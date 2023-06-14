@@ -1,0 +1,47 @@
+{
+  "id": "AAAAAAAA-1111-AAAA-1111-AAAAAAAAAAAA:ABPerson",
+  "name": "Amelia Avery",
+  "has_image": true,
+  "is_company": false,
+  "first_name": "Amelia",
+  "last_name": "Avery",
+  "job_title": "Architect",
+  "phones":
+    [
+      {
+        "id": "AAAAAAAA-2222-AAAA-2222-AAAAAAAAAAAA",
+        "label": "_$!<Mobile>!$_",
+        "value": "+11111111111",
+      },
+    ],
+  "emails":
+    [
+      {
+        "id": "AAAAAAAA-3333-AAAA-3333-AAAAAAAAAAAA",
+        "label": "_$!<Home>!$_",
+        "value": "amelia@avery.com",
+      },
+    ],
+  "urls":
+    [
+      {
+        "id": "AAAAAAAA-4444-AAAA-4444-AAAAAAAAAAAA",
+        "label": "_$!<Home>!$_",
+        "value": "https://www.avery.com",
+      },
+    ],
+  "addresses":
+    [
+      {
+        "id": "AAAAAAAA-4444-AAAA-4444-AAAAAAAAAAAA",
+        "country_code": "us",
+        "label": "_$!<Home>!$_",
+        "street": "111 Arlington Blvd",
+        "city": "Arlington",
+        "state": "TX",
+        "zip": "76010",
+        "country": "United States",
+      },
+    ],
+  "birth_date": "01/01/01",
+},

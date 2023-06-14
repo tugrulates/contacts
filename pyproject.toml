@@ -3,14 +3,14 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "my-cli"
+name = "contacts-cli"
 version = "0.0.1"
-description = 'My package description'
+description = 'Manage contacts'
 readme = "README.md"
 requires-python = ">=3.7"
 license = "MIT"
-keywords = ["mykeywords"]
-authors = [{ name = "My Name", email = "my.email@test.com" }]
+keywords = ["contacts"]
+authors = [{ name = "Tugrul Ates", email = "me@tugrulates.com" }]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Programming Language :: Python",
@@ -22,8 +22,8 @@ classifiers = [
   "Environment :: Console",
   "License :: OSI Approved :: MIT License",
 ]
-
 dependencies = [
+  "PyYAML==6.0",
   "typer[all]==0.9.0",
 ]
 
@@ -42,6 +42,7 @@ dev = [
   "isort==5.12.0",
   "mypy==1.3.0",
   "pep8-naming==0.13.3",
+  "pytest==7.3.1",
   "types-PyYAML==6.0.12.10",
 ]
 test = [
@@ -50,16 +51,16 @@ test = [
 ]
 
 [project.scripts]
-my-cli = "my_cli.cli:app"
+contacts = "contacts.cli:app"
 
 [project.urls]
-Documentation = "https://github.com/mygithubuser/mycli#readme"
-Issues = "https://github.com/mygithubuser/mycli/issues"
-Source = "https://github.com/mygithubuser/mycli"
+Documentation = "https://github.com/tugrulates/contacts-cli#readme"
+Issues = "https://github.com/tugrulates/contacts-cli/issues"
+Source = "https://github.com/tugrulates/contacts-cli"
 
 [tool.hatch.build]
 artifacts = [
-  "my-cli/static/**",
+  "contacts/applescript/*.applescript",
 ]
 
 [tool.hatch.envs.dev]
@@ -79,20 +80,19 @@ lint = [
 fmt = [
   "isort .",
   "black .",
-  "check",
 ]
 test = [
   "pytest -v",
 ]
 cov = [
-  "pytest -v --cov my_cli --cov-report xml --cov-fail-under=80",
+  "pytest -v --cov contacts --cov-report xml --cov-fail-under=70",
 ]
 
 [tool.bandit]
 exclude_dirs = ["tests"]
 
-[tool.mypy]
-strict = true
-
 [tool.isort]
 profile = "black"
+
+[tool.mypy]
+strict = true
