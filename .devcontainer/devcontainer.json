@@ -12,7 +12,11 @@
                 "EditorConfig.EditorConfig",
                 "esbenp.prettier-vscode",
                 "GitHub.vscode-pull-request-github",
-                "ms-python.flake8"
+                "idleberg.applescript",
+                "ms-python.black-formatter",
+                "ms-python.flake8",
+                "ms-python.isort",
+                "ms-python.python"
             ]
         }
     }
