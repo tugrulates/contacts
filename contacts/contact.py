@@ -1,8 +1,7 @@
 """Contact operations."""
 
+import json
 from typing import Any
-
-import yaml
 
 from contacts import applescript
 
@@ -45,5 +44,5 @@ class Contact:
 
 def find(keywords: list[str]) -> list[Contact]:
     """Find contacts matching given keyword."""
-    result = yaml.safe_load(applescript.run("find", *keywords))
+    result = json.loads(applescript.run("find", *keywords))
     return [Contact(x) for x in result]

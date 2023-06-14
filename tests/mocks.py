@@ -28,11 +28,9 @@ class MockApplescript:
 
         if script == "find":
             return "[\n{}\n]\n".format(
-                "\n".join(
+                ",\n".join(
                     [
-                        Path(self._test_data_path / "{}.yaml".format(x)).read_text(
-                            encoding="utf-8"
-                        )
+                        Path(self._test_data_path / x).read_text(encoding="utf-8")
                         for x in self._find
                     ]
                 )

@@ -51,7 +51,7 @@ def test_list_no_contact(mock_applescript: MockApplescript) -> None:
 
 def test_list_single_contact(mock_applescript: MockApplescript) -> None:
     """Test find with single contact."""
-    mock_applescript.find("amelia")
+    mock_applescript.find("amelia.json")
     result = runner.invoke(cli.app, "amelia")
     assert result.exit_code == 0
     assert result.stdout.rstrip().split("\n") == [
@@ -61,7 +61,7 @@ def test_list_single_contact(mock_applescript: MockApplescript) -> None:
 
 def test_list_multiple_contact(mock_applescript: MockApplescript) -> None:
     """Test find with multiple contacts."""
-    mock_applescript.find("bob", "carnival")
+    mock_applescript.find("bob.json", "carnival.json")
     result = runner.invoke(cli.app, "balloon")
     assert result.exit_code == 0
     assert result.stdout.rstrip().split("\n") == [
@@ -72,7 +72,7 @@ def test_list_multiple_contact(mock_applescript: MockApplescript) -> None:
 
 def test_list_multiple_keywords(mock_applescript: MockApplescript) -> None:
     """Test find with single contact."""
-    mock_applescript.find("amelia", "bob")
+    mock_applescript.find("amelia.json", "bob.json")
     result = runner.invoke(cli.app, "amelia", "bob")
     assert result.exit_code == 0
     assert result.stdout.rstrip().split("\n") == [

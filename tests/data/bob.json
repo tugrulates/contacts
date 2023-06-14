@@ -1,0 +1,17 @@
+{
+    "id": "BBBBBBBB-1111-BBBB-1111-BBBBBBBBBBBB:ABPerson",
+    "name": "Bob Balloon",
+    "has_image": false,
+    "is_company": false,
+    "first_name": "Bob",
+    "middle_name": "Babála",
+    "last_name": "Balon",
+    "job_title": "Baker",
+    "phones": [
+        {
+            "id": "BBBBBBBB-2222-BBBB-2222-BBBBBBBBBBBB",
+            "label": "_$!<Mobile>!$_",
+            "value": "+222222222222"
+        }
+    ]
+}
