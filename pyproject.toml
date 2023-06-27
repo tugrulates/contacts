@@ -37,7 +37,7 @@ dev = [
   "flake8-simplify==0.20.0",
   "flake8==6.0.0",
   "isort==5.12.0",
-  "mypy==1.3.0",
+  "mypy==1.4.1",
   "pep8-naming==0.13.3",
   "pytest==7.4.0",
 ]
