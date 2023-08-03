@@ -2,8 +2,8 @@
     "name": "Python 3",
     "image": "mcr.microsoft.com/devcontainers/python:0-3.10",
     "features": {
-        "ghcr.io/devcontainers-contrib/features/hatch:1": {},
-        "ghcr.io/devcontainers-contrib/features/pre-commit:1": {}
+        "ghcr.io/devcontainers-contrib/features/hatch:2": {},
+        "ghcr.io/devcontainers-contrib/features/pre-commit:2": {}
     },
     "postCreateCommand": "pip install -e . && pip install $(hatch dep show requirements -f dev -f test) && (if [ -e .git ]; then pre-commit install-hooks; fi)",
     "customizations": {
