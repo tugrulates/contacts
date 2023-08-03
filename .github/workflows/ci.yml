@@ -53,3 +53,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: hynek/build-and-inspect-python-package@v1
+
+  done:
+    needs: [lint, test, coverage, build]
+    runs-on: ubuntu-latest
+    steps:
+      - run: "true"
