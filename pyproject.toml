@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "contacts-cli"
+name = "contacts"
 version = "0.0.1"
 description = 'Manage contacts'
 readme = "README.md"
@@ -50,9 +50,9 @@ test = [
 contacts = "contacts.cli:app"
 
 [project.urls]
-Documentation = "https://github.com/tugrulates/contacts-cli#readme"
-Issues = "https://github.com/tugrulates/contacts-cli/issues"
-Source = "https://github.com/tugrulates/contacts-cli"
+Documentation = "https://github.com/tugrulates/contacts#readme"
+Issues = "https://github.com/tugrulates/contacts/issues"
+Source = "https://github.com/tugrulates/contacts"
 
 [tool.hatch.build]
 artifacts = [
