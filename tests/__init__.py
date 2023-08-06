@@ -1,1 +1,1 @@
-"""Tests for contacts-cli."""
+"""Tests for contacts."""
