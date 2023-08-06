@@ -23,6 +23,7 @@ on findContacts(theKeywords)
     end tell
 end findContacts
 
+
 on run argv
     findContacts(argv)
 end run
