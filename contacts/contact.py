@@ -1,7 +1,7 @@
 """Contact operations."""
 
 import json
-from typing import Any
+from typing import Any, Iterator, Sequence
 
 from contacts import applescript
 
@@ -42,7 +42,12 @@ class Contact:
         return f"Contact({self.name})"
 
 
-def find(keywords: list[str]) -> list[Contact]:
+def by_keyword(keywords: Sequence[str]) -> Iterator[Contact]:
     """Find contacts matching given keyword."""
-    result = json.loads(applescript.run("find", *keywords))
-    return [Contact(x) for x in result]
+    for contact_id in applescript.run_and_read_log("find", *keywords):
+        yield by_id(contact_id)
+
+
+def by_id(contact_id: str) -> Contact:
+    """Create contact by id."""
+    return Contact(json.loads(applescript.run_and_read_output("detail", contact_id)))
