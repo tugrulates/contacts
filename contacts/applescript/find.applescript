@@ -14,8 +14,8 @@ on findContacts(theKeywords)
                     first name is theKeyword or ¬
                     middle name is theKeyword or ¬
                     last name is theKeyword or ¬
-                    organization is theKeyword or ¬
-                    job title is theKeyword or ¬
+                    organization contains theKeyword or ¬
+                    job title contains theKeyword or ¬
                     city of addresses contains theKeyword or ¬
                     country of addresses contains theKeyword)
                 end ignoring
