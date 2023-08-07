@@ -17,7 +17,7 @@ app = typer.Typer(help=__doc__)
 def find(
     keywords: Annotated[Optional[list[str]], typer.Argument()] = None,
     *,
-    extend: bool = False,
+    extend: bool = True,
 ) -> None:
     """List contacts matching given keyword."""
     keywords = keyword.prepare(keywords or [], extend=extend)
