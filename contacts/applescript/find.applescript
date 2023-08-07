@@ -5,18 +5,25 @@ on findContacts(theKeywords)
                 log id of the theContact as text
             end repeat
         else
+            set theIds to {}
             repeat with theKeyword in theKeywords
                 ignoring diacriticals
-                    set found to people where ( ¬
-                        id is theKeyword or ¬
-                        name is theKeyword or ¬
-                        first name is theKeyword or ¬
-                        middle name is theKeyword or ¬
-                        last name is theKeyword or ¬
-                        organization is theKeyword)
+                set theFound to id of people whose ( ¬
+                    id is theKeyword or ¬
+                    name is theKeyword or ¬
+                    first name is theKeyword or ¬
+                    middle name is theKeyword or ¬
+                    last name is theKeyword or ¬
+                    organization is theKeyword or ¬
+                    job title is theKeyword or ¬
+                    city of addresses contains theKeyword or ¬
+                    country of addresses contains theKeyword)
                 end ignoring
-                repeat with theContact in found
-                    log id of the theContact as text
+                repeat with theId in theFound
+                    if theId as text is not in theIds
+                        log theId as text
+                        copy theId as text to the end of theIds
+                    end if
                 end repeat
             end repeat
         end if
@@ -26,4 +33,5 @@ end findContacts
 
 on run argv
     findContacts(argv)
+    return
 end run

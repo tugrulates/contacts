@@ -1,4 +1,4 @@
-"""Unittests for the CLI."""
+"""Unittests for cli."""
 
 
 import pytest
