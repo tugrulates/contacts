@@ -24,7 +24,7 @@ def prepare(keywords: list[str], *, extend: bool = False) -> list[str]:
 
     :param extend: extend the search space to find near matches
     """
-    result = {x.capitalize() for x in keywords}
+    result = {" ".join(x.capitalize() for x in k.split()) for k in keywords}
 
     if extend:
         for keyword in list(result):
