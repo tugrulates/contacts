@@ -3,7 +3,7 @@
 import json
 from pathlib import Path
 from subprocess import CalledProcessError
-from typing import Iterator
+from typing import Any, Iterator
 
 
 class MockApplescript:
@@ -13,7 +13,7 @@ class MockApplescript:
         """Initialize the mock."""
         self._test_data_path = test_data_path
         self._error = False
-        self._data = {}
+        self._data: dict[str, dict[Any, Any]] = {}
 
     def error(self) -> None:
         """Raise an error upon invocation."""

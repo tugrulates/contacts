@@ -49,11 +49,8 @@ def by_keyword(*keywords: str) -> Iterator[Contact]:
     """Find contacts matching given keyword."""
     contact_ids = applescript.run_and_read_log("find", *keywords)
     chunks = zip_longest(*([iter(contact_ids)] * BATCH_DETAIL_SIZE))
-    # print(chunks)
-    # print([by_id(x) for x in chunks])
-    # print(list(chain(by_id(*x) for x in chunks)))
-    for contact_ids in chunks:
-        yield from by_id(*(x for x in contact_ids if x))
+    for chunk in chunks:
+        yield from by_id(*(x for x in chunk if x))
 
 
 def by_id(*contact_ids: str) -> Iterator[Contact]:
