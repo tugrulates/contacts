@@ -6,7 +6,7 @@ from typing import Any, Iterator
 
 from contacts import applescript
 
-BATCH_DETAIL_SIZE = 1
+BATCH_DETAIL_SIZE = 10
 
 
 class Contact:
