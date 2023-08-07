@@ -6,8 +6,6 @@ from typing import Any, Iterator
 
 from contacts import applescript
 
-BATCH_DETAIL_SIZE = 10
-
 
 class Contact:
     """A single contact person or company."""
@@ -45,15 +43,18 @@ class Contact:
         return f"Contact({self.name})"
 
 
-def by_keyword(*keywords: str) -> Iterator[Contact]:
-    """Find contacts matching given keyword."""
+def by_keyword(keywords: list[str], *, batch: int = 1) -> Iterator[Contact]:
+    """Find contacts matching given keyword.
+
+    :param batch: batch detail queries by given number of contacts
+    """
     contact_ids = applescript.run_and_read_log("find", *keywords)
-    chunks = zip_longest(*([iter(contact_ids)] * BATCH_DETAIL_SIZE))
+    chunks = zip_longest(*([iter(contact_ids)] * batch))
     for chunk in chunks:
-        yield from by_id(*(x for x in chunk if x))
+        yield from by_id([x for x in chunk if x])
 
 
-def by_id(*contact_ids: str) -> Iterator[Contact]:
+def by_id(contact_ids: list[str]) -> Iterator[Contact]:
     """Create contact by id."""
     result = json.loads(applescript.run_and_read_output("detail", *contact_ids))
     for contact in result:
