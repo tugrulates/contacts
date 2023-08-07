@@ -82,7 +82,7 @@ test = [
 ]
 # TODO: #4 Increase code coverage to 80%
 cov = [
-  "pytest -v --cov contacts --cov-report xml --cov-fail-under=60",
+  "pytest -v --cov contacts --cov-report xml --cov-fail-under=70",
 ]
 
 [tool.bandit]

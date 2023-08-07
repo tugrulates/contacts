@@ -5,7 +5,7 @@ from typing import Annotated, Optional
 
 import typer
 
-from contacts import contact
+from contacts import contact, keyword
 
 ALL_CONTACTS: list[str] = []
 
@@ -14,9 +14,14 @@ app = typer.Typer(help=__doc__)
 
 
 @app.command()
-def find(keywords: Annotated[Optional[list[str]], typer.Argument()] = None) -> None:
+def find(
+    keywords: Annotated[Optional[list[str]], typer.Argument()] = None,
+    *,
+    extend: bool = True,
+) -> None:
     """List contacts matching given keyword."""
-    for person in contact.by_keyword(*(keywords or [])):
+    keywords = keyword.prepare(keywords or [], extend=extend)
+    for person in contact.by_keyword(*keywords):
         print(
             "{} {}".format(
                 ["  ", ["👤", "🏢"][person.is_company]][person.has_image],
