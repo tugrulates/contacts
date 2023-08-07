@@ -16,7 +16,8 @@ def mock_applescript(
 ) -> MockApplescript:
     """Fixture for prefs."""
     mock = MockApplescript(request.path.parent / "data")
-    monkeypatch.setattr(applescript, "run", mock.run)
+    monkeypatch.setattr(applescript, "run_and_read_output", mock.run_and_read_output)
+    monkeypatch.setattr(applescript, "run_and_read_log", mock.run_and_read_log)
     return mock
 
 
