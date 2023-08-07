@@ -1,9 +1,12 @@
 """Contact operations."""
 
 import json
-from typing import Any
+from itertools import zip_longest
+from typing import Any, Iterator
 
 from contacts import applescript
+
+BATCH_DETAIL_SIZE = 10
 
 
 class Contact:
@@ -42,7 +45,16 @@ class Contact:
         return f"Contact({self.name})"
 
 
-def find(keywords: list[str]) -> list[Contact]:
+def by_keyword(*keywords: str) -> Iterator[Contact]:
     """Find contacts matching given keyword."""
-    result = json.loads(applescript.run("find", *keywords))
-    return [Contact(x) for x in result]
+    contact_ids = applescript.run_and_read_log("find", *keywords)
+    chunks = zip_longest(*([iter(contact_ids)] * BATCH_DETAIL_SIZE))
+    for chunk in chunks:
+        yield from by_id(*(x for x in chunk if x))
+
+
+def by_id(*contact_ids: str) -> Iterator[Contact]:
+    """Create contact by id."""
+    result = json.loads(applescript.run_and_read_output("detail", *contact_ids))
+    for contact in result:
+        yield Contact(contact)

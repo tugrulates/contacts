@@ -1,7 +1,9 @@
 """Mocks for tests."""
 
+import json
 from pathlib import Path
 from subprocess import CalledProcessError
+from typing import Any, Iterator
 
 
 class MockApplescript:
@@ -11,7 +13,7 @@ class MockApplescript:
         """Initialize the mock."""
         self._test_data_path = test_data_path
         self._error = False
-        self._find: list[str] = []
+        self._data: dict[str, dict[Any, Any]] = {}
 
     def error(self) -> None:
         """Raise an error upon invocation."""
@@ -19,20 +21,27 @@ class MockApplescript:
 
     def find(self, *find_data: str) -> None:
         """Specify which test data to find in contacts."""
-        self._find = list(find_data)
+        data = [
+            json.loads(Path(self._test_data_path / x).read_text(encoding="utf-8"))
+            for x in find_data
+        ]
+        self._data = {x["id"]: x for x in data}
 
-    def run(self, script: str, *args: str) -> str:
-        """Emulate applescript run."""
+    def run_and_read_output(self, script: str, *args: str) -> str:
+        """Emulate applescript.run_and_read_output."""
+        if self._error:
+            raise CalledProcessError(1, "run")
+
+        if script == "detail":
+            return "[\n{}\n]\n".format(
+                ",\n".join(json.dumps(self._data[x]) for x in args)
+            )
+        return ""
+
+    def run_and_read_log(self, script: str, *args: str) -> Iterator[str]:
+        """Emulate applescript.run_and_read_log."""
         if self._error:
             raise CalledProcessError(1, "run")
 
         if script == "find":
-            return "[\n{}\n]\n".format(
-                ",\n".join(
-                    [
-                        Path(self._test_data_path / x).read_text(encoding="utf-8")
-                        for x in self._find
-                    ]
-                )
-            )
-        return ""
+            yield from self._data.keys()
