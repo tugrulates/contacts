@@ -17,7 +17,7 @@ class Contact:
         self._data = data
 
     @property
-    def identifier(self) -> str:
+    def contact_id(self) -> str:
         """Return the id of this contact."""
         return str(self._data["id"])
 
