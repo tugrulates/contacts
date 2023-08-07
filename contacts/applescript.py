@@ -36,7 +36,7 @@ def run_and_read_log(script: str, *args: str) -> Iterator[str]:
             stdout=True,
             stderr=subprocess.PIPE,
             universal_newlines=True,
-        ) as process:
+        ) as process:  # nosec B603
             if process.stderr:
                 yield from (x.strip() for x in process.stderr)
     except subprocess.CalledProcessError as e:
