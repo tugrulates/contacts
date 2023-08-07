@@ -124,33 +124,41 @@ on logContactBirthDate(theContact)
 end logContactBirthDate
 
 
-on detailContact(theId)
+on detailContact(theIds)
     tell application "Contacts"
-        set theContact to person id theId
-        set theEntries to {}
+        set theResults to {}
 
-        copy my logContactValue("id", id of theContact) to the end of theEntries
+        repeat with theId in theIds
+            set theEntries to {}
 
-        copy my logContactValue("name", name of theContact) to the end of theEntries
-        copy my logContactValue("has_image", image of theContact exists) to the end of theEntries
-        copy my logContactValue("is_company", company of theContact) to the end of theEntries
+            set theContact to person id theId
+            set theEntries to {}
 
-        copy my logContactValue("nickname", nickname of theContact) to the end of theEntries
-        copy my logContactValue("first_name", first name of theContact) to the end of theEntries
-        copy my logContactValue("middle_name", middle name of theContact) to the end of theEntries
-        copy my logContactValue("last_name", last name of theContact) to the end of theEntries
+            copy my logContactValue("id", id of theContact) to the end of theEntries
 
-        copy my logContactValue("organization", organization of theContact) to the end of theEntries
-        copy my logContactValue("job_title", job title of theContact) to the end of theEntries
+            copy my logContactValue("name", name of theContact) to the end of theEntries
+            copy my logContactValue("has_image", image of theContact exists) to the end of theEntries
+            copy my logContactValue("is_company", company of theContact) to the end of theEntries
 
-        copy my logContactInfo("phones", every phone of theContact) to the end of theEntries
-        copy my logContactInfo("emails", every emails of theContact) to the end of theEntries
-        copy my logContactInfo("urls", every urls of theContact) to the end of theEntries
+            copy my logContactValue("nickname", nickname of theContact) to the end of theEntries
+            copy my logContactValue("first_name", first name of theContact) to the end of theEntries
+            copy my logContactValue("middle_name", middle name of theContact) to the end of theEntries
+            copy my logContactValue("last_name", last name of theContact) to the end of theEntries
 
-        copy my logContactAddresses(theContact) to the end of theEntries
-        copy my logContactBirthDate(theContact) to the end of theEntries
+            copy my logContactValue("organization", organization of theContact) to the end of theEntries
+            copy my logContactValue("job_title", job title of theContact) to the end of theEntries
 
-        return my encloseList("{", "    ", theEntries, "  }")
+            copy my logContactInfo("phones", every phone of theContact) to the end of theEntries
+            copy my logContactInfo("emails", every emails of theContact) to the end of theEntries
+            copy my logContactInfo("urls", every urls of theContact) to the end of theEntries
+
+            copy my logContactAddresses(theContact) to the end of theEntries
+            copy my logContactBirthDate(theContact) to the end of theEntries
+
+            copy my encloseList(" {", "    ", theEntries, "  }") to the end of theResults
+        end repeat
+
+        return my encloseList("[", " ", theResults, "]")
     end tell
 end detailContact
 

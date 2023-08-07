@@ -38,7 +38,7 @@ def run_and_read_log(script: str, *args: str) -> Iterator[str]:
             universal_newlines=True,
         ) as process:
             if process.stderr:
-                yield from map(lambda x: x.strip(), process.stderr)
+                yield from (x.strip() for x in process.stderr)
     except subprocess.CalledProcessError as e:
         print(e.stderr)
         raise e

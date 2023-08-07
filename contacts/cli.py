@@ -16,7 +16,7 @@ app = typer.Typer(help=__doc__)
 @app.command()
 def find(keywords: Annotated[Optional[list[str]], typer.Argument()] = None) -> None:
     """List contacts matching given keyword."""
-    for person in contact.by_keyword(keywords or []):
+    for person in contact.by_keyword(*(keywords or [])):
         print(
             "{} {}".format(
                 ["  ", ["👤", "🏢"][person.is_company]][person.has_image],
