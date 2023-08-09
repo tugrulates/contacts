@@ -4,7 +4,7 @@
 from typing import Annotated, Optional
 
 import typer
-from rich import print, box
+from rich import box, print
 from rich.table import Table
 
 from contacts import contact, keyword
@@ -22,7 +22,7 @@ def find(
     batch: int = 1,
     extend: bool = True,
     detail: bool = False,
-    markdown: bool = False
+    markdown: bool = False,
 ) -> None:
     """List contacts matching given keyword."""
     keywords = keyword.prepare(keywords or [], extend=extend)
