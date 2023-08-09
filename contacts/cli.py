@@ -33,7 +33,7 @@ def find(
             table.add_column(min_width=20, justify="right", style="magenta")
             table.add_column(str(person))
             for key, value in person.details().items():
-                if type(value) == list:
+                if isinstance(type(value), list):
                     value = "\n".join(map(str, value))
                 else:
                     value = str(value)
