@@ -4,12 +4,12 @@
 from typing import Annotated, Optional
 
 import typer
-from rich import print
+from rich import print, box
 from rich.table import Table
 
 from contacts import contact, keyword
 
-ALL_CONTACTS: list[str] = []
+ALL_CONTACTS: list[str] = []=
 
 # App object enclosing the commands.
 app = typer.Typer(help=__doc__)
@@ -29,11 +29,11 @@ def find(
         if not detail:
             print(person)
         else:
-            table = Table(highlight=True)
+            table = Table(highlight=True, box=box.ROUNDED)
             table.add_column(min_width=20, justify="right", style="magenta")
             table.add_column(str(person))
             for key, value in person.details().items():
-                if isinstance(type(value), list):
+                if isinstance(value, list):
                     value = "\n".join(map(str, value))
                 else:
                     value = str(value)
