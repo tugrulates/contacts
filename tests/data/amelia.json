@@ -11,6 +11,11 @@
             "id": "AAAAAAAA-2222-AAAA-2222-AAAAAAAAAAAA",
             "label": "_$!<Mobile>!$_",
             "value": "+11111111111"
+        },
+        {
+            "id": "AAAAAAAA-2222-AAAA-2222-AAAAAAAAAAAA",
+            "label": "_$!<Work>!$_",
+            "value": "+11111111112"
         }
     ],
     "emails": [
@@ -30,6 +35,7 @@
     "addresses": [
         {
             "id": "AAAAAAAA-4444-AAAA-4444-AAAAAAAAAAAA",
+            "value": "111 Arlington Blvd Arlington, TX 76010\nUnited States",
             "country_code": "us",
             "label": "_$!<Home>!$_",
             "street": "111 Arlington Blvd",
@@ -39,5 +45,5 @@
             "country": "United States"
         }
     ],
-    "birth_date": "01/01/01"
+    "birth_date": "January 1, 2001"
 }

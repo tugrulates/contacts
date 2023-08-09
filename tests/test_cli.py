@@ -49,9 +49,9 @@ def test_find_all_contacts(mock_applescript: MockApplescript) -> None:
     result = runner.invoke(cli.app, "waldo")
     assert result.exit_code == 0
     assert result.stdout.rstrip().split("\n") == [
-        str("👤 Amelia Avery"),
-        str("   Bob Balloon"),
-        str("🏢 Carnival Balloon Co."),
+        "👤 Amelia Avery",
+        "👤 Bob Balloon",
+        "🏢 Carnival Balloon Co.",
     ]
 
 
@@ -61,7 +61,7 @@ def test_find_single_contact(mock_applescript: MockApplescript) -> None:
     result = runner.invoke(cli.app, "amelia")
     assert result.exit_code == 0
     assert result.stdout.rstrip().split("\n") == [
-        str("👤 Amelia Avery"),
+        "👤 Amelia Avery",
     ]
 
 
@@ -71,8 +71,8 @@ def test_find_multiple_contact(mock_applescript: MockApplescript) -> None:
     result = runner.invoke(cli.app, "balloon")
     assert result.exit_code == 0
     assert result.stdout.rstrip().split("\n") == [
-        str("   Bob Balloon"),
-        str("🏢 Carnival Balloon Co."),
+        "👤 Bob Balloon",
+        "🏢 Carnival Balloon Co.",
     ]
 
 
@@ -82,6 +82,45 @@ def test_find_multiple_keywords(mock_applescript: MockApplescript) -> None:
     result = runner.invoke(cli.app, "amelia bob")
     assert result.exit_code == 0
     assert result.stdout.rstrip().split("\n") == [
-        str("👤 Amelia Avery"),
-        str("   Bob Balloon"),
+        "👤 Amelia Avery",
+        "👤 Bob Balloon",
+    ]
+
+
+def test_find_details(mock_applescript: MockApplescript) -> None:
+    """Test find with single contact."""
+    mock_applescript.find("amelia.json", "bob.json", "carnival.json")
+    result = runner.invoke(cli.app, "--detail --no-safe-box")
+    assert result.exit_code == 0
+    assert [x for x in result.stdout.split("\n") if x.strip()] == [
+        "╭──────────────────────┬───────────────────────────────────────────╮",
+        "│                      │ 👤 Amelia Avery                           │",
+        "├──────────────────────┼───────────────────────────────────────────┤",
+        "│           First name │ 💬 Amelia                                 │",
+        "│            Last name │ 💬 Avery                                  │",
+        "│            Job title │ 💼 Architect                              │",
+        "│               Phones │ 📱 +11111111111                           │",
+        "│                      │ 💼 +11111111112                           │",
+        "│               Emails │ 🏠 amelia@avery.com                       │",
+        "│                 Urls │ 🏠 https://www.avery.com                  │",
+        "│            Addresses │ 🏠 111 Arlington Blvd Arlington, TX 76010 │",
+        "│                      │    United States                          │",
+        "│           Birth date │ 📅 January 1, 2001                        │",
+        "╰──────────────────────┴───────────────────────────────────────────╯",
+        "╭──────────────────────┬──────────────────╮",
+        "│                      │ 👤 Bob Balloon   │",
+        "├──────────────────────┼──────────────────┤",
+        "│           First name │ 💬 Bob           │",
+        "│          Middle name │ 💬 Babála        │",
+        "│            Last name │ 💬 Balon         │",
+        "│            Job title │ 💼 Baker         │",
+        "│               Phones │ 📱 +222222222222 │",
+        "╰──────────────────────┴──────────────────╯",
+        "╭──────────────────────┬──────────────────────────────╮",
+        "│                      │ 🏢 Carnival Balloon Co.      │",
+        "├──────────────────────┼──────────────────────────────┤",
+        "│               Phones │ 📱 +3333333333333            │",
+        "│               Emails │ 💼 order@carnivalballoon.com │",
+        "│                      │ 💼 order@carnivalballoon.com │",
+        "╰──────────────────────┴──────────────────────────────╯",
     ]

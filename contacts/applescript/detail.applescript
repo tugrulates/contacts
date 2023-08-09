@@ -97,8 +97,9 @@ on logContactAddresses(theContact)
                 set theEntries to {}
 
                 copy my logContactValue("id", id of theAddress) to the end of theEntries
-                copy my logContactValue("country_code", country code of theAddress) to the end of theEntries
                 copy my logContactValue("label", label of theAddress) to the end of theEntries
+                copy my logContactValue("value", formatted address of theAddress) to the end of theEntries
+                copy my logContactValue("country_code", country code of theAddress) to the end of theEntries
                 copy my logContactValue("street", street of theAddress) to the end of theEntries
                 copy my logContactValue("city", city of theAddress) to the end of theEntries
                 copy my logContactValue("state", state of theAddress) to the end of theEntries
@@ -118,7 +119,12 @@ on logContactBirthDate(theContact)
     tell application "Contacts"
         set theBirthDate to birth date of theContact
         if theBirthDate exists
-            return my logContactValue("birth_date", short date string of (theBirthDate))
+            if year of theBirthDate >= 1900
+                set theDateStr to (month of theBirthDate) & " " & (day of theBirthDate) & ", " & (year of theBirthDate)
+            else
+                set theDateStr to (month of theBirthDate) & " " & (day of theBirthDate)
+            end if
+            return my logContactValue("birth_date", theDateStr as text)
         end if
     end tell
 end logContactBirthDate
