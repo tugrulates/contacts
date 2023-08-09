@@ -9,7 +9,7 @@ from rich.table import Table
 
 from contacts import contact, keyword
 
-ALL_CONTACTS: list[str] = []=
+ALL_CONTACTS: list[str] = []
 
 # App object enclosing the commands.
 app = typer.Typer(help=__doc__)
@@ -22,6 +22,7 @@ def find(
     batch: int = 1,
     extend: bool = True,
     detail: bool = False,
+    markdown: bool = False
 ) -> None:
     """List contacts matching given keyword."""
     keywords = keyword.prepare(keywords or [], extend=extend)
@@ -29,7 +30,7 @@ def find(
         if not detail:
             print(person)
         else:
-            table = Table(highlight=True, box=box.ROUNDED)
+            table = Table(highlight=True, box=box.MARKDOWN if markdown else box.ROUNDED)
             table.add_column(min_width=20, justify="right", style="magenta")
             table.add_column(str(person))
             for key, value in person.details().items():
