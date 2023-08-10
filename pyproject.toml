@@ -78,10 +78,10 @@ fmt = [
   "black .",
 ]
 test = [
-  "pytest -v",
+  "pytest -vv",
 ]
 cov = [
-  "pytest -v --cov contacts --cov-report xml --cov-fail-under=80",
+  "pytest --cov contacts --cov-report xml --cov-fail-under=80",
 ]
 
 [tool.bandit]
