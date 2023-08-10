@@ -4,7 +4,7 @@ import json
 from itertools import zip_longest
 from typing import Any, Iterator, Optional
 
-from contacts import applescript, category
+from contacts import applescript
 from contacts.category import Category
 
 
@@ -17,9 +17,14 @@ class Info:
         self._value = value
 
     @property
+    def category(self) -> Category:
+        """Return the category of this info."""
+        return self._category
+
+    @property
     def icon(self) -> str:
         """Return the icon of this info."""
-        return self._category.icon
+        return self.category.icon
 
     @property
     def value(self) -> str:
@@ -52,7 +57,7 @@ class RichInfo(Info):
     @property
     def icon(self) -> str:
         """Return the icon of this info."""
-        return category.from_label(self.label, self._category).icon
+        return Category.from_label(self.label, self.category).icon
 
     @property
     def label(self) -> str:
@@ -166,6 +171,11 @@ class Contact(RichInfo):
         self._data = data
 
     @property
+    def category(self) -> Category:
+        """Return the category of this info."""
+        return Category.COMPANY if self.is_company else Category.PERSON
+
+    @property
     def contact_id(self) -> str:
         """Return the id of this contact."""
         return str(self._data["id"])
@@ -173,7 +183,7 @@ class Contact(RichInfo):
     @property
     def icon(self) -> str:
         """Return the icon of this contact."""
-        return "🏢" if self.is_company else "👤"
+        return self.category.icon
 
     @property
     def value(self) -> str:

@@ -1,13 +1,16 @@
 """Label operations."""
 
 
+from __future__ import annotations
 from enum import Enum
-from typing import AbstractSet
+from typing import AbstractSet, Optional
 
 
 class Category(Enum):
     """A contact information category."""
 
+    PERSON = "👤"
+    COMPANY = "🏢"
     NAME = "🔖"
     PHONETIC = "🎧"
     DATE = "📅"
@@ -33,10 +36,10 @@ class Category(Enum):
         self.icon = icon
         self.labels = labels
 
-
-def from_label(label: str, default: Category = Category.UNKNOWN) -> Category:
-    """Return the category of given label."""
-    for category in Category:
-        if label in category.labels:
-            return category
-    return default
+    @staticmethod
+    def from_label(label: str, default: Optional[Category] = None) -> Category:
+        """Return the category of given label."""
+        for category in Category:
+            if label in category.labels:
+                return category
+        return default or Category.UNKNOWN
