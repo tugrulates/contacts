@@ -1,7 +1,6 @@
 """Unittests for cli."""
 
 
-from itertools import chain
 from pathlib import Path
 
 import pytest
