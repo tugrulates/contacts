@@ -150,16 +150,26 @@ on detailContact(theIds)
             copy my logContactValue("first_name", first name of theContact) to the end of theEntries
             copy my logContactValue("middle_name", middle name of theContact) to the end of theEntries
             copy my logContactValue("last_name", last name of theContact) to the end of theEntries
+            copy my logContactValue("title", title of theContact) to the end of theEntries
+            copy my logContactValue("suffix", suffix of theContact) to the end of theEntries
+            copy my logContactValue("maiden_name", maiden name of theContact) to the end of theEntries
+            copy my logContactValue("phonetic_first_name", phonetic first name of theContact) to the end of theEntries
+            copy my logContactValue("phonetic_middle_name", phonetic middle name of theContact) to the end of theEntries
+            copy my logContactValue("phonetic_last_name", phonetic last name of theContact) to the end of theEntries
 
             copy my logContactValue("organization", organization of theContact) to the end of theEntries
+            copy my logContactValue("department", department of theContact) to the end of theEntries
             copy my logContactValue("job_title", job title of theContact) to the end of theEntries
 
             copy my logContactInfo("phones", every phone of theContact) to the end of theEntries
             copy my logContactInfo("emails", every emails of theContact) to the end of theEntries
+            copy my logContactValue("home_page", home page of theContact) to the end of theEntries
             copy my logContactInfo("urls", every urls of theContact) to the end of theEntries
 
             copy my logContactAddresses(theContact) to the end of theEntries
             copy my logContactBirthDate(theContact) to the end of theEntries
+
+            copy my logContactValue("note", note of theContact) to the end of theEntries
 
             copy my encloseList(" {", "    ", theEntries, "  }") to the end of theResults
         end repeat
