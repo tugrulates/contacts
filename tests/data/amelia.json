@@ -3,19 +3,19 @@
     "name": "Ms. Amelia Avery Arch.",
     "has_image": true,
     "is_company": false,
-    "nickname": "Amelie",
     "prefix": "Ms.",
     "first_name": "Amelia",
-    "middle_name": "Ada",
-    "last_name": "Avery",
-    "suffix": "Arch.",
-    "maiden_name": "Anglais",
     "phonetic_first_name": "a-mel-ia",
+    "middle_name": "Ada",
     "phonetic_middle_name": "AY-duh",
+    "last_name": "Avery",
     "phonetic_last_name": "AYV-ree",
-    "organization": "Avery & Avery",
-    "department": "Administrative",
+    "maiden_name": "Anglais",
+    "suffix": "Arch.",
+    "nickname": "Amelie",
     "job_title": "Architect",
+    "department": "Administrative",
+    "organization": "Avery & Avery",
     "phones": [
         {
             "id": "AAAAAAAA-2222-AAAA-2222-AAAAAAAAAAAA",
@@ -41,31 +41,6 @@
             "id": "AAAAAAAA-4444-AAAA-4444-AAAAAAAAAAAA",
             "label": "_$!<Home>!$_",
             "value": "https://www.avery.com"
-        }
-    ],
-    "social_profiles": [
-        {
-            "id": "AAAAAAAA-5555-AAAA-5555-AAAAAAAAAAAA",
-            "service_name": "Duolingo",
-            "user_name": "amelie"
-        },
-        {
-            "id": "AAAAAAAA-5555-AAAA-5556-AAAAAAAAAAAA",
-            "service_name": "LinkedIn",
-            "user_name": "AmeliaAvery",
-            "url": "http://www.linkedin.com/in/AmeliaAvery"
-        }
-    ],
-    "instant_messages": [
-        {
-            "id": "AAAAAAAA-6666-AAAA-6666-AAAAAAAAAAAA",
-            "service_name": "WhatsApp",
-            "user_name": "+11111111111"
-        },
-        {
-            "id": "AAAAAAAA-6666-AAAA-6667-AAAAAAAAAAAA",
-            "service_name": "ICQ",
-            "user_name": "1111111"
         }
     ],
     "addresses": [
@@ -110,6 +85,31 @@
             "id": "AAAAAAAA-9999-AAAA-9999-AAAAAAAAAAAA",
             "label": "_$!<Brother>!$_",
             "value": "Bob Balloon"
+        }
+    ],
+    "social_profiles": [
+        {
+            "id": "AAAAAAAA-5555-AAAA-5555-AAAAAAAAAAAA",
+            "service_name": "Duolingo",
+            "user_name": "amelie"
+        },
+        {
+            "id": "AAAAAAAA-5555-AAAA-5556-AAAAAAAAAAAA",
+            "service_name": "LinkedIn",
+            "user_name": "AmeliaAvery",
+            "url": "http://www.linkedin.com/in/AmeliaAvery"
+        }
+    ],
+    "instant_messages": [
+        {
+            "id": "AAAAAAAA-6666-AAAA-6666-AAAAAAAAAAAA",
+            "service_name": "WhatsApp",
+            "user_name": "+11111111111"
+        },
+        {
+            "id": "AAAAAAAA-6666-AAAA-6667-AAAAAAAAAAAA",
+            "service_name": "ICQ",
+            "user_name": "1111111"
         }
     ],
     "note": "A trusted contact."

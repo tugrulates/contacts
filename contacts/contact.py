@@ -70,48 +70,6 @@ class RichInfo(Info):
         return str(self._data["value"])
 
 
-class OnlineProfile(RichInfo):
-    """A single social profile or instant message address."""
-
-    @property
-    def label(self) -> str:
-        """Return the label of this social profile."""
-        return self.service_name or "unknown"
-
-    @property
-    def value(self) -> str:
-        """Return the value of this social profile."""
-        return f"{self.user_name} ({self.service_name})"
-
-    @property
-    def service_name(self) -> Optional[str]:
-        """Return the service name of this social profile."""
-        data = self._data["service_name"]
-        return str(data) if data else None
-
-    @property
-    def user_name(self) -> Optional[str]:
-        """Return the user name of this social profile."""
-        data = self._data["user_name"]
-        return str(data) if data else None
-
-
-class SocialProfile(OnlineProfile):
-    """A single social profile."""
-
-    @property
-    def user_identifier(self) -> Optional[str]:
-        """Return the user identifier of this social profile."""
-        data = self._data["user_identifier"]
-        return str(data) if data else None
-
-    @property
-    def url(self) -> Optional[str]:
-        """Return the url of this social profile."""
-        data = self._data["url"]
-        return str(data) if data else None
-
-
 class Address(RichInfo):
     """A single address."""
 
@@ -163,6 +121,48 @@ class Address(RichInfo):
         return str(data) if data else None
 
 
+class OnlineProfile(RichInfo):
+    """A single social profile or instant message address."""
+
+    @property
+    def label(self) -> str:
+        """Return the label of this social profile."""
+        return self.service_name or "unknown"
+
+    @property
+    def value(self) -> str:
+        """Return the value of this social profile."""
+        return f"{self.user_name} ({self.service_name})"
+
+    @property
+    def service_name(self) -> Optional[str]:
+        """Return the service name of this social profile."""
+        data = self._data["service_name"]
+        return str(data) if data else None
+
+    @property
+    def user_name(self) -> Optional[str]:
+        """Return the user name of this social profile."""
+        data = self._data["user_name"]
+        return str(data) if data else None
+
+
+class SocialProfile(OnlineProfile):
+    """A single social profile."""
+
+    @property
+    def user_identifier(self) -> Optional[str]:
+        """Return the user identifier of this social profile."""
+        data = self._data["user_identifier"]
+        return str(data) if data else None
+
+    @property
+    def url(self) -> Optional[str]:
+        """Return the url of this social profile."""
+        data = self._data["url"]
+        return str(data) if data else None
+
+
 class Contact(RichInfo):
     """A single contact person or company."""
 
@@ -201,12 +201,6 @@ class Contact(RichInfo):
         return bool(self._data["is_company"])
 
     @property
-    def nickname(self) -> Optional[Info]:
-        """Return the nickname of this contact."""
-        data = self._data.get("nickname")
-        return Info(Category.NAME, data) if data else None
-
-    @property
     def prefix(self) -> Optional[Info]:
         """Return the prefix of this contact."""
         data = self._data.get("prefix")
@@ -219,15 +213,39 @@ class Contact(RichInfo):
         return Info(Category.NAME, data) if data else None
 
     @property
+    def phonetic_first_name(self) -> Optional[Info]:
+        """Return the phonetic version of the first name of this contact."""
+        data = self._data.get("phonetic_first_name")
+        return Info(Category.PHONETIC, data) if data else None
+
+    @property
     def middle_name(self) -> Optional[Info]:
         """Return the middle name of this contact."""
         data = self._data.get("middle_name")
         return Info(Category.NAME, data) if data else None
 
     @property
+    def phonetic_middle_name(self) -> Optional[Info]:
+        """Return the phonetic version of the middle name of this contact."""
+        data = self._data.get("phonetic_middle_name")
+        return Info(Category.PHONETIC, data) if data else None
+
+    @property
     def last_name(self) -> Optional[Info]:
         """Return the last name of this contact."""
         data = self._data.get("last_name")
+        return Info(Category.NAME, data) if data else None
+
+    @property
+    def phonetic_last_name(self) -> Optional[Info]:
+        """Return the phonetic version of the last name of this contact."""
+        data = self._data.get("phonetic_last_name")
+        return Info(Category.PHONETIC, data) if data else None
+
+    @property
+    def maiden_name(self) -> Optional[Info]:
+        """Return the maiden name of this contact."""
+        data = self._data.get("maiden_name")
         return Info(Category.NAME, data) if data else None
 
     @property
@@ -237,33 +255,15 @@ class Contact(RichInfo):
         return Info(Category.NAME, data) if data else None
 
     @property
-    def maiden_name(self) -> Optional[Info]:
-        """Return the maiden name of this contact."""
-        data = self._data.get("maiden_name")
+    def nickname(self) -> Optional[Info]:
+        """Return the nickname of this contact."""
+        data = self._data.get("nickname")
         return Info(Category.NAME, data) if data else None
 
     @property
-    def phonetic_first_name(self) -> Optional[Info]:
-        """Return the phonetic version of the first name of this contact."""
-        data = self._data.get("phonetic_first_name")
-        return Info(Category.PHONETIC, data) if data else None
-
-    @property
-    def phonetic_middle_name(self) -> Optional[Info]:
-        """Return the phonetic version of the middle name of this contact."""
-        data = self._data.get("phonetic_middle_name")
-        return Info(Category.PHONETIC, data) if data else None
-
-    @property
-    def phonetic_last_name(self) -> Optional[Info]:
-        """Return the phonetic version of the last name of this contact."""
-        data = self._data.get("phonetic_last_name")
-        return Info(Category.PHONETIC, data) if data else None
-
-    @property
-    def organization(self) -> Optional[Info]:
-        """Return the organization this contact works for."""
-        data = self._data.get("organization")
+    def job_title(self) -> Optional[Info]:
+        """Return the job title of this contact."""
+        data = self._data.get("job_title")
         return Info(Category.WORK, data) if data else None
 
     @property
@@ -273,9 +273,9 @@ class Contact(RichInfo):
         return Info(Category.WORK, data) if data else None
 
     @property
-    def job_title(self) -> Optional[Info]:
-        """Return the job title of this contact."""
-        data = self._data.get("job_title")
+    def organization(self) -> Optional[Info]:
+        """Return the organization this contact works for."""
+        data = self._data.get("organization")
         return Info(Category.WORK, data) if data else None
 
     @property
@@ -303,18 +303,6 @@ class Contact(RichInfo):
         return [RichInfo(Category.URL, x) for x in data] if data else []
 
     @property
-    def social_profiles(self) -> list[SocialProfile]:
-        """Return the social profiles of this contact."""
-        data: Optional[list[dict[str, Any]]] = self._data.get("social_profiles")
-        return [SocialProfile(Category.URL, x) for x in data] if data else []
-
-    @property
-    def instant_messages(self) -> list[OnlineProfile]:
-        """Return the instant message addresses of this contact."""
-        data: Optional[list[dict[str, Any]]] = self._data.get("instant_messages")
-        return [OnlineProfile(Category.MESSAGING, x) for x in data] if data else []
-
-    @property
     def addresses(self) -> list[Address]:
         """Return the addresses of this contact."""
         data: Optional[list[dict[str, Any]]] = self._data.get("addresses")
@@ -339,6 +327,18 @@ class Contact(RichInfo):
         return [RichInfo(Category.RELATED, x) for x in data] if data else []
 
     @property
+    def social_profiles(self) -> list[SocialProfile]:
+        """Return the social profiles of this contact."""
+        data: Optional[list[dict[str, Any]]] = self._data.get("social_profiles")
+        return [SocialProfile(Category.URL, x) for x in data] if data else []
+
+    @property
+    def instant_messages(self) -> list[OnlineProfile]:
+        """Return the instant message addresses of this contact."""
+        data: Optional[list[dict[str, Any]]] = self._data.get("instant_messages")
+        return [OnlineProfile(Category.MESSAGING, x) for x in data] if data else []
+
+    @property
     def note(self) -> Optional[Info]:
         """Return the notes for this contact."""
         data = self._data.get("note")
@@ -349,29 +349,29 @@ class Contact(RichInfo):
         details = {
             prop: self.__getattribute__(prop)
             for prop in [
-                "nickname",
                 "prefix",
                 "first_name",
-                "middle_name",
-                "last_name",
-                "suffix",
-                "maiden_name",
                 "phonetic_first_name",
+                "middle_name",
                 "phonetic_middle_name",
+                "last_name",
                 "phonetic_last_name",
-                "organization",
-                "department",
+                "maiden_name",
+                "suffix",
+                "nickname",
                 "job_title",
+                "department",
+                "organization",
                 "phones",
                 "emails",
                 "home_page",
                 "urls",
-                "social_profiles",
-                "instant_messages",
                 "addresses",
                 "birth_date",
                 "custom_dates",
                 "related_names",
+                "social_profiles",
+                "instant_messages",
                 "note",
             ]
         }

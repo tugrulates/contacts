@@ -203,27 +203,25 @@ on detailContact(theIds)
             copy my logContactValue("has_image", image of theContact exists) to the end of theEntries
             copy my logContactValue("is_company", company of theContact) to the end of theEntries
 
-            copy my logContactValue("nickname", nickname of theContact) to the end of theEntries
             copy my logContactValue("prefix", title of theContact) to the end of theEntries
             copy my logContactValue("first_name", first name of theContact) to the end of theEntries
-            copy my logContactValue("middle_name", middle name of theContact) to the end of theEntries
-            copy my logContactValue("last_name", last name of theContact) to the end of theEntries
-            copy my logContactValue("suffix", suffix of theContact) to the end of theEntries
-            copy my logContactValue("maiden_name", maiden name of theContact) to the end of theEntries
             copy my logContactValue("phonetic_first_name", phonetic first name of theContact) to the end of theEntries
+            copy my logContactValue("middle_name", middle name of theContact) to the end of theEntries
             copy my logContactValue("phonetic_middle_name", phonetic middle name of theContact) to the end of theEntries
+            copy my logContactValue("last_name", last name of theContact) to the end of theEntries
             copy my logContactValue("phonetic_last_name", phonetic last name of theContact) to the end of theEntries
+            copy my logContactValue("maiden_name", maiden name of theContact) to the end of theEntries
+            copy my logContactValue("suffix", suffix of theContact) to the end of theEntries
+            copy my logContactValue("nickname", nickname of theContact) to the end of theEntries
 
-            copy my logContactValue("organization", organization of theContact) to the end of theEntries
-            copy my logContactValue("department", department of theContact) to the end of theEntries
             copy my logContactValue("job_title", job title of theContact) to the end of theEntries
+            copy my logContactValue("department", department of theContact) to the end of theEntries
+            copy my logContactValue("organization", organization of theContact) to the end of theEntries
 
             copy my logContactInfo("phones", every phone of theContact, false) to the end of theEntries
             copy my logContactInfo("emails", every email of theContact, false) to the end of theEntries
             copy my logContactValue("home_page", home page of theContact) to the end of theEntries
             copy my logContactInfo("urls", every url of theContact, false) to the end of theEntries
-            copy my logContactSocialProfiles(theContact) to the end of theEntries
-            copy my logInstantMessages(theContact) to the end of theEntries
 
             copy my logContactAddresses(theContact) to the end of theEntries
 
@@ -231,6 +229,9 @@ on detailContact(theIds)
             copy my logContactInfo("custom_dates", custom dates of theContact, true) to the end of theEntries
 
             copy my logContactInfo("related_names", every related names of theContact, false) to the end of theEntries
+
+            copy my logContactSocialProfiles(theContact) to the end of theEntries
+            copy my logInstantMessages(theContact) to the end of theEntries
 
             copy my logContactValue("note", note of theContact) to the end of theEntries
 
