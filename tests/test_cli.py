@@ -49,7 +49,7 @@ def test_find_all_contacts(mock_applescript: MockApplescript) -> None:
     result = runner.invoke(cli.app, "waldo")
     assert result.exit_code == 0
     assert result.stdout.rstrip().split("\n") == [
-        "👤 Amelia Avery",
+        "👤 Ms. Amelia Avery Arch.",
         "👤 Bob Balloon",
         "🏢 Carnival Balloon Co.",
     ]
@@ -61,7 +61,7 @@ def test_find_single_contact(mock_applescript: MockApplescript) -> None:
     result = runner.invoke(cli.app, "amelia")
     assert result.exit_code == 0
     assert result.stdout.rstrip().split("\n") == [
-        "👤 Amelia Avery",
+        "👤 Ms. Amelia Avery Arch.",
     ]
 
 
@@ -82,7 +82,7 @@ def test_find_multiple_keywords(mock_applescript: MockApplescript) -> None:
     result = runner.invoke(cli.app, "amelia bob")
     assert result.exit_code == 0
     assert result.stdout.rstrip().split("\n") == [
-        "👤 Amelia Avery",
+        "👤 Ms. Amelia Avery Arch.",
         "👤 Bob Balloon",
     ]
 
