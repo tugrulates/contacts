@@ -22,7 +22,11 @@ class MockApplescript:
     def find(self, *find_data: str) -> None:
         """Specify which test data to find in contacts."""
         data = [
-            json.loads(Path(self._test_data_path / x).read_text(encoding="utf-8"))
+            json.loads(
+                Path(self._test_data_path / x)
+                .with_suffix(".json")
+                .read_text(encoding="utf-8")
+            )
             for x in find_data
         ]
         self._data = {x["id"]: x for x in data}
