@@ -78,7 +78,18 @@
             "state": "TX",
             "zip": "76010",
             "country": "United States",
-            "formatted_address": "111 Arlington Blvd Arlington, TX 76010\nUnited States"
+            "formatted_address": "111 Arlington Blvd\nArlington, TX 76010\nUnited States"
+        },
+        {
+            "id": "AAAAAAAA-7777-AAAA-7778-AAAAAAAAAAAA",
+            "country_code": "us",
+            "label": "mailbox",
+            "street": "1 Arlington Blvd\nP.O. Box 11",
+            "city": "Arlington",
+            "state": "TX",
+            "zip": "76010",
+            "country": "United States",
+            "formatted_address": "1 Arlington Blvd\nP.O. Box 11\nArlington, TX 76010\nUnited States"
         }
     ],
     "birth_date": "January 1, 2001",
