@@ -1,10 +1,20 @@
 {
     "id": "AAAAAAAA-1111-AAAA-1111-AAAAAAAAAAAA:ABPerson",
-    "name": "Amelia Avery",
+    "name": "Ms. Amelia Avery Arch.",
     "has_image": true,
     "is_company": false,
+    "nickname": "Amelie",
+    "prefix": "Ms.",
     "first_name": "Amelia",
+    "middle_name": "Ada",
     "last_name": "Avery",
+    "suffix": "Arch.",
+    "maiden_name": "Anglais",
+    "phonetic_first_name": "a-mel-ia",
+    "phonetic_middle_name": "AY-duh",
+    "phonetic_last_name": "AYV-ree",
+    "organization": "Avery & Avery",
+    "department": "Administrative",
     "job_title": "Architect",
     "phones": [
         {
@@ -25,6 +35,7 @@
             "value": "amelia@avery.com"
         }
     ],
+    "home_page": "https://www.avery.com",
     "urls": [
         {
             "id": "AAAAAAAA-4444-AAAA-4444-AAAAAAAAAAAA",
@@ -45,5 +56,6 @@
             "country": "United States"
         }
     ],
-    "birth_date": "January 1, 2001"
+    "birth_date": "January 1, 2001",
+    "note": "A trusted contact."
 }

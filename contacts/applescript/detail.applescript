@@ -147,10 +147,10 @@ on detailContact(theIds)
             copy my logContactValue("is_company", company of theContact) to the end of theEntries
 
             copy my logContactValue("nickname", nickname of theContact) to the end of theEntries
+            copy my logContactValue("prefix", title of theContact) to the end of theEntries
             copy my logContactValue("first_name", first name of theContact) to the end of theEntries
             copy my logContactValue("middle_name", middle name of theContact) to the end of theEntries
             copy my logContactValue("last_name", last name of theContact) to the end of theEntries
-            copy my logContactValue("title", title of theContact) to the end of theEntries
             copy my logContactValue("suffix", suffix of theContact) to the end of theEntries
             copy my logContactValue("maiden_name", maiden name of theContact) to the end of theEntries
             copy my logContactValue("phonetic_first_name", phonetic first name of theContact) to the end of theEntries

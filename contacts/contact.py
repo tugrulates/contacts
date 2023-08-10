@@ -149,6 +149,12 @@ class Contact(RichInfo):
         return Info("💬", data) if data else None
 
     @property
+    def prefix(self) -> Optional[Info]:
+        """Return the prefix of this contact."""
+        data = self._data.get("prefix")
+        return Info("💬", data) if data else None
+
+    @property
     def first_name(self) -> Optional[Info]:
         """Return the first name of this contact."""
         data = self._data.get("first_name")
@@ -167,12 +173,6 @@ class Contact(RichInfo):
         return Info("💬", data) if data else None
 
     @property
-    def title(self) -> Optional[Info]:
-        """Return the title of this contact."""
-        data = self._data.get("title")
-        return Info("💬", data) if data else None
-
-    @property
     def suffix(self) -> Optional[Info]:
         """Return the suffix of this contact."""
         data = self._data.get("suffix")
@@ -181,7 +181,7 @@ class Contact(RichInfo):
     @property
     def maiden_name(self) -> Optional[Info]:
         """Return the maiden name of this contact."""
-        data = self._data.get("maiden name")
+        data = self._data.get("maiden_name")
         return Info("💬", data) if data else None
 
     @property
@@ -268,10 +268,10 @@ class Contact(RichInfo):
             prop: self.__getattribute__(prop)
             for prop in [
                 "nickname",
+                "prefix",
                 "first_name",
                 "middle_name",
                 "last_name",
-                "title",
                 "suffix",
                 "maiden_name",
                 "phonetic_first_name",
