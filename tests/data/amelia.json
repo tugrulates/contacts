@@ -23,7 +23,7 @@
             "value": "+11111111111"
         },
         {
-            "id": "AAAAAAAA-2222-AAAA-2222-AAAAAAAAAAAA",
+            "id": "AAAAAAAA-2222-AAAA-2223-AAAAAAAAAAAA",
             "label": "_$!<Work>!$_",
             "value": "+11111111112"
         }
@@ -45,7 +45,7 @@
     ],
     "addresses": [
         {
-            "id": "AAAAAAAA-4444-AAAA-4444-AAAAAAAAAAAA",
+            "id": "AAAAAAAA-5555-AAAA-5555-AAAAAAAAAAAA",
             "value": "111 Arlington Blvd Arlington, TX 76010\nUnited States",
             "country_code": "us",
             "label": "_$!<Home>!$_",
@@ -57,5 +57,24 @@
         }
     ],
     "birth_date": "January 1, 2001",
+    "custom_dates": [
+        {
+            "id": "AAAAAAAA-6666-AAAA-6666-AAAAAAAAAAAA",
+            "label": "_$!<Anniversary>!$_",
+            "value": "November 11"
+        },
+        {
+            "id": "AAAAAAAA-6666-AAAA-6667-AAAAAAAAAAAA",
+            "label": "favorite",
+            "value": "November 11, 2011"
+        }
+    ],
+    "related_names": [
+        {
+            "id": "AAAAAAAA-7777-AAAA-7777-AAAAAAAAAAAA",
+            "label": "_$!<Brother>!$_",
+            "value": "Bob Balloon"
+        }
+    ],
     "note": "A trusted contact."
 }

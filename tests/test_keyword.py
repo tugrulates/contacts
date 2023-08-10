@@ -9,17 +9,17 @@ runner = CliRunner(mix_stderr=True)
 
 def test_prepare() -> None:
     """Test non-extended prepare."""
-    assert keyword.prepare(["amelia", "bob"]) == ["Amelia", "Bob"]
-    assert keyword.prepare(["bob", "amelia"]) == ["Amelia", "Bob"]
-    assert keyword.prepare(["carnival balloon"]) == ["Carnival Balloon"]
+    assert keyword.prepare_keywords(["amelia", "bob"]) == ["Amelia", "Bob"]
+    assert keyword.prepare_keywords(["bob", "amelia"]) == ["Amelia", "Bob"]
+    assert keyword.prepare_keywords(["carnival balloon"]) == ["Carnival Balloon"]
 
 
 def test_prepare_extend() -> None:
     """Test non-extended prepare."""
-    assert keyword.prepare(["BOB"]) == ["Bob"]
-    assert keyword.prepare(["BoB"]) == ["Bob"]
-    assert keyword.prepare(["bob"], extend=True) == ["Bob", "Böb"]
-    assert keyword.prepare(["balloon"], extend=True) == [
+    assert keyword.prepare_keywords(["BOB"]) == ["Bob"]
+    assert keyword.prepare_keywords(["BoB"]) == ["Bob"]
+    assert keyword.prepare_keywords(["bob"], extend=True) == ["Bob", "Böb"]
+    assert keyword.prepare_keywords(["balloon"], extend=True) == [
         "Balloon",
         "Balloön",
         "Ballöon",

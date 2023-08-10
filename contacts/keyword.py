@@ -19,7 +19,7 @@ LETTER_TRANS = {
 }
 
 
-def prepare(keywords: list[str], *, extend: bool = False) -> list[str]:
+def prepare_keywords(keywords: list[str], *, extend: bool = False) -> list[str]:
     """Capitalize keywords to match contacts.
 
     :param extend: extend the search space to find near matches

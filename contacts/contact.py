@@ -4,15 +4,15 @@ import json
 from itertools import zip_longest
 from typing import Any, Iterator, Optional
 
-from contacts import applescript
+from contacts import applescript, icon
 
 
 class Info:
     """A single info with an icon."""
 
-    def __init__(self, icon: str, value: str):
+    def __init__(self, category: str, value: str):
         """Initialize info from query output."""
-        self._icon = icon
+        self._icon = icon.category_icon(category)
         self._value = value
 
     @property
@@ -38,8 +38,9 @@ class Info:
 class RichInfo(Info):
     """An multi-value info with an id."""
 
-    def __init__(self, data: dict[str, Any]):
+    def __init__(self, category: str, data: dict[str, Any]):
         """Initialize info from query output."""
+        self._category = category
         self._data = data
 
     @property
@@ -50,19 +51,7 @@ class RichInfo(Info):
     @property
     def icon(self) -> str:
         """Return the icon of this info."""
-        return {
-            "_$!<Mobile>!$_": "📱",
-            "_$!<Home>!$_": "🏠",
-            "_$!<Main>!$_": "🏠",
-            "_$!<HomePage>!$_": "🏠",
-            "_$!<Work>!$_": "💼",
-            "_$!<School>!$_": "🏫",
-            "_$!<HomeFAX>!$_": "📠",
-            "_$!<WorkFAX>!$_": "📠",
-            "_$!<OtherFAX>!$_": "📠",
-            "_$!<Pager>!$_": "📟",
-            "_$!<Other>!$_": "❓",
-        }.get(self._data["label"], "❌")
+        return icon.label_icon(self._data["label"], self._category)
 
     @property
     def value(self) -> str:
@@ -146,121 +135,133 @@ class Contact(RichInfo):
     def nickname(self) -> Optional[Info]:
         """Return the nickname of this contact."""
         data = self._data.get("nickname")
-        return Info("💬", data) if data else None
+        return Info("name", data) if data else None
 
     @property
     def prefix(self) -> Optional[Info]:
         """Return the prefix of this contact."""
         data = self._data.get("prefix")
-        return Info("💬", data) if data else None
+        return Info("name", data) if data else None
 
     @property
     def first_name(self) -> Optional[Info]:
         """Return the first name of this contact."""
         data = self._data.get("first_name")
-        return Info("💬", data) if data else None
+        return Info("name", data) if data else None
 
     @property
     def middle_name(self) -> Optional[Info]:
         """Return the middle name of this contact."""
         data = self._data.get("middle_name")
-        return Info("💬", data) if data else None
+        return Info("name", data) if data else None
 
     @property
     def last_name(self) -> Optional[Info]:
         """Return the last name of this contact."""
         data = self._data.get("last_name")
-        return Info("💬", data) if data else None
+        return Info("name", data) if data else None
 
     @property
     def suffix(self) -> Optional[Info]:
         """Return the suffix of this contact."""
         data = self._data.get("suffix")
-        return Info("💬", data) if data else None
+        return Info("name", data) if data else None
 
     @property
     def maiden_name(self) -> Optional[Info]:
         """Return the maiden name of this contact."""
         data = self._data.get("maiden_name")
-        return Info("💬", data) if data else None
+        return Info("name", data) if data else None
 
     @property
     def phonetic_first_name(self) -> Optional[Info]:
         """Return the phonetic version of the first name of this contact."""
         data = self._data.get("phonetic_first_name")
-        return Info("🎧", data) if data else None
+        return Info("phonetic", data) if data else None
 
     @property
     def phonetic_middle_name(self) -> Optional[Info]:
         """Return the phonetic version of the middle name of this contact."""
         data = self._data.get("phonetic_middle_name")
-        return Info("🎧", data) if data else None
+        return Info("phonetic", data) if data else None
 
     @property
     def phonetic_last_name(self) -> Optional[Info]:
         """Return the phonetic version of the last name of this contact."""
         data = self._data.get("phonetic_last_name")
-        return Info("🎧", data) if data else None
+        return Info("phonetic", data) if data else None
 
     @property
     def organization(self) -> Optional[Info]:
         """Return the organization this contact works for."""
         data = self._data.get("organization")
-        return Info("💼", data) if data else None
+        return Info("work", data) if data else None
 
     @property
     def department(self) -> Optional[Info]:
         """Return the department this contact works for."""
         data = self._data.get("department")
-        return Info("💼", data) if data else None
+        return Info("work", data) if data else None
 
     @property
     def job_title(self) -> Optional[Info]:
         """Return the job title of this contact."""
         data = self._data.get("job_title")
-        return Info("💼", data) if data else None
+        return Info("work", data) if data else None
 
     @property
     def phones(self) -> list[RichInfo]:
         """Return the phones of this contact."""
         data: Optional[list[dict[str, Any]]] = self._data.get("phones")
-        return [RichInfo(x) for x in data] if data else []
+        return [RichInfo("phone", x) for x in data] if data else []
 
     @property
     def emails(self) -> list[RichInfo]:
         """Return the emails of this contact."""
         data: Optional[list[dict[str, Any]]] = self._data.get("emails")
-        return [RichInfo(x) for x in data] if data else []
+        return [RichInfo("email", x) for x in data] if data else []
 
     @property
     def home_page(self) -> Optional[Info]:
         """Return the home page of this contact."""
         data = self._data.get("home_page")
-        return Info("🏠", data) if data else None
+        return Info("url", data) if data else None
 
     @property
     def urls(self) -> list[RichInfo]:
         """Return the URLs of this contact."""
         data: Optional[list[dict[str, Any]]] = self._data.get("urls")
-        return [RichInfo(x) for x in data] if data else []
+        return [RichInfo("url", x) for x in data] if data else []
 
     @property
     def addresses(self) -> list[Address]:
         """Return the addresses of this contact."""
         data: Optional[list[dict[str, Any]]] = self._data.get("addresses")
-        return [Address(x) for x in data] if data else []
+        return [Address("address", x) for x in data] if data else []
 
     @property
     def birth_date(self) -> Optional[Info]:
         """Return the birth date of this contact."""
         data = self._data.get("birth_date")
-        return Info("📅", data) if data else None
+        return Info("date", data) if data else None
+
+    @property
+    def custom_dates(self) -> list[RichInfo]:
+        """Return the custom dates of this contact."""
+        data: Optional[list[dict[str, Any]]] = self._data.get("custom_dates")
+        return [RichInfo("date", x) for x in data] if data else []
+
+    @property
+    def related_names(self) -> list[RichInfo]:
+        """Return the related names of this contact."""
+        data: Optional[list[dict[str, Any]]] = self._data.get("related_names")
+        return [RichInfo("related", x) for x in data] if data else []
 
     @property
     def note(self) -> Optional[Info]:
         """Return the notes for this contact."""
         data = self._data.get("note")
-        return Info("📋", data) if data else None
+        return Info("note", data) if data else None
 
     def details(self) -> dict[str, Any]:
         """Printable details of the contact."""
@@ -286,6 +287,8 @@ class Contact(RichInfo):
                 "urls",
                 "addresses",
                 "birth_date",
+                "custom_dates",
+                "related_names",
                 "note",
             ]
         }

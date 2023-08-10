@@ -66,7 +66,19 @@ on logContactValue(theName, theValue)
 end logContactValue
 
 
-on logContactInfo(theName, theInfos)
+on logContactDate(theName, theDate)
+    tell application "Contacts"
+        if year of theDate >= 1900
+            set theDateStr to (month of theDate) & " " & (day of theDate) & ", " & (year of theDate)
+        else
+            set theDateStr to (month of theDate) & " " & (day of theDate)
+        end if
+        return my logContactValue(theName, theDateStr as text)
+    end tell
+end logContactDate
+
+
+on logContactInfo(theName, theInfos, areDates)
     tell application "Contacts"
         if count of theInfos > 0
             set theResults to {}
@@ -76,7 +88,11 @@ on logContactInfo(theName, theInfos)
 
                 copy my logContactValue("id", id of theInfo) to the end of theEntries
                 copy my logContactValue("label", label of theInfo) to the end of theEntries
-                copy my logContactValue("value", value of theInfo) to the end of theEntries
+                if areDates
+                    copy my logContactDate("value", value of theInfo) to the end of theEntries
+                else
+                    copy my logContactValue("value", value of theInfo) to the end of theEntries
+                end if
 
                 copy my encloseList("    {", "        ", theEntries, "      }") to the end of theResults
             end repeat
@@ -119,12 +135,7 @@ on logContactBirthDate(theContact)
     tell application "Contacts"
         set theBirthDate to birth date of theContact
         if theBirthDate exists
-            if year of theBirthDate >= 1900
-                set theDateStr to (month of theBirthDate) & " " & (day of theBirthDate) & ", " & (year of theBirthDate)
-            else
-                set theDateStr to (month of theBirthDate) & " " & (day of theBirthDate)
-            end if
-            return my logContactValue("birth_date", theDateStr as text)
+            return my logContactDate("birth_date", theBirthDate)
         end if
     end tell
 end logContactBirthDate
@@ -161,13 +172,17 @@ on detailContact(theIds)
             copy my logContactValue("department", department of theContact) to the end of theEntries
             copy my logContactValue("job_title", job title of theContact) to the end of theEntries
 
-            copy my logContactInfo("phones", every phone of theContact) to the end of theEntries
-            copy my logContactInfo("emails", every emails of theContact) to the end of theEntries
+            copy my logContactInfo("phones", every phone of theContact, false) to the end of theEntries
+            copy my logContactInfo("emails", every emails of theContact, false) to the end of theEntries
             copy my logContactValue("home_page", home page of theContact) to the end of theEntries
-            copy my logContactInfo("urls", every urls of theContact) to the end of theEntries
+            copy my logContactInfo("urls", every urls of theContact, false) to the end of theEntries
 
             copy my logContactAddresses(theContact) to the end of theEntries
+
             copy my logContactBirthDate(theContact) to the end of theEntries
+            copy my logContactInfo("custom_dates", custom dates of theContact, true) to the end of theEntries
+
+            copy my logContactInfo("related_names", every related names of theContact, false) to the end of theEntries
 
             copy my logContactValue("note", note of theContact) to the end of theEntries
 

@@ -25,7 +25,7 @@ def find(
     safe_box: bool = True,
 ) -> None:
     """List contacts matching given keyword."""
-    keywords = keyword.prepare(keywords or [], extend=extend)
+    keywords = keyword.prepare_keywords(keywords or [], extend=extend)
     for person in contact.by_keyword(keywords, batch=batch):
         if not detail:
             print(person)
