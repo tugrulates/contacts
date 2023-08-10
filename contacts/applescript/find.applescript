@@ -30,10 +30,10 @@ on findContacts(theKeywords)
             end repeat
         end if
     end tell
-end findContacts
+end
 
 
 on run argv
     findContacts(argv)
     return
-end run
+end

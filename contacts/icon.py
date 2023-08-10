@@ -17,12 +17,13 @@ LABEL_TO_CATEGORY = {
 }
 
 CATEGORY_TO_ICON = {
-    "name": "💬",
+    "name": "🔖",
     "phonetic": "🎧",
     "date": "📅",
     "phone": "📞",
     "email": "📧",
     "url": "🌐",
+    "message": "💬",
     "address": "📫",
     "mobile": "📱",
     "home": "🏠",

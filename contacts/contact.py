@@ -51,7 +51,12 @@ class RichInfo(Info):
     @property
     def icon(self) -> str:
         """Return the icon of this info."""
-        return icon.label_icon(self._data["label"], self._category)
+        return icon.label_icon(self.label, self._category)
+
+    @property
+    def label(self) -> str:
+        """Return the label of this info."""
+        return str(self._data["label"])
 
     @property
     def value(self) -> str:
@@ -59,12 +64,59 @@ class RichInfo(Info):
         return str(self._data["value"])
 
 
+class OnlineProfile(RichInfo):
+    """A single social profile or instant message address."""
+
+    @property
+    def label(self) -> str:
+        """Return the label of this social profile."""
+        return self.service_name or "unknown"
+
+    @property
+    def value(self) -> str:
+        """Return the value of this social profile."""
+        return f"{self.user_name} ({self.service_name})"
+
+    @property
+    def service_name(self) -> Optional[str]:
+        """Return the service name of this social profile."""
+        data = self._data["service_name"]
+        return str(data) if data else None
+
+    @property
+    def user_name(self) -> Optional[str]:
+        """Return the user name of this social profile."""
+        data = self._data["user_name"]
+        return str(data) if data else None
+
+
+class SocialProfile(OnlineProfile):
+    """A single social profile."""
+
+    @property
+    def user_identifier(self) -> Optional[str]:
+        """Return the user identifier of this social profile."""
+        data = self._data["user_identifier"]
+        return str(data) if data else None
+
+    @property
+    def url(self) -> Optional[str]:
+        """Return the url of this social profile."""
+        data = self._data["url"]
+        return str(data) if data else None
+
+
 class Address(RichInfo):
     """A single address."""
 
     @property
+    def value(self) -> str:
+        """Return the value of this info."""
+        return self.formatted_address or ""
+
+    @property
     def country_code(self) -> Optional[str]:
-        """Return the country_code of this address."""
+        """Return the country code of this address."""
         data = self._data["country_code"]
         return str(data) if data else None
 
@@ -96,6 +148,12 @@ class Address(RichInfo):
     def country(self) -> Optional[str]:
         """Return the country of this address."""
         data = self._data["country"]
+        return str(data) if data else None
+
+    @property
+    def formatted_address(self) -> Optional[str]:
+        """Return the formatted address of this address."""
+        data = self._data["formatted_address"]
         return str(data) if data else None
 
 
@@ -234,6 +292,18 @@ class Contact(RichInfo):
         return [RichInfo("url", x) for x in data] if data else []
 
     @property
+    def social_profiles(self) -> list[SocialProfile]:
+        """Return the social profiles of this contact."""
+        data: Optional[list[dict[str, Any]]] = self._data.get("social_profiles")
+        return [SocialProfile("url", x) for x in data] if data else []
+
+    @property
+    def instant_messages(self) -> list[OnlineProfile]:
+        """Return the instant message addresses of this contact."""
+        data: Optional[list[dict[str, Any]]] = self._data.get("instant_messages")
+        return [OnlineProfile("message", x) for x in data] if data else []
+
+    @property
     def addresses(self) -> list[Address]:
         """Return the addresses of this contact."""
         data: Optional[list[dict[str, Any]]] = self._data.get("addresses")
@@ -285,6 +355,8 @@ class Contact(RichInfo):
                 "emails",
                 "home_page",
                 "urls",
+                "social_profiles",
+                "instant_messages",
                 "addresses",
                 "birth_date",
                 "custom_dates",
