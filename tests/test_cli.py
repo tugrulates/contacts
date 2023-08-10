@@ -49,7 +49,7 @@ def test_find_all_contacts(mock_applescript: MockApplescript) -> None:
     result = runner.invoke(cli.app, "waldo")
     assert result.exit_code == 0
     assert result.stdout.rstrip().split("\n") == [
-        "👤 Amelia Avery",
+        "👤 Ms. Amelia Avery Arch.",
         "👤 Bob Balloon",
         "🏢 Carnival Balloon Co.",
     ]
@@ -61,7 +61,7 @@ def test_find_single_contact(mock_applescript: MockApplescript) -> None:
     result = runner.invoke(cli.app, "amelia")
     assert result.exit_code == 0
     assert result.stdout.rstrip().split("\n") == [
-        "👤 Amelia Avery",
+        "👤 Ms. Amelia Avery Arch.",
     ]
 
 
@@ -82,7 +82,7 @@ def test_find_multiple_keywords(mock_applescript: MockApplescript) -> None:
     result = runner.invoke(cli.app, "amelia bob")
     assert result.exit_code == 0
     assert result.stdout.rstrip().split("\n") == [
-        "👤 Amelia Avery",
+        "👤 Ms. Amelia Avery Arch.",
         "👤 Bob Balloon",
     ]
 
@@ -93,26 +93,50 @@ def test_find_details(mock_applescript: MockApplescript) -> None:
     result = runner.invoke(cli.app, "--detail --no-safe-box")
     assert result.exit_code == 0
     assert [x for x in result.stdout.split("\n") if x.strip()] == [
-        "╭──────────────────────┬───────────────────────────────────────────╮",
-        "│                      │ 👤 Amelia Avery                           │",
-        "├──────────────────────┼───────────────────────────────────────────┤",
-        "│           First name │ 💬 Amelia                                 │",
-        "│            Last name │ 💬 Avery                                  │",
-        "│            Job title │ 💼 Architect                              │",
-        "│               Phones │ 📱 +11111111111                           │",
-        "│                      │ 💼 +11111111112                           │",
-        "│               Emails │ 🏠 amelia@avery.com                       │",
-        "│                 Urls │ 🏠 https://www.avery.com                  │",
-        "│            Addresses │ 🏠 111 Arlington Blvd Arlington, TX 76010 │",
-        "│                      │    United States                          │",
-        "│           Birth date │ 📅 January 1, 2001                        │",
-        "╰──────────────────────┴───────────────────────────────────────────╯",
+        "╭──────────────────────┬────────────────────────────╮",
+        "│                      │ 👤 Ms. Amelia Avery Arch.  │",
+        "├──────────────────────┼────────────────────────────┤",
+        "│               Prefix │ 🔖 Ms.                     │",
+        "│           First name │ 🔖 Amelia                  │",
+        "│  Phonetic first name │ 🎧 a-mel-ia                │",
+        "│          Middle name │ 🔖 Ada                     │",
+        "│ Phonetic middle name │ 🎧 AY-duh                  │",
+        "│            Last name │ 🔖 Avery                   │",
+        "│   Phonetic last name │ 🎧 AYV-ree                 │",
+        "│          Maiden name │ 🔖 Anglais                 │",
+        "│               Suffix │ 🔖 Arch.                   │",
+        "│             Nickname │ 🔖 Amelie                  │",
+        "│            Job title │ 💼 Architect               │",
+        "│           Department │ 💼 Administrative          │",
+        "│         Organization │ 💼 Avery & Avery           │",
+        "│               Phones │ 📱 +11111111111            │",
+        "│                      │ 💼 +11111111112            │",
+        "│               Emails │ 🏠 amelia@avery.com        │",
+        "│            Home page │ 🌐 https://www.avery.com   │",
+        "│                 Urls │ 🏠 https://www.avery.com   │",
+        "│            Addresses │ 🏠 111 Arlington Blvd      │",
+        "│                      │    Arlington, TX 76010     │",
+        "│                      │    United States           │",
+        "│                      │ 📫 1 Arlington Blvd        │",
+        "│                      │    P.O. Box 11             │",
+        "│                      │    Arlington, TX 76010     │",
+        "│                      │    United States           │",
+        "│           Birth date │ 📅 January 1, 2001         │",
+        "│         Custom dates │ 💍 November 11             │",
+        "│                      │ 📅 November 11, 2011       │",
+        "│        Related names │ 👥 Bob Balloon             │",
+        "│      Social profiles │ 🌐 amelie (Duolingo)       │",
+        "│                      │ 🌐 AmeliaAvery (LinkedIn)  │",
+        "│     Instant messages │ 💬 +11111111111 (WhatsApp) │",
+        "│                      │ 💬 1111111 (ICQ)           │",
+        "│                 Note │ 📋 A trusted contact.      │",
+        "╰──────────────────────┴────────────────────────────╯",
         "╭──────────────────────┬──────────────────╮",
         "│                      │ 👤 Bob Balloon   │",
         "├──────────────────────┼──────────────────┤",
-        "│           First name │ 💬 Bob           │",
-        "│          Middle name │ 💬 Babála        │",
-        "│            Last name │ 💬 Balon         │",
+        "│           First name │ 🔖 Bob           │",
+        "│          Middle name │ 🔖 Babála        │",
+        "│            Last name │ 🔖 Balon         │",
         "│            Job title │ 💼 Baker         │",
         "│               Phones │ 📱 +222222222222 │",
         "╰──────────────────────┴──────────────────╯",

@@ -5,7 +5,7 @@ on findAndReplaceInText(theText, theSearchString, theReplacementString)
     set theText to theTextItems as string
     set AppleScript's text item delimiters to ""
     return theText
-end findAndReplaceInText
+end
 
 
 on encloseList(theOpening, theIndent, theList, theClosing)
@@ -23,7 +23,7 @@ on encloseList(theOpening, theIndent, theList, theClosing)
         set AppleScript's text item delimiters to ""
         return theOpening & "\n" & theInner & "\n" & theClosing
     end if
-end encloseList
+end
 
 
 on findContacts(theKeywords)
@@ -49,7 +49,7 @@ on findContacts(theKeywords)
         end if
     end tell
     return theContacts
-end findContacts
+end
 
 
 on logContactValue(theName, theValue)
@@ -66,7 +66,19 @@ on logContactValue(theName, theValue)
 end logContactValue
 
 
-on logContactInfo(theName, theInfos)
+on logContactDate(theName, theDate)
+    tell application "Contacts"
+        if year of theDate >= 1900
+            set theDateStr to (month of theDate) & " " & (day of theDate) & ", " & (year of theDate)
+        else
+            set theDateStr to (month of theDate) & " " & (day of theDate)
+        end if
+        return my logContactValue(theName, theDateStr as text)
+    end tell
+end
+
+
+on logContactInfo(theName, theInfos, areDates)
     tell application "Contacts"
         if count of theInfos > 0
             set theResults to {}
@@ -76,7 +88,11 @@ on logContactInfo(theName, theInfos)
 
                 copy my logContactValue("id", id of theInfo) to the end of theEntries
                 copy my logContactValue("label", label of theInfo) to the end of theEntries
-                copy my logContactValue("value", value of theInfo) to the end of theEntries
+                if areDates
+                    copy my logContactDate("value", value of theInfo) to the end of theEntries
+                else
+                    copy my logContactValue("value", value of theInfo) to the end of theEntries
+                end if
 
                 copy my encloseList("    {", "        ", theEntries, "      }") to the end of theResults
             end repeat
@@ -84,7 +100,53 @@ on logContactInfo(theName, theInfos)
             return my encloseList("\"" & theName & "\": [", "  ", theResults, "    ]")
         end if
     end tell
-end logContactInfo
+end
+
+
+on logContactSocialProfiles(theContact)
+    tell application "Contacts"
+        set theSocialProfiles to every social profile of theContact
+        if count of theSocialProfiles > 0
+            set theResults to {}
+
+            repeat with theSocialProfile in theSocialProfiles
+                set theEntries to {}
+
+                copy my logContactValue("id", id of theSocialProfile) to the end of theEntries
+                copy my logContactValue("service_name", service name of theSocialProfile) to the end of theEntries
+                copy my logContactValue("user_name", user name of theSocialProfile) to the end of theEntries
+                copy my logContactValue("user_identifier", user identifier of theSocialProfile) to the end of theEntries
+                copy my logContactValue("url", url of theSocialProfile) to the end of theEntries
+
+                copy my encloseList("    {", "        ", theEntries, "      }") to the end of theResults
+            end repeat
+
+            return my encloseList("\"social_profiles\": [", "  ", theResults, "    ]")
+        end if
+    end tell
+end
+
+
+on logInstantMessages(theContact)
+    tell application "Contacts"
+        set theInstantMessages to every instant message of theContact
+        if count of theInstantMessages > 0
+            set theResults to {}
+
+            repeat with theInstantMessage in every instant message of theContact
+                set theEntries to {}
+
+                copy my logContactValue("id", id of theInstantMessage) to the end of theEntries
+                copy my logContactValue("service_name", service name of theInstantMessage) to the end of theEntries
+                copy my logContactValue("user_name", user name of theInstantMessage) to the end of theEntries
+
+                copy my encloseList("    {", "        ", theEntries, "      }") to the end of theResults
+            end repeat
+
+            return my encloseList("\"instant_messages\": [", "  ", theResults, "    ]")
+        end if
+    end tell
+end
 
 
 on logContactAddresses(theContact)
@@ -98,13 +160,13 @@ on logContactAddresses(theContact)
 
                 copy my logContactValue("id", id of theAddress) to the end of theEntries
                 copy my logContactValue("label", label of theAddress) to the end of theEntries
-                copy my logContactValue("value", formatted address of theAddress) to the end of theEntries
                 copy my logContactValue("country_code", country code of theAddress) to the end of theEntries
                 copy my logContactValue("street", street of theAddress) to the end of theEntries
                 copy my logContactValue("city", city of theAddress) to the end of theEntries
                 copy my logContactValue("state", state of theAddress) to the end of theEntries
                 copy my logContactValue("zip", zip of theAddress) to the end of theEntries
                 copy my logContactValue("country", country of theAddress) to the end of theEntries
+                copy my logContactValue("formatted_address", formatted address of theAddress) to the end of theEntries
 
                 copy my encloseList("    {", "        ", theEntries, "      }") to the end of theResults
             end repeat
@@ -112,22 +174,17 @@ on logContactAddresses(theContact)
             return my encloseList("\"addresses\": [", "  ", theResults, "    ]")
         end if
     end tell
-end logContactAddresses
+end
 
 
 on logContactBirthDate(theContact)
     tell application "Contacts"
         set theBirthDate to birth date of theContact
         if theBirthDate exists
-            if year of theBirthDate >= 1900
-                set theDateStr to (month of theBirthDate) & " " & (day of theBirthDate) & ", " & (year of theBirthDate)
-            else
-                set theDateStr to (month of theBirthDate) & " " & (day of theBirthDate)
-            end if
-            return my logContactValue("birth_date", theDateStr as text)
+            return my logContactDate("birth_date", theBirthDate)
         end if
     end tell
-end logContactBirthDate
+end
 
 
 on detailContact(theIds)
@@ -146,29 +203,46 @@ on detailContact(theIds)
             copy my logContactValue("has_image", image of theContact exists) to the end of theEntries
             copy my logContactValue("is_company", company of theContact) to the end of theEntries
 
-            copy my logContactValue("nickname", nickname of theContact) to the end of theEntries
+            copy my logContactValue("prefix", title of theContact) to the end of theEntries
             copy my logContactValue("first_name", first name of theContact) to the end of theEntries
+            copy my logContactValue("phonetic_first_name", phonetic first name of theContact) to the end of theEntries
             copy my logContactValue("middle_name", middle name of theContact) to the end of theEntries
+            copy my logContactValue("phonetic_middle_name", phonetic middle name of theContact) to the end of theEntries
             copy my logContactValue("last_name", last name of theContact) to the end of theEntries
+            copy my logContactValue("phonetic_last_name", phonetic last name of theContact) to the end of theEntries
+            copy my logContactValue("maiden_name", maiden name of theContact) to the end of theEntries
+            copy my logContactValue("suffix", suffix of theContact) to the end of theEntries
+            copy my logContactValue("nickname", nickname of theContact) to the end of theEntries
 
-            copy my logContactValue("organization", organization of theContact) to the end of theEntries
             copy my logContactValue("job_title", job title of theContact) to the end of theEntries
+            copy my logContactValue("department", department of theContact) to the end of theEntries
+            copy my logContactValue("organization", organization of theContact) to the end of theEntries
 
-            copy my logContactInfo("phones", every phone of theContact) to the end of theEntries
-            copy my logContactInfo("emails", every emails of theContact) to the end of theEntries
-            copy my logContactInfo("urls", every urls of theContact) to the end of theEntries
+            copy my logContactInfo("phones", every phone of theContact, false) to the end of theEntries
+            copy my logContactInfo("emails", every email of theContact, false) to the end of theEntries
+            copy my logContactValue("home_page", home page of theContact) to the end of theEntries
+            copy my logContactInfo("urls", every url of theContact, false) to the end of theEntries
 
             copy my logContactAddresses(theContact) to the end of theEntries
+
             copy my logContactBirthDate(theContact) to the end of theEntries
+            copy my logContactInfo("custom_dates", custom dates of theContact, true) to the end of theEntries
+
+            copy my logContactInfo("related_names", every related names of theContact, false) to the end of theEntries
+
+            copy my logContactSocialProfiles(theContact) to the end of theEntries
+            copy my logInstantMessages(theContact) to the end of theEntries
+
+            copy my logContactValue("note", note of theContact) to the end of theEntries
 
             copy my encloseList(" {", "    ", theEntries, "  }") to the end of theResults
         end repeat
 
         return my encloseList("[", " ", theResults, "]")
     end tell
-end detailContact
+end
 
 
 on run argv
     detailContact(argv)
-end run
+end
