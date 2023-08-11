@@ -17,6 +17,7 @@ on findContacts(theKeywords, shouldLog)
                     first name is theKeyword or ¬
                     middle name is theKeyword or ¬
                     last name is theKeyword or ¬
+                    nickname is theKeyword or ¬
                     organization contains theKeyword or ¬
                     job title contains theKeyword or ¬
                     organization is theKeyword or ¬
