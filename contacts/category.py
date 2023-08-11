@@ -1,4 +1,4 @@
-"""Label operations."""
+"""Category class."""
 
 
 from __future__ import annotations
@@ -13,7 +13,7 @@ class Category(Enum):
     PERSON = "👤"
     COMPANY = "🏢"
     NAME = "🔖"
-    PHONETIC = "🎧"
+    PHONETIC = "🔉"
     DATE = "📅"
     PHONE = "📞"
     EMAIL = "📧"
@@ -29,8 +29,10 @@ class Category(Enum):
     ANNIVERSARY = ("💍", {"_$!<Anniversary>!$_"})
     RELATED = "👥"
     NOTE = "📋"
-    OTHER = ("❓", {"_$!<Other>!$_"})
-    UNKNOWN = "❌"
+    OTHER = ("🗂️", {"_$!<Other>!$_"})
+    WARNING = "⚠️"
+    ERROR = "⛔"
+    UNKNOWN = "❓"
 
     def __init__(self, icon: str, labels: AbstractSet[str] = frozenset()):
         """Initialize category."""

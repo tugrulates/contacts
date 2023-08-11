@@ -12,7 +12,7 @@
     "phonetic_last_name": "AYV-ree",
     "maiden_name": "Anglais",
     "suffix": "Arch.",
-    "nickname": "Amelie",
+    "nickname": "Amelie Avery",
     "job_title": "Architect",
     "department": "Administrative",
     "organization": "Avery & Avery",
@@ -20,12 +20,12 @@
         {
             "id": "AAAAAAAA-2222-AAAA-2222-AAAAAAAAAAAA",
             "label": "_$!<Mobile>!$_",
-            "value": "+11111111111"
+            "value": "+1 (817) 200-0000"
         },
         {
             "id": "AAAAAAAA-2222-AAAA-2223-AAAAAAAAAAAA",
             "label": "_$!<Work>!$_",
-            "value": "+11111111112"
+            "value": "+1 (817) 200-0001"
         }
     ],
     "emails": [
