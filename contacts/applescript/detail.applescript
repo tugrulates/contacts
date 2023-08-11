@@ -26,32 +26,6 @@ on encloseList(theOpening, theIndent, theList, theClosing)
 end
 
 
-on findContacts(theKeywords)
-    tell application "Contacts"
-        set theContacts to {}
-        if count of theKeywords = 0
-            set theContacts to people
-        else
-            repeat with theKeyword in theKeywords
-                ignoring diacriticals
-                    set found to people where ( ¬
-                        id is theKeyword or ¬
-                        name is theKeyword or ¬
-                        first name is theKeyword or ¬
-                        middle name is theKeyword or ¬
-                        last name is theKeyword or ¬
-                        organization is theKeyword)
-                end ignoring
-                repeat with theContact in found
-                    copy theContact to end of theContacts
-                end repeat
-            end repeat
-        end if
-    end tell
-    return theContacts
-end
-
-
 on logContactValue(theName, theValue)
     tell application "Contacts"
         if exists theValue
@@ -201,7 +175,7 @@ on detailContact(theIds)
 
             copy my logContactValue("name", name of theContact) to the end of theEntries
             copy my logContactValue("has_image", image of theContact exists) to the end of theEntries
-            copy my logContactValue("is_company", company of theContact) to the end of theEntries
+            copy my logContactValue("company", company of theContact) to the end of theEntries
 
             copy my logContactValue("prefix", title of theContact) to the end of theEntries
             copy my logContactValue("first_name", first name of theContact) to the end of theEntries

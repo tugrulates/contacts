@@ -20,9 +20,9 @@ app = typer.Typer(help=__doc__)
 def find(
     keywords: Annotated[Optional[list[str]], typer.Argument()] = None,
     *,
-    batch: int = 1,
     extend: bool = True,
     detail: bool = False,
+    batch: Optional[int] = None,
     safe_box: bool = True,
 ) -> None:
     """List contacts matching given keyword."""
@@ -30,9 +30,11 @@ def find(
         task = progress.add_task("Counting contacts")
         keywords = keyword.prepare_keywords(keywords or [], extend=extend)
         count = contact.count(keywords)
+        brief = not detail
+        batch = batch or (1 if keywords else 10)
         progress.update(task, total=count, description="Fetching contacts")
 
-        for person in contact.by_keyword(keywords, batch=batch):
+        for person in contact.by_keyword(keywords, brief=brief, batch=batch):
             if not detail:
                 print(person)
             else:
