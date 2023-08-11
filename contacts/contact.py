@@ -204,7 +204,7 @@ class Contact(RichInfo):
     @property
     def is_company(self) -> bool:
         """Return whether this contact is a company."""
-        return bool(self._data["is_company"])
+        return bool(self._data["company"])
 
     @property
     def prefix(self) -> Optional[Info]:
@@ -390,7 +390,9 @@ def count(keywords: list[str]) -> int:
     return int(output)
 
 
-def by_keyword(keywords: list[str], *, batch: int = 1) -> Iterator[Contact]:
+def by_keyword(
+    keywords: list[str], *, brief: bool = False, batch: int = 1
+) -> Iterator[Contact]:
     """Find contacts matching given keyword.
 
     :param batch: batch detail queries by given number of contacts
@@ -398,11 +400,12 @@ def by_keyword(keywords: list[str], *, batch: int = 1) -> Iterator[Contact]:
     contact_ids = applescript.run_and_read_log("find", *keywords)
     chunks = zip_longest(*([iter(contact_ids)] * batch))
     for chunk in chunks:
-        yield from by_id([x for x in chunk if x])
+        yield from by_id([x for x in chunk if x], brief=brief)
 
 
-def by_id(contact_ids: list[str]) -> Iterator[Contact]:
+def by_id(contact_ids: list[str], *, brief: bool = False) -> Iterator[Contact]:
     """Create contact by id."""
-    result = json.loads(applescript.run_and_read_output("detail", *contact_ids))
+    script = "brief" if brief else "detail"
+    result = json.loads(applescript.run_and_read_output(script, *contact_ids))
     for contact in result:
         yield Contact(contact)

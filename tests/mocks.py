@@ -13,7 +13,7 @@ class MockApplescript:
         """Initialize the mock."""
         self._test_data_path = test_data_path
         self._error = False
-        self._data: dict[str, dict[Any, Any]] = {}
+        self._data: list[dict[Any, Any]] = []
 
     def error(self) -> None:
         """Raise an error upon invocation."""
@@ -21,7 +21,7 @@ class MockApplescript:
 
     def find(self, *find_data: str) -> None:
         """Specify which test data to find in contacts."""
-        data = [
+        self._data = [
             json.loads(
                 Path(self._test_data_path / x)
                 .with_suffix(".json")
@@ -29,7 +29,6 @@ class MockApplescript:
             )
             for x in find_data
         ]
-        self._data = {x["id"]: x for x in data}
 
     def run_and_read_output(self, script: str, *args: str) -> str:
         """Emulate applescript.run_and_read_output."""
@@ -37,9 +36,17 @@ class MockApplescript:
             raise CalledProcessError(1, "run")
         if script == "find":
             return str(len(self._data))
+        if script == "brief":
+            brief_data = [
+                {"id": x["id"], "name": x["name"], "company": x["company"]}
+                for x in self._data
+            ]
+            return "[\n{}\n]\n".format(
+                ",\n".join(json.dumps(x) for x in brief_data if x["id"] in args)
+            )
         if script == "detail":
             return "[\n{}\n]\n".format(
-                ",\n".join(json.dumps(self._data[x]) for x in args)
+                ",\n".join(json.dumps(x) for x in self._data if x["id"] in args)
             )
         return ""
 
@@ -49,4 +56,4 @@ class MockApplescript:
             raise CalledProcessError(1, "run")
 
         if script == "find":
-            yield from self._data.keys()
+            yield from [x["id"] for x in self._data]

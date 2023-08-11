@@ -2,7 +2,7 @@
     "id": "BBBBBBBB-1111-BBBB-1111-BBBBBBBBBBBB:ABPerson",
     "name": "Bob Balloon",
     "has_image": false,
-    "is_company": false,
+    "company": false,
     "first_name": "Bob",
     "middle_name": "Babála",
     "last_name": "Balon",
