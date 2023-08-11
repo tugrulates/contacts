@@ -33,7 +33,7 @@ def run_and_read_log(script: str, *args: str) -> Iterator[str]:
         with subprocess.Popen(
             ["/usr/bin/osascript", script_path, *args],
             encoding="utf-8",
-            stdout=True,
+            stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             universal_newlines=True,
         ) as process:  # nosec B603

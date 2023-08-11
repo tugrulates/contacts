@@ -1,5 +1,6 @@
 """Contact operations."""
 
+
 import json
 from itertools import zip_longest
 from typing import Any, Iterator, Optional
@@ -171,6 +172,11 @@ class Contact(RichInfo):
         self._data = data
 
     @property
+    def value(self) -> str:
+        """Use contact name as info value."""
+        return self.name
+
+    @property
     def category(self) -> Category:
         """Return the category of this info."""
         return Category.COMPANY if self.is_company else Category.PERSON
@@ -186,7 +192,7 @@ class Contact(RichInfo):
         return self.category.icon
 
     @property
-    def value(self) -> str:
+    def name(self) -> str:
         """Return the full name of this contact."""
         return str(self._data["name"])
 
@@ -376,6 +382,12 @@ class Contact(RichInfo):
             ]
         }
         return {k: v for k, v in details.items() if v}
+
+
+def count(keywords: list[str]) -> int:
+    """Return the list of contacts matching keywords without loading them."""
+    output = applescript.run_and_read_output("find", "?", *keywords)
+    return int(output)
 
 
 def by_keyword(keywords: list[str], *, batch: int = 1) -> Iterator[Contact]:

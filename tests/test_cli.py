@@ -34,7 +34,7 @@ def test_bare() -> None:
     # TODO: #19 Bare invocation should show help. Fix when there are more commands.
     result = runner.invoke(cli.app)
     assert result.exit_code == 0
-    assert not result.stdout
+    assert not result.stdout.strip()
 
 
 def test_help() -> None:
