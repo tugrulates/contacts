@@ -35,7 +35,8 @@ class MockApplescript:
         """Emulate applescript.run_and_read_output."""
         if self._error:
             raise CalledProcessError(1, "run")
-
+        if script == "find":
+            return str(len(self._data))
         if script == "detail":
             return "[\n{}\n]\n".format(
                 ",\n".join(json.dumps(self._data[x]) for x in args)
