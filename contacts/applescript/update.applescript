@@ -15,6 +15,7 @@ on updatePhone(thePersonId, thePhoneId, thePhoneValue)
         set thePerson to person id thePersonId
         set thePhone to phone id thePhoneId of thePerson
         set value of thePhone to thePhoneValue
+        save()
     end tell
 end
 
@@ -22,8 +23,6 @@ end
 on updateField(thePersonId, theField, theValue)
     tell application "Contacts"
         set thePerson to person id thePersonId
-        set property theField of thePerson to theValue
-        return
         if theField is "prefix"
             set prefix of thePerson to theValue
         else if theField is "first_name"
@@ -39,6 +38,7 @@ on updateField(thePersonId, theField, theValue)
         else if theField is "nickname"
             set nickname of thePerson to theValue
         end if
+        save()
     end tell
 end
 
