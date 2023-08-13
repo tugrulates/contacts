@@ -3,6 +3,7 @@
 
 from itertools import chain, combinations
 
+# only for Turkish names
 LETTER_TRANS = {
     "c": ("ç",),
     "C": ("Ç",),

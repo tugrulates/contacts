@@ -1,77 +1,66 @@
 """Contact operations."""
 
 
-import json
-from itertools import zip_longest
-from typing import Any, Iterator, Optional
+from functools import cached_property
+from typing import Any, Optional
 
-from contacts import applescript
+from contacts import problem
 from contacts.category import Category
+from contacts.info import ContactInfo, Info, SimpleInfo
+from contacts.problem import Problem
+
+DataType = dict[str, Any]
 
 
-class Info:
-    """A single info with an icon."""
+class ContactPhone(ContactInfo):
+    """Phone of a contact."""
 
-    def __init__(self, category: Category, value: str):
+    def __init__(self, data: DataType):
         """Initialize info from query output."""
-        self._category = category
-        self._value = value
-
-    @property
-    def category(self) -> Category:
-        """Return the category of this info."""
-        return self._category
-
-    @property
-    def icon(self) -> str:
-        """Return the icon of this info."""
-        return self.category.icon
-
-    @property
-    def value(self) -> str:
-        """Return the value of this info."""
-        return self._value
-
-    def __str__(self) -> str:
-        """Convert info to string."""
-        value_str = self.value.replace("\n", "\n   ")
-        return f"{self.icon} {value_str}"
-
-    def __repr__(self) -> str:
-        """Info object repr."""
-        return f"{type(self)}({self.value})"
+        ContactInfo.__init__(self, Category.PHONE, data)
 
 
-class RichInfo(Info):
-    """An multi-value info with an id."""
+class ContactEmail(ContactInfo):
+    """Email of a contact."""
 
-    def __init__(self, category: Category, data: dict[str, Any]):
+    def __init__(self, data: DataType):
         """Initialize info from query output."""
-        self._category = category
-        self._data = data
-
-    @property
-    def info_id(self) -> str:
-        """Return the id of this info."""
-        return str(self._data["id"])
-
-    @property
-    def icon(self) -> str:
-        """Return the icon of this info."""
-        return Category.from_label(self.label, self.category).icon
-
-    @property
-    def label(self) -> str:
-        """Return the label of this info."""
-        return str(self._data["label"])
-
-    @property
-    def value(self) -> str:
-        """Return the value of this info."""
-        return str(self._data["value"])
+        ContactInfo.__init__(self, Category.EMAIL, data)
 
 
-class Address(RichInfo):
+class ContactUrl(ContactInfo):
+    """Url of a contact."""
+
+    def __init__(self, data: DataType):
+        """Initialize info from query output."""
+        ContactInfo.__init__(self, Category.URL, data)
+
+
+class ContactDate(SimpleInfo):
+    """Date of a contact."""
+
+    def __init__(self, value: str):
+        """Initialize info from query output."""
+        SimpleInfo.__init__(self, Category.DATE, value)
+
+
+class ContactCustomDate(ContactInfo):
+    """Date of a contact."""
+
+    def __init__(self, data: DataType):
+        """Initialize info from query output."""
+        ContactInfo.__init__(self, Category.DATE, data)
+
+
+class ContactRelatedName(ContactInfo):
+    """Related name of a contact."""
+
+    def __init__(self, data: DataType):
+        """Initialize info from query output."""
+        ContactInfo.__init__(self, Category.RELATED, data)
+
+
+class ContactAddress(ContactInfo):
     """A single address."""
 
     @property
@@ -122,7 +111,7 @@ class Address(RichInfo):
         return str(data) if data else None
 
 
-class OnlineProfile(RichInfo):
+class ContactOnlineProfile(ContactInfo):
     """A single social profile or instant message address."""
 
     @property
@@ -148,8 +137,12 @@ class OnlineProfile(RichInfo):
         return str(data) if data else None
 
 
-class SocialProfile(OnlineProfile):
+class ContactSocialProfile(ContactOnlineProfile):
     """A single social profile."""
+
+    def __init__(self, data: DataType):
+        """Initialize info from query output."""
+        ContactInfo.__init__(self, Category.URL, data)
 
     @property
     def user_identifier(self) -> Optional[str]:
@@ -164,10 +157,18 @@ class SocialProfile(OnlineProfile):
         return str(data) if data else None
 
 
-class Contact(RichInfo):
+class ContactInstantMessage(ContactOnlineProfile):
+    """A single instant message profile."""
+
+    def __init__(self, data: DataType):
+        """Initialize info from query output."""
+        ContactInfo.__init__(self, Category.MESSAGING, data)
+
+
+class Contact(Info):
     """A single contact person or company."""
 
-    def __init__(self, data: dict[str, Any]):
+    def __init__(self, data: DataType):
         """Initialize info from query output."""
         self._data = data
 
@@ -179,7 +180,13 @@ class Contact(RichInfo):
     @property
     def category(self) -> Category:
         """Return the category of this info."""
-        return Category.COMPANY if self.is_company else Category.PERSON
+        if [x for x in self.problems if x.category == Category.ERROR]:
+            return Category.ERROR
+        if [x for x in self.problems if x.category == Category.WARNING]:
+            return Category.WARNING
+        if self.is_company:
+            return Category.COMPANY
+        return Category.PERSON
 
     @property
     def contact_id(self) -> str:
@@ -207,205 +214,150 @@ class Contact(RichInfo):
         return bool(self._data["company"])
 
     @property
-    def prefix(self) -> Optional[Info]:
+    def prefix(self) -> Optional[SimpleInfo]:
         """Return the prefix of this contact."""
         data = self._data.get("prefix")
-        return Info(Category.NAME, data) if data else None
+        return SimpleInfo(Category.NAME, data) if data else None
 
     @property
-    def first_name(self) -> Optional[Info]:
+    def first_name(self) -> Optional[SimpleInfo]:
         """Return the first name of this contact."""
         data = self._data.get("first_name")
-        return Info(Category.NAME, data) if data else None
+        return SimpleInfo(Category.NAME, data) if data else None
 
     @property
-    def phonetic_first_name(self) -> Optional[Info]:
+    def phonetic_first_name(self) -> Optional[SimpleInfo]:
         """Return the phonetic version of the first name of this contact."""
         data = self._data.get("phonetic_first_name")
-        return Info(Category.PHONETIC, data) if data else None
+        return SimpleInfo(Category.PHONETIC, data) if data else None
 
     @property
-    def middle_name(self) -> Optional[Info]:
+    def middle_name(self) -> Optional[SimpleInfo]:
         """Return the middle name of this contact."""
         data = self._data.get("middle_name")
-        return Info(Category.NAME, data) if data else None
+        return SimpleInfo(Category.NAME, data) if data else None
 
     @property
-    def phonetic_middle_name(self) -> Optional[Info]:
+    def phonetic_middle_name(self) -> Optional[SimpleInfo]:
         """Return the phonetic version of the middle name of this contact."""
         data = self._data.get("phonetic_middle_name")
-        return Info(Category.PHONETIC, data) if data else None
+        return SimpleInfo(Category.PHONETIC, data) if data else None
 
     @property
-    def last_name(self) -> Optional[Info]:
+    def last_name(self) -> Optional[SimpleInfo]:
         """Return the last name of this contact."""
         data = self._data.get("last_name")
-        return Info(Category.NAME, data) if data else None
+        return SimpleInfo(Category.NAME, data) if data else None
 
     @property
-    def phonetic_last_name(self) -> Optional[Info]:
+    def phonetic_last_name(self) -> Optional[SimpleInfo]:
         """Return the phonetic version of the last name of this contact."""
         data = self._data.get("phonetic_last_name")
-        return Info(Category.PHONETIC, data) if data else None
+        return SimpleInfo(Category.PHONETIC, data) if data else None
 
     @property
-    def maiden_name(self) -> Optional[Info]:
+    def maiden_name(self) -> Optional[SimpleInfo]:
         """Return the maiden name of this contact."""
         data = self._data.get("maiden_name")
-        return Info(Category.NAME, data) if data else None
+        return SimpleInfo(Category.NAME, data) if data else None
 
     @property
-    def suffix(self) -> Optional[Info]:
+    def suffix(self) -> Optional[SimpleInfo]:
         """Return the suffix of this contact."""
         data = self._data.get("suffix")
-        return Info(Category.NAME, data) if data else None
+        return SimpleInfo(Category.NAME, data) if data else None
 
     @property
-    def nickname(self) -> Optional[Info]:
+    def nickname(self) -> Optional[SimpleInfo]:
         """Return the nickname of this contact."""
         data = self._data.get("nickname")
-        return Info(Category.NAME, data) if data else None
+        return SimpleInfo(Category.NAME, data) if data else None
 
     @property
-    def job_title(self) -> Optional[Info]:
+    def job_title(self) -> Optional[SimpleInfo]:
         """Return the job title of this contact."""
         data = self._data.get("job_title")
-        return Info(Category.WORK, data) if data else None
+        return SimpleInfo(Category.WORK, data) if data else None
 
     @property
-    def department(self) -> Optional[Info]:
+    def department(self) -> Optional[SimpleInfo]:
         """Return the department this contact works for."""
         data = self._data.get("department")
-        return Info(Category.WORK, data) if data else None
+        return SimpleInfo(Category.WORK, data) if data else None
 
     @property
-    def organization(self) -> Optional[Info]:
+    def organization(self) -> Optional[SimpleInfo]:
         """Return the organization this contact works for."""
         data = self._data.get("organization")
-        return Info(Category.WORK, data) if data else None
+        return SimpleInfo(Category.WORK, data) if data else None
 
     @property
-    def phones(self) -> list[RichInfo]:
+    def phones(self) -> list[ContactPhone]:
         """Return the phones of this contact."""
         data: Optional[list[dict[str, Any]]] = self._data.get("phones")
-        return [RichInfo(Category.PHONE, x) for x in data] if data else []
+        return [ContactPhone(x) for x in data or []]
 
     @property
-    def emails(self) -> list[RichInfo]:
+    def emails(self) -> list[ContactEmail]:
         """Return the emails of this contact."""
         data: Optional[list[dict[str, Any]]] = self._data.get("emails")
-        return [RichInfo(Category.EMAIL, x) for x in data] if data else []
+        return [ContactEmail(x) for x in data or []]
 
     @property
-    def home_page(self) -> Optional[Info]:
+    def home_page(self) -> Optional[SimpleInfo]:
         """Return the home page of this contact."""
         data = self._data.get("home_page")
-        return Info(Category.URL, data) if data else None
+        return SimpleInfo(Category.URL, data) if data else None
 
     @property
-    def urls(self) -> list[RichInfo]:
+    def urls(self) -> list[ContactUrl]:
         """Return the URLs of this contact."""
         data: Optional[list[dict[str, Any]]] = self._data.get("urls")
-        return [RichInfo(Category.URL, x) for x in data] if data else []
+        return [ContactUrl(x) for x in data] if data else []
 
     @property
-    def addresses(self) -> list[Address]:
+    def addresses(self) -> list[ContactAddress]:
         """Return the addresses of this contact."""
         data: Optional[list[dict[str, Any]]] = self._data.get("addresses")
-        return [Address(Category.ADDRESS, x) for x in data] if data else []
+        return [ContactAddress(Category.ADDRESS, x) for x in data] if data else []
 
     @property
-    def birth_date(self) -> Optional[Info]:
+    def birth_date(self) -> Optional[ContactDate]:
         """Return the birth date of this contact."""
         data = self._data.get("birth_date")
-        return Info(Category.DATE, data) if data else None
+        return ContactDate(data) if data else None
 
     @property
-    def custom_dates(self) -> list[RichInfo]:
+    def custom_dates(self) -> list[ContactCustomDate]:
         """Return the custom dates of this contact."""
         data: Optional[list[dict[str, Any]]] = self._data.get("custom_dates")
-        return [RichInfo(Category.DATE, x) for x in data] if data else []
+        return [ContactCustomDate(x) for x in data or []]
 
     @property
-    def related_names(self) -> list[RichInfo]:
+    def related_names(self) -> list[ContactRelatedName]:
         """Return the related names of this contact."""
         data: Optional[list[dict[str, Any]]] = self._data.get("related_names")
-        return [RichInfo(Category.RELATED, x) for x in data] if data else []
+        return [ContactRelatedName(x) for x in data or []]
 
     @property
-    def social_profiles(self) -> list[SocialProfile]:
+    def social_profiles(self) -> list[ContactSocialProfile]:
         """Return the social profiles of this contact."""
         data: Optional[list[dict[str, Any]]] = self._data.get("social_profiles")
-        return [SocialProfile(Category.URL, x) for x in data] if data else []
+        return [ContactSocialProfile(x) for x in data or []]
 
     @property
-    def instant_messages(self) -> list[OnlineProfile]:
+    def instant_messages(self) -> list[ContactInstantMessage]:
         """Return the instant message addresses of this contact."""
         data: Optional[list[dict[str, Any]]] = self._data.get("instant_messages")
-        return [OnlineProfile(Category.MESSAGING, x) for x in data] if data else []
+        return [ContactInstantMessage(x) for x in data or []]
 
     @property
-    def note(self) -> Optional[Info]:
+    def note(self) -> Optional[SimpleInfo]:
         """Return the notes for this contact."""
         data = self._data.get("note")
-        return Info(Category.NOTE, data) if data else None
+        return SimpleInfo(Category.NOTE, data) if data else None
 
-    def details(self) -> dict[str, Any]:
-        """Printable details of the contact."""
-        details = {
-            prop: self.__getattribute__(prop)
-            for prop in [
-                "prefix",
-                "first_name",
-                "phonetic_first_name",
-                "middle_name",
-                "phonetic_middle_name",
-                "last_name",
-                "phonetic_last_name",
-                "maiden_name",
-                "suffix",
-                "nickname",
-                "job_title",
-                "department",
-                "organization",
-                "phones",
-                "emails",
-                "home_page",
-                "urls",
-                "addresses",
-                "birth_date",
-                "custom_dates",
-                "related_names",
-                "social_profiles",
-                "instant_messages",
-                "note",
-            ]
-        }
-        return {k: v for k, v in details.items() if v}
-
-
-def count(keywords: list[str]) -> int:
-    """Return the list of contacts matching keywords without loading them."""
-    output = applescript.run_and_read_output("find", "?", *keywords)
-    return int(output)
-
-
-def by_keyword(
-    keywords: list[str], *, brief: bool = False, batch: int = 1
-) -> Iterator[Contact]:
-    """Find contacts matching given keyword.
-
-    :param batch: batch detail queries by given number of contacts
-    """
-    contact_ids = applescript.run_and_read_log("find", *keywords)
-    chunks = zip_longest(*([iter(contact_ids)] * batch))
-    for chunk in chunks:
-        yield from by_id([x for x in chunk if x], brief=brief)
-
-
-def by_id(contact_ids: list[str], *, brief: bool = False) -> Iterator[Contact]:
-    """Create contact by id."""
-    script = "brief" if brief else "detail"
-    result = json.loads(applescript.run_and_read_output(script, *contact_ids))
-    for contact in result:
-        yield Contact(contact)
+    @cached_property
+    def problems(self) -> list[Problem]:
+        """Return all problems for this contact."""
+        return problem.find_problems(self)

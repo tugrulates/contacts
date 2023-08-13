@@ -1,3 +1,22 @@
+-- Returns contact ids matching given keywords.
+--
+-- If the first argument is "?", returns the number of results only
+-- with minimal processing.
+--
+--   $ osascript find.applescript [keyword_1] [keyword_2] ... [keyword_M]
+--   stderr:
+--   [contact_id_1]
+--   [contact_id_2]
+--   ...
+--   [contact_id_N]
+--   stdout:
+--   [N]
+--
+--   $ osascript find.applescript ? [keyword_1] [keyword_2] ... [keyword_M]
+--   stdout:
+--   [N]
+
+
 on findContacts(theKeywords, shouldLog)
     tell application "Contacts"
         if count of theKeywords = 0

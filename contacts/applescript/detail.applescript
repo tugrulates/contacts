@@ -1,3 +1,30 @@
+-- Returns full contacts with given ids.
+--
+--   $ osascript brief.applescript [contact_id_1] [contact_id_2] ... [contact_id_N]
+--   stdout:
+--   [
+--     {
+--       "id": "[contact_id_1]",
+--       "name": "[name_1]",
+--       ...
+--       "notes": "[notes_1]"
+--     },
+--     {
+--       "id": "[contact_id_2]",
+--       "name": "[name_2]",
+--       ...
+--       "notes": "[notes_2]"
+--     },
+--     ...
+--     {
+--       "id": "[contact_id_N]",
+--       "name": "[name_N]",
+--       ...
+--       "notes": "[notes_N]"
+--     }
+--   ]
+
+
 on findAndReplaceInText(theText, theSearchString, theReplacementString)
     set AppleScript's text item delimiters to theSearchString
     set theTextItems to every text item of theText
@@ -110,6 +137,7 @@ on logInstantMessages(theContact)
             repeat with theInstantMessage in every instant message of theContact
                 set theEntries to {}
 
+                --- label is equal to service name and and value is missing
                 copy my logContactValue("id", id of theInstantMessage) to the end of theEntries
                 copy my logContactValue("service_name", service name of theInstantMessage) to the end of theEntries
                 copy my logContactValue("user_name", user name of theInstantMessage) to the end of theEntries

@@ -1,3 +1,15 @@
+-- Returns minimal contacts with given ids.
+--
+--   $ osascript brief.applescript [contact_id_1] [contact_id_2] ... [contact_id_N]
+--   stdout:
+--   [
+--     { "id": "[contact_id_1]", "name": "[name_1]", "company": [company_1] },
+--     { "id": "[contact_id_1]", "name": "[name_2]", "company": [company_2] },
+--     ...
+--     { "id": "[contact_id_N]", "name": "[name_N]", "company": [company_N] }
+--   ]
+
+
 on encloseList(theOpening, theIndent, theList, theClosing)
     set theInner to {}
     repeat with theLine in theList
@@ -38,7 +50,7 @@ on detailContact(theIds)
             set theContact to person id theId
             set theName to name of theContact
             set theCompany to company of theContact
-            set theEntry to "  { \"id\": \"" & theId & "\", \"name\": \"" & theName & "\", \"company\": " & theCompany & " }"
+            set theEntry to " { \"id\": \"" & theId & "\", \"name\": \"" & theName & "\", \"company\": " & theCompany & " }"
 
             copy theEntry to the end of theResults
         end repeat
