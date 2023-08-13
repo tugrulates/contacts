@@ -22,8 +22,6 @@ end
 on updateField(thePersonId, theField, theValue)
     tell application "Contacts"
         set thePerson to person id thePersonId
-        set property theField of thePerson to theValue
-        return
         if theField is "prefix"
             set prefix of thePerson to theValue
         else if theField is "first_name"
