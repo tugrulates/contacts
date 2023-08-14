@@ -1,13 +1,13 @@
--- Updates contact fields with given values.
+-- Updates contact field with given value.
 --
---   $ osascript update.applescript prefix [prefix] [contact_id]
---   $ osascript update.applescript first_name [first_name] [contact_id]
---   $ osascript update.applescript middle_name [middle_name] [contact_id]
---   $ osascript update.applescript last_name [prelast_namefix] [contact_id]
---   $ osascript update.applescript maiden_name [maiden_name] [contact_id]
---   $ osascript update.applescript suffix [suffix] [contact_id]
---   $ osascript update.applescript nickname [nickname] [contact_id]
---   $ osascript update.applescript phone [phone_number] [contact_id] [phone_id]
+--   $ osascript update.applescript [contact_id] prefix [prefix]
+--   $ osascript update.applescript [contact_id] first_name [first_name]
+--   $ osascript update.applescript [contact_id] middle_name [middle_name]
+--   $ osascript update.applescript [contact_id] last_name [prelast_namefix]
+--   $ osascript update.applescript [contact_id] maiden_name [maiden_name]
+--   $ osascript update.applescript [contact_id] suffix [suffix]
+--   $ osascript update.applescript [contact_id] nickname [nickname]
+--   $ osascript update.applescript [contact_id] phone [phone_id] [phone_number]
 
 
 on updatePhone(thePersonId, thePhoneId, thePhoneValue)
@@ -37,6 +37,8 @@ on updateField(thePersonId, theField, theValue)
             set suffix of thePerson to theValue
         else if theField is "nickname"
             set nickname of thePerson to theValue
+        else
+            error "Cannot update " & theField
         end if
         save()
     end tell
@@ -44,19 +46,16 @@ end
 
 
 on run argv
-    set argc to count of argv
-    set theField to item 1 of argv
-    set theValue to item 2 of argv
-    set thePerson to item 3 of argv
-    if argc > 4
-        set theIds to item 4 thru argc of argv
-    else
-        set theIds to {}
-    end if
+    set thePersonId to item 1 of argv
+    set theField to item 2 of argv
 
-    if theField is "phone"
-        updatePhone(thePerson, item 1 of theIds, theValue)
+    if theField is "phones"
+        set thePhoneId to item 3 of argv
+        set theLabel to item 4 of argv
+        set theValue to item 4 of argv
+        updatePhone(thePersonId, thePhoneId, theLabel, theValue)
     else
-        updateField(thePerson, theField, theValue)
+        set theValue to item 3 of argv
+        updateField(thePersonId, theField, theValue)
     end if
 end

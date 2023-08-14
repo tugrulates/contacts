@@ -1,0 +1,23 @@
+{
+    "contact_id": "WWWWWWWW-1111-WWWW-1111-WWWWWWWWWWWW:ABPerson",
+    "name": "Dr. Warnen Bitte Sanft Jr.",
+    "has_image": false,
+    "is_company": false,
+    "prefix": "Dr.",
+    "first_name": "Warnen",
+    "middle_name": "Bitte",
+    "last_name": "Sanft",
+    "maiden_name": "Angaben",
+    "suffix": "Jr.",
+    "nickname": "Warnen sanft",
+    "job_title": "Warner manager",
+    "organization": "Warner Bros.",
+    "department": "Warning",
+    "urls": [
+        {
+            "info_id": "WWWWWWWW-2222-WWWW-2222-WWWWWWWWWWWW:ABPerson",
+            "label": "_$!<HomePage>!$_",
+            "value": "http://warnen.blog"
+        }
+    ]
+}

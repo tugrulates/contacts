@@ -1,6 +1,7 @@
 """A CLI tool to manage contacts."""
 
 
+import dataclasses
 from typing import Annotated, Optional
 
 import typer
@@ -9,34 +10,7 @@ from rich.progress import Progress
 from rich.table import Table
 
 from contacts import address_book, contact, keyword
-
-DETAILS = [
-    "prefix",
-    "first_name",
-    "phonetic_first_name",
-    "middle_name",
-    "phonetic_middle_name",
-    "last_name",
-    "phonetic_last_name",
-    "maiden_name",
-    "suffix",
-    "nickname",
-    "job_title",
-    "department",
-    "organization",
-    "phones",
-    "emails",
-    "home_page",
-    "urls",
-    "addresses",
-    "birth_date",
-    "custom_dates",
-    "related_names",
-    "social_profiles",
-    "instant_messages",
-    "note",
-    "problems",
-]
+from contacts.category import Category
 
 app = typer.Typer(help=__doc__)
 
@@ -45,17 +19,33 @@ def table(person: contact.Contact, width: Optional[int], safe_box: bool) -> Tabl
     """Create a table view for contact."""
     table = Table(highlight=True, box=box.ROUNDED, width=width, safe_box=safe_box)
     table.add_column(ratio=1, justify="right", style="magenta")
-    table.add_column(str(person), ratio=2)
+    table.add_column(person.category.icon)
+    table.add_column(person.name, ratio=2)
 
-    details = {prop: person.__getattribute__(prop) for prop in DETAILS}
-    for key, value in details.items():
-        if not value:
+    for field in dataclasses.fields(contact.Contact):
+        field_key = field.name.capitalize().replace("_", " ")
+        field_value = getattr(person, field.name)
+        field_category = Category.from_field(field)
+        if not (field_value and field_category):
             continue
-        if isinstance(value, list):
-            value = "\n".join(map(str, value))
+        if isinstance(field_value, list):
+            for index, info in enumerate(field_value):
+                if isinstance(info, contact.ContactInfo):
+                    info_category = Category.from_label(info.label)
+                    table.add_row(
+                        field_key if index == 0 else None,
+                        (info_category or field_category).icon,
+                        str(info),
+                    )
         else:
-            value = str(value)
-        table.add_row(key.replace("_", " ").capitalize(), value)
+            table.add_row(field_key, field_category.icon, field_value)
+
+    for index, problem in enumerate(person.problems):
+        table.add_row(
+            "Problems" if index == 0 else None,
+            problem.category.icon,
+            problem.message,
+        )
 
     return table
 
@@ -87,7 +77,12 @@ def find(
                     progress.update(task, description=f"Fixing {person}")
                     problem.try_fix()
                 person = address_book.reload(person)
-            print(table(person, width, safe_box) if detail else person)
+            print(
+                table(person, width, safe_box)
+                if detail
+                else f"{person.category.icon} {person.name}"
+            )
+            del person.first_name
             progress.advance(task)
 
 

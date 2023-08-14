@@ -6,6 +6,8 @@ from pathlib import Path
 from subprocess import CalledProcessError
 from typing import Any, Iterator
 
+from tests.contact_diff import Mutation
+
 
 class MockApplescript:
     """Mock object for running applescript code in tests."""
@@ -15,7 +17,9 @@ class MockApplescript:
         self._test_data_path = test_data_path
         self._error = False
         self._data: list[dict[Any, Any]] = []
-        self._updates: list[list[str]] = []
+        self._updates: list[Mutation] = []
+        self._adds: list[Mutation] = []
+        self._deletes: list[Mutation] = []
 
     def error(self) -> None:
         """Raise an error upon invocation."""
@@ -40,18 +44,29 @@ class MockApplescript:
             return str(len(self._data))
         if script == "brief":
             brief_data = [
-                {"id": x["id"], "name": x["name"], "company": x["company"]}
+                {
+                    "contact_id": x["contact_id"],
+                    "name": x["name"],
+                    "is_company": x["is_company"],
+                }
                 for x in self._data
             ]
             return "[\n{}\n]\n".format(
-                ",\n".join(json.dumps(x) for x in brief_data if x["id"] in args)
+                ",\n".join(json.dumps(x) for x in brief_data if x["contact_id"] in args)
             )
         if script == "detail":
             return "[\n{}\n]\n".format(
-                ",\n".join(json.dumps(x) for x in self._data if x["id"] in args)
+                ",\n".join(json.dumps(x) for x in self._data if x["contact_id"] in args)
             )
         if script == "update":
-            self._updates.append(list(args))
+            self._updates.append((*args,))
+            return ""
+        if script == "add":
+            self._adds.append((*args,))
+            return ""
+        if script == "delete":
+            self._deletes.append((*args,))
+            return ""
         return ""
 
     def _run_and_read_log(self, script: str, *args: str) -> Iterator[str]:
@@ -60,4 +75,4 @@ class MockApplescript:
             raise CalledProcessError(1, "run")
 
         if script == "find":
-            yield from [x["id"] for x in self._data]
+            yield from [x["contact_id"] for x in self._data]

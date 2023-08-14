@@ -4,20 +4,20 @@
 --   stdout:
 --   [
 --     {
---       "id": "[contact_id_1]",
+--       "contact_id": "[contact_id_1]",
 --       "name": "[name_1]",
 --       ...
 --       "notes": "[notes_1]"
 --     },
 --     {
---       "id": "[contact_id_2]",
+--       "contact_id": "[contact_id_2]",
 --       "name": "[name_2]",
 --       ...
 --       "notes": "[notes_2]"
 --     },
 --     ...
 --     {
---       "id": "[contact_id_N]",
+--       "contact_id": "[contact_id_N]",
 --       "name": "[name_N]",
 --       ...
 --       "notes": "[notes_N]"
@@ -87,7 +87,7 @@ on logContactInfo(theName, theInfos, areDates)
             repeat with theInfo in theInfos
                 set theEntries to {}
 
-                copy my logContactValue("id", id of theInfo) to the end of theEntries
+                copy my logContactValue("info_id", id of theInfo) to the end of theEntries
                 copy my logContactValue("label", label of theInfo) to the end of theEntries
                 if areDates
                     copy my logContactDate("value", value of theInfo) to the end of theEntries
@@ -113,9 +113,9 @@ on logContactSocialProfiles(theContact)
             repeat with theSocialProfile in theSocialProfiles
                 set theEntries to {}
 
-                copy my logContactValue("id", id of theSocialProfile) to the end of theEntries
-                copy my logContactValue("service_name", service name of theSocialProfile) to the end of theEntries
-                copy my logContactValue("user_name", user name of theSocialProfile) to the end of theEntries
+                copy my logContactValue("info_id", id of theSocialProfile) to the end of theEntries
+                copy my logContactValue("label", service name of theSocialProfile) to the end of theEntries
+                copy my logContactValue("value", user name of theSocialProfile) to the end of theEntries
                 copy my logContactValue("user_identifier", user identifier of theSocialProfile) to the end of theEntries
                 copy my logContactValue("url", url of theSocialProfile) to the end of theEntries
 
@@ -137,10 +137,10 @@ on logInstantMessages(theContact)
             repeat with theInstantMessage in every instant message of theContact
                 set theEntries to {}
 
-                --- label is equal to service name and and value is missing
-                copy my logContactValue("id", id of theInstantMessage) to the end of theEntries
-                copy my logContactValue("service_name", service name of theInstantMessage) to the end of theEntries
-                copy my logContactValue("user_name", user name of theInstantMessage) to the end of theEntries
+                --- value is missing
+                copy my logContactValue("info_id", id of theInstantMessage) to the end of theEntries
+                copy my logContactValue("label", service name of theInstantMessage) to the end of theEntries
+                copy my logContactValue("value", user name of theInstantMessage) to the end of theEntries
 
                 copy my encloseList("    {", "        ", theEntries, "      }") to the end of theResults
             end repeat
@@ -160,15 +160,15 @@ on logContactAddresses(theContact)
             repeat with theAddress in every address of theContact
                 set theEntries to {}
 
-                copy my logContactValue("id", id of theAddress) to the end of theEntries
+                copy my logContactValue("info_id", id of theAddress) to the end of theEntries
                 copy my logContactValue("label", label of theAddress) to the end of theEntries
+                copy my logContactValue("value", formatted address of theAddress) to the end of theEntries
                 copy my logContactValue("country_code", country code of theAddress) to the end of theEntries
                 copy my logContactValue("street", street of theAddress) to the end of theEntries
                 copy my logContactValue("city", city of theAddress) to the end of theEntries
                 copy my logContactValue("state", state of theAddress) to the end of theEntries
-                copy my logContactValue("zip", zip of theAddress) to the end of theEntries
+                copy my logContactValue("zip_code", zip of theAddress) to the end of theEntries
                 copy my logContactValue("country", country of theAddress) to the end of theEntries
-                copy my logContactValue("formatted_address", formatted address of theAddress) to the end of theEntries
 
                 copy my encloseList("    {", "        ", theEntries, "      }") to the end of theResults
             end repeat
@@ -199,11 +199,11 @@ on detailContact(theIds)
             set theContact to person id theId
             set theEntries to {}
 
-            copy my logContactValue("id", id of theContact) to the end of theEntries
+            copy my logContactValue("contact_id", id of theContact) to the end of theEntries
 
             copy my logContactValue("name", name of theContact) to the end of theEntries
             copy my logContactValue("has_image", image of theContact exists) to the end of theEntries
-            copy my logContactValue("company", company of theContact) to the end of theEntries
+            copy my logContactValue("is_company", company of theContact) to the end of theEntries
 
             copy my logContactValue("prefix", title of theContact) to the end of theEntries
             copy my logContactValue("first_name", first name of theContact) to the end of theEntries

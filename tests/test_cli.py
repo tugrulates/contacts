@@ -1,7 +1,6 @@
 """Unittests for cli."""
 
 
-import json
 from pathlib import Path
 
 import pytest
@@ -9,6 +8,7 @@ from typer.testing import CliRunner
 
 from contacts import address_book, cli
 from contacts.contact import Contact
+from tests.contact_diff import ContactDiff
 from tests.mocks import MockApplescript
 
 runner = CliRunner(mix_stderr=True)
@@ -114,85 +114,12 @@ def test_fix_warnings(data_path: Path, mock_applescript: MockApplescript) -> Non
     assert result.stdout.rstrip().split("\n") == [
         "⚠️  dr. warnen bitte sanft jr.",
     ]
-    fixed = Contact(
-        json.loads((data_path / "warnen.fixes.json").read_text(encoding="utf-8"))
-    )
-    assert mock_applescript._updates == [
-        update
-        for update in [
-            [
-                "prefix",
-                fixed.prefix.value,
-                fixed.contact_id,
-            ]
-            if fixed.prefix
-            else None,
-            [
-                "first_name",
-                fixed.first_name.value,
-                fixed.contact_id,
-            ]
-            if fixed.first_name
-            else None,
-            [
-                "last_name",
-                fixed.last_name.value,
-                fixed.contact_id,
-            ]
-            if fixed.last_name
-            else None,
-            [
-                "maiden_name",
-                fixed.maiden_name.value,
-                fixed.contact_id,
-            ]
-            if fixed.maiden_name
-            else None,
-            [
-                "suffix",
-                fixed.suffix.value,
-                fixed.contact_id,
-            ]
-            if fixed.suffix
-            else None,
-            [
-                "nickname",
-                fixed.nickname.value,
-                fixed.contact_id,
-            ]
-            if fixed.nickname
-            else None,
-            [
-                "job_title",
-                fixed.job_title.value,
-                fixed.contact_id,
-            ]
-            if fixed.job_title
-            else None,
-            [
-                "department",
-                fixed.department.value,
-                fixed.contact_id,
-            ]
-            if fixed.department
-            else None,
-            [
-                "organization",
-                fixed.organization.value,
-                fixed.contact_id,
-            ]
-            if fixed.organization
-            else None,
-            [
-                "note",
-                fixed.note.value,
-                fixed.contact_id,
-            ]
-            if fixed.note
-            else None,
-        ]
-        if update
-    ]
+    before = Contact.read(data_path / "warnen.json")
+    after = Contact.read(data_path / "warnen.fixed.json")
+    diff = ContactDiff(before, after)
+    assert sorted(mock_applescript._updates) == sorted(diff.updates)
+    assert sorted(mock_applescript._adds) == sorted(diff.adds)
+    assert sorted(mock_applescript._deletes) == sorted(diff.deletes)
 
 
 def test_errors(mock_applescript: MockApplescript) -> None:

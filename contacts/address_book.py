@@ -6,7 +6,7 @@ from itertools import zip_longest
 from pathlib import Path
 from typing import Iterator
 
-from contacts.contact import Contact, ContactPhone
+from contacts.contact import Contact, ContactInfo
 
 
 def _run_and_read_output(script: str, *args: str) -> str:
@@ -70,7 +70,7 @@ def by_id(contact_ids: list[str], *, brief: bool = False) -> Iterator[Contact]:
     """
     output = _run_and_read_output("brief" if brief else "detail", *contact_ids)
     for data in json.loads(output):
-        yield Contact(data)
+        yield Contact(**data)
 
 
 def reload(contact: Contact) -> Contact:
@@ -83,56 +83,66 @@ def reload(contact: Contact) -> Contact:
 
 def update_prefix(contact: Contact, value: str) -> str:
     """Update contact prefix with given value."""
-    return _run_and_read_output("update", "prefix", value, contact.contact_id)
+    return _run_and_read_output("update", contact.contact_id, "prefix", value)
 
 
 def update_first_name(contact: Contact, value: str) -> str:
     """Update contact first name with given value."""
-    return _run_and_read_output("update", "first_name", value, contact.contact_id)
+    return _run_and_read_output("update", contact.contact_id, "first_name", value)
 
 
 def update_middle_name(contact: Contact, value: str) -> str:
     """Update contact middle name with given value."""
-    return _run_and_read_output("update", "middle_name", value, contact.contact_id)
+    return _run_and_read_output("update", contact.contact_id, "middle_name", value)
 
 
 def update_last_name(contact: Contact, value: str) -> str:
     """Update contact last name with given value."""
-    return _run_and_read_output("update", "last_name", value, contact.contact_id)
+    return _run_and_read_output("update", contact.contact_id, "last_name", value)
 
 
 def update_maiden_name(contact: Contact, value: str) -> str:
     """Update contact maiden name with given value."""
-    return _run_and_read_output("update", "maiden_name", value, contact.contact_id)
+    return _run_and_read_output("update", contact.contact_id, "maiden_name", value)
 
 
 def update_suffix(contact: Contact, value: str) -> str:
     """Update contact suffix with given value."""
-    return _run_and_read_output("update", "suffix", value, contact.contact_id)
+    return _run_and_read_output("update", contact.contact_id, "suffix", value)
 
 
 def update_nickname(contact: Contact, value: str) -> str:
     """Update contact nickname with given value."""
-    return _run_and_read_output("update", "nickname", value, contact.contact_id)
+    return _run_and_read_output("update", contact.contact_id, "nickname", value)
 
 
 def update_job_title(contact: Contact, value: str) -> str:
     """Update contact job title with given value."""
-    return _run_and_read_output("update", "job_title", value, contact.contact_id)
+    return _run_and_read_output("update", contact.contact_id, "job_title", value)
 
 
 def update_department(contact: Contact, value: str) -> str:
     """Update contact department with given value."""
-    return _run_and_read_output("update", "department", value, contact.contact_id)
+    return _run_and_read_output("update", contact.contact_id, "department", value)
 
 
 def update_organization(contact: Contact, value: str) -> str:
     """Update contact organization with given value."""
-    return _run_and_read_output("update", "organization", value, contact.contact_id)
+    return _run_and_read_output("update", contact.contact_id, "organization", value)
 
 
-def update_phone(contact: Contact, phone: ContactPhone, value: str) -> str:
+def update_phone(contact: Contact, phone: ContactInfo, value: str) -> str:
     """Update contact phone with given value."""
     return _run_and_read_output(
-        "update", "phone", value, contact.contact_id, phone.info_id
+        "update", contact.contact_id, "phones", phone.info_id, phone.label, value
     )
+
+
+def add_url(contact: Contact, label: str, value: str) -> str:
+    """Add a contact URL."""
+    return _run_and_read_output("add", contact.contact_id, "urls", label, value)
+
+
+def delete_home_page(contact: Contact) -> str:
+    """Delete contact home page."""
+    return _run_and_read_output("delete", contact.contact_id, "home_page")
