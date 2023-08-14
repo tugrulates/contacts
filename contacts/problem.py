@@ -27,7 +27,7 @@ class Problem:
         fix: Optional[Callable[[], Any]] = None,
     ):
         """Initialize problem details."""
-        self.message = message
+        self.message = message.replace("\n", " ")
         self.fix = fix
 
     @property

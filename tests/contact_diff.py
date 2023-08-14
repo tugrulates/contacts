@@ -64,7 +64,7 @@ class ContactDiff:
             self.deletes.append((*mutation, field))
         elif (after is not None) and (before is None):
             self.adds.append((*mutation, *after.values()))
-        elif (after is not None) and (before is not None):
+        elif (after is not None) and (after != before):
             self.updates.append((*mutation, field, *after.values()))
 
     def _diff_simple_info(
@@ -74,7 +74,7 @@ class ContactDiff:
             self.deletes.append((*mutation, field))
         elif (after is not None) and (before is None):
             self.adds.append((*mutation, field, str(after)))
-        elif (after is not None) and after != before:
+        elif (after is not None) and (after != before):
             self.updates.append((*mutation, field, str(after)))
 
     def __str__(self) -> str:

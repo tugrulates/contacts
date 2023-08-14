@@ -11,7 +11,31 @@
 │              Job title │ 💼 │ warner manager                                │
 │             Department │ 💼 │ warning                                       │
 │           Organization │ 💼 │ Warner Bros.                                  │
+│                 Phones │ 📱 │ +1 (817) 200-0000                             │
+│                        │ 💼 │ +1 (817) 200-0001                             │
+│                        │ 💼 │ +1 (817) 200-0000                             │
+│                        │ 💼 │ +1 (817) 200-0001                             │
+│                        │ 🏠 │ +1 (817) 200-0001                             │
+│                 Emails │ 🏠 │ warnen@warnen.blog                            │
+│                        │ 🏠 │ warnen@warnen.blog                            │
 │              Home page │ 🌐 │ http://warnen.blog                            │
+│                   Urls │ 💼 │ http://warnen.com                             │
+│                        │ 🏠 │ http://warnen.com                             │
+│              Addresses │ 💼 │ Walther-von-der-Vogelweide-Straße 7777 A      │
+│                        │    │ Würzburg Bavaria 97074                        │
+│                        │    │ Germany                                       │
+│                        │ 💼 │ Walther-von-der-Vogelweide-Straße 7777 A      │
+│                        │    │ Würzburg Bavaria 97074                        │
+│                        │    │ Germany                                       │
+│           Custom dates │ 💍 │ July 7, 1977                                  │
+│                        │ 💍 │ July 7, 1977                                  │
+│                        │ 📅 │ July 7, 1977                                  │
+│        Social profiles │ 🌐 │ warnensanft (LinkedIn)                        │
+│                        │ 🌐 │ warnensanft (LinkedIn)                        │
+│                        │ 🌐 │ warnensanft (Twitter)                         │
+│       Instant messages │ 💬 │ +1 (817) 200-0000 (WhatsApp)                  │
+│                        │ 💬 │ +1 (817) 200-0000 (iMessage)                  │
+│                        │ 💬 │ +1 (817) 200-0000 (WhatsApp)                  │
 │               Problems │ ⚠️  │ Prefix 'dr.' should be 'Dr.'.                 │
 │                        │ ⚠️  │ First name 'warnen' should be 'Warnen'.       │
 │                        │ ⚠️  │ Middle name 'bitte' should be 'Bitte'.        │
@@ -25,4 +49,16 @@
 │                        │ ⚠️  │ Department 'warning' should be 'Warning'.     │
 │                        │ ⚠️  │ Home page 'http://warnen.blog' should be a    │
 │                        │    │ URL.                                          │
+│                        │ ⚠️  │ Phone '+1 (817) 200-0000' has duplicate(s).   │
+│                        │ ⚠️  │ Phone '+1 (817) 200-0001' has duplicate(s).   │
+│                        │ ⚠️  │ Email 'warnen@warnen.blog' has duplicate(s).  │
+│                        │ ⚠️  │ URL 'http://warnen.com' has duplicate(s).     │
+│                        │ ⚠️  │ Address 'Walther-von-der-Vogelweide-Straße    │
+│                        │    │ 7777 A Würzburg Bavaria 97074 Germany' has    │
+│                        │    │ duplicate(s).                                 │
+│                        │ ⚠️  │ Custom date 'July 7, 1977' has duplicate(s).  │
+│                        │ ⚠️  │ Social profile 'warnensanft (LinkedIn)' has   │
+│                        │    │ duplicate(s).                                 │
+│                        │ ⚠️  │ Instant message '+1 (817) 200-0000            │
+│                        │    │ (WhatsApp)' has duplicate(s).                 │
 ╰────────────────────────┴────┴───────────────────────────────────────────────╯
