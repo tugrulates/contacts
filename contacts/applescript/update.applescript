@@ -10,11 +10,19 @@
 --   $ osascript update.applescript [contact_id] phone [phone_id] [phone_number]
 
 
-on updatePhone(thePersonId, thePhoneId, thePhoneValue)
+on updateInfo(thePersonId, theField, theInfoId, theLabel, theValue)
     tell application "Contacts"
         tell person id thePersonId
-            set thePhone to phone id thePhoneId
-            set value of thePhone to thePhoneValue
+            if theField is "phones"
+                set theInfo to phone id theInfoId
+            else if theField is "urls"
+                set theInfo to url id theInfoId
+            end if
+
+            tell theInfo
+                set label to theLabel
+                set value  to theValue
+            end tell
         end tell
         save()
     end tell
@@ -52,10 +60,10 @@ on run argv
     set theField to item 2 of argv
 
     if theField is in {"phones", "urls"}
-        set thePhoneId to item 3 of argv
+        set theInfoId to item 3 of argv
         set theLabel to item 4 of argv
-        set theValue to item 4 of argv
-        updatePhone(thePersonId, thePhoneId, theLabel, theValue)
+        set theValue to item 5 of argv
+        updateInfo(thePersonId, theField, theInfoId, theLabel, theValue)
     else
         set theValue to item 3 of argv
         updateField(thePersonId, theField, theValue)
