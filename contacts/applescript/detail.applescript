@@ -69,14 +69,13 @@ end logContactValue
 
 on logContactDate(theName, theDate)
     tell application "Contacts"
-        tell theDate
-            if year >= 1900
-                set theDateStr to month & " " & day & ", " & year
-            else
-                set theDateStr to month & " " & day
-            end if
-            return my logContactValue(theName, theDateStr as text)
-        end tell
+        set [theDay, theMonth, theYear] to [day, month, year] of theDate
+        if theYear >= 1900
+            set theDateStr to "" & theMonth & " " & theDay & ", " & theYear
+        else
+            set theDateStr to "" & theMonth & " " & theDay
+        end if
+        return my logContactValue(theName, theDateStr as text)
     end tell
 end
 
