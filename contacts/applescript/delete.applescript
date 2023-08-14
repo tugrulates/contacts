@@ -7,7 +7,7 @@ on deleteField(thePersonId, theField)
     tell application "Contacts"
         tell person id thePersonId
             if theField is "home_page"
-                delete home_page of thePerson
+                delete home_page
             else
                 error "Cannot delete " & theField
             end if
