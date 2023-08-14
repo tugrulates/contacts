@@ -1,16 +1,17 @@
 {
-    "id": "WWWWWWWW-1111-WWWW-1111-WWWWWWWWWWWW:ABPerson",
+    "contact_id": "WWWWWWWW-1111-WWWW-1111-WWWWWWWWWWWW:ABPerson",
     "name": "dr. warnen bitte sanft jr.",
     "has_image": false,
-    "company": false,
+    "is_company": false,
     "prefix": "dr.",
     "first_name": "warnen",
-    "middle": "bitte",
+    "middle_name": "bitte",
     "last_name": "sanft",
     "maiden_name": "angaben",
     "suffix": "jr.",
     "nickname": "warnen sanft",
     "job_title": "warner manager",
     "department": "warning",
-    "organization": "Warner Bros."
+    "organization": "Warner Bros.",
+    "home_page": "http://warnen.blog"
 }

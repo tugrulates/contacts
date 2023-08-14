@@ -3,8 +3,9 @@
 
 from __future__ import annotations
 
+from dataclasses import Field
 from enum import Enum
-from typing import AbstractSet, Optional
+from typing import AbstractSet, Any, Optional
 
 
 class Category(Enum):
@@ -30,9 +31,8 @@ class Category(Enum):
     RELATED = "👥"
     NOTE = "📋"
     OTHER = ("🗂️", {"_$!<Other>!$_"})
-    WARNING = "⚠️"
+    WARNING = "⚠️ "
     ERROR = "⛔"
-    UNKNOWN = "❓"
 
     def __init__(self, icon: str, labels: AbstractSet[str] = frozenset()):
         """Initialize category."""
@@ -40,9 +40,16 @@ class Category(Enum):
         self.labels = labels
 
     @staticmethod
-    def from_label(label: str, default: Optional[Category] = None) -> Category:
+    def from_field(field: Field[Any]) -> Optional[Category]:
+        """Return the category of given Contact field."""
+        return field.metadata.get("category")
+
+    @staticmethod
+    def from_label(
+        label: str, default: Optional[Category] = None
+    ) -> Optional[Category]:
         """Return the category of given label."""
         for category in Category:
             if label in category.labels:
                 return category
-        return default or Category.UNKNOWN
+        return default

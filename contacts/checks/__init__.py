@@ -5,11 +5,14 @@ from __future__ import annotations
 
 from enum import Enum
 
-from contacts.checks import name_capitalization_check, nickname_check
+from contacts.checks.home_page_check import HomePageCheck
+from contacts.checks.name_capitalization_check import NameCapitalizationCheck
+from contacts.checks.nickname_check import NicknameCheck
 
 
 class Checks(Enum):
     """List of all checkers."""
 
-    NAME_CAPITALIZATION_CHECK = name_capitalization_check.NameCapitalizationCheck()
-    NICK_NAME_CHECK = nickname_check.NicknameCheck()
+    NAME_CAPITALIZATION_CHECK = NameCapitalizationCheck()
+    NICK_NAME_CHECK = NicknameCheck()
+    HOME_PAGE_CHECK = HomePageCheck()

@@ -8,7 +8,6 @@ from typing import Any, Callable, Optional
 
 from contacts import contact
 from contacts.category import Category
-from contacts.info import Info
 
 
 class Check(metaclass=abc.ABCMeta):
@@ -19,7 +18,7 @@ class Check(metaclass=abc.ABCMeta):
         """Check contact."""
 
 
-class Problem(Info):
+class Problem:
     """Represents something being off in a contact."""
 
     def __init__(
@@ -35,11 +34,6 @@ class Problem(Info):
     def category(self) -> Category:
         """Return the category of this problem."""
         return Category.WARNING if self.fix else Category.ERROR
-
-    @property
-    def value(self) -> str:
-        """Return the the problem description."""
-        return f"{self.message}"
 
     def try_fix(self) -> None:
         """Attempt to fix this problem."""
