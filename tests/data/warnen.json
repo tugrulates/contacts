@@ -55,12 +55,12 @@
     "urls": [
         {
             "info_id": "WWWWWWWW-4444-WWWW-4444-WWWWWWWWWWWW",
-            "label": "_$!<Work>!$_",
+            "label": "_$!<Home>!$_",
             "value": "http://warnen.com"
         },
         {
             "info_id": "WWWWWWWW-4444-WWWW-4445-WWWWWWWWWWWW",
-            "label": "_$!<Home>!$_",
+            "label": "_$!<Work>!$_",
             "value": "http://warnen.com"
         }
     ],

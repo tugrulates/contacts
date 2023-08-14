@@ -9,6 +9,7 @@ from contacts.checks.capitalization_check import CapitalizationCheck
 from contacts.checks.duplicate_check import DuplicateCheck
 from contacts.checks.home_page_check import HomePageCheck
 from contacts.checks.nickname_check import NicknameCheck
+from contacts.checks.url_check import UrlCheck
 
 
 class Checks(Enum):
@@ -17,4 +18,5 @@ class Checks(Enum):
     NAME_CAPITALIZATION_CHECK = CapitalizationCheck()
     NICK_NAME_CHECK = NicknameCheck()
     HOME_PAGE_CHECK = HomePageCheck()
+    NICK_NAURL_CHECK = UrlCheck()
     DUPLICATE_CHECK = DuplicateCheck()  # must be the last item

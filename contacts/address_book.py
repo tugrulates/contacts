@@ -131,10 +131,17 @@ def update_organization(contact: Contact, value: str) -> str:
     return _run_and_read_output("update", contact.contact_id, "organization", value)
 
 
-def update_phone(contact: Contact, phone: ContactInfo, value: str) -> str:
-    """Update contact phone with given value."""
+def update_phone(contact: Contact, phone: ContactInfo, label: str, value: str) -> str:
+    """Update contact phone with given label and value."""
     return _run_and_read_output(
-        "update", contact.contact_id, "phones", phone.info_id, phone.label, value
+        "update", contact.contact_id, "phones", phone.info_id, label, value
+    )
+
+
+def update_url(contact: Contact, url: ContactInfo, label: str, value: str) -> str:
+    """Update contact url with given label and value."""
+    return _run_and_read_output(
+        "update", contact.contact_id, "urls", url.info_id, label, value
     )
 
 

@@ -51,7 +51,7 @@ on run argv
     set thePersonId to item 1 of argv
     set theField to item 2 of argv
 
-    if theField is "phones"
+    if theField is in {"phones", "urls"}
         set thePhoneId to item 3 of argv
         set theLabel to item 4 of argv
         set theValue to item 4 of argv
