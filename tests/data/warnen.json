@@ -13,5 +13,133 @@
     "job_title": "warner manager",
     "department": "warning",
     "organization": "Warner Bros.",
+    "phones": [
+        {
+            "info_id": "WWWWWWWW-2222-WWWW-2222-WWWWWWWWWWWW",
+            "label": "_$!<Mobile>!$_",
+            "value": "+1 (817) 200-0000"
+        },
+        {
+            "info_id": "WWWWWWWW-2222-WWWW-2223-WWWWWWWWWWWW",
+            "label": "_$!<Work>!$_",
+            "value": "+1 (817) 200-0001"
+        },
+        {
+            "info_id": "WWWWWWWW-2222-WWWW-2224-WWWWWWWWWWWW",
+            "label": "_$!<Work>!$_",
+            "value": "+1 (817) 200-0000"
+        },
+        {
+            "info_id": "WWWWWWWW-2222-WWWW-2225-WWWWWWWWWWWW",
+            "label": "_$!<Work>!$_",
+            "value": "+1 (817) 200-0001"
+        },
+        {
+            "info_id": "WWWWWWWW-2222-WWWW-2226-WWWWWWWWWWWW",
+            "label": "_$!<Home>!$_",
+            "value": "+1 (817) 200-0001"
+        }
+    ],
+    "emails": [
+        {
+            "info_id": "WWWWWWWW-3333-WWWW-3333-WWWWWWWWWWWW",
+            "label": "_$!<Home>!$_",
+            "value": "warnen@warnen.blog"
+        },
+        {
+            "info_id": "WWWWWWWW-3333-WWWW-3334-WWWWWWWWWWWW",
+            "label": "_$!<Home>!$_",
+            "value": "warnen@warnen.blog"
+        }
+    ],
+    "urls": [
+        {
+            "info_id": "WWWWWWWW-4444-WWWW-4444-WWWWWWWWWWWW",
+            "label": "_$!<Work>!$_",
+            "value": "http://warnen.com"
+        },
+        {
+            "info_id": "WWWWWWWW-4444-WWWW-4445-WWWWWWWWWWWW",
+            "label": "_$!<Home>!$_",
+            "value": "http://warnen.com"
+        }
+    ],
+    "addresses": [
+        {
+            "info_id": "AAAAAAAA-7777-AAAA-7777-AAAAAAAAAAAA",
+            "label": "_$!<Work>!$_",
+            "value": "Walther-von-der-Vogelweide-Straße 7777 A\nWürzburg Bavaria 97074\nGermany",
+            "country_code": "de",
+            "street": "Walther-von-der-Vogelweide-Straße 7777 A",
+            "city": "Würzburg",
+            "state": "Bavaria",
+            "zip": "97074",
+            "country": "Germany"
+        },
+        {
+            "info_id": "AAAAAAAA-7777-AAAA-7778-AAAAAAAAAAAA",
+            "label": "_$!<Work>!$_",
+            "value": "Walther-von-der-Vogelweide-Straße 7777 A\nWürzburg Bavaria 97074\nGermany",
+            "country_code": "de",
+            "street": "Walther-von-der-Vogelweide-Straße 7777 A",
+            "city": "Würzburg",
+            "state": "Bavaria",
+            "zip": "97074",
+            "country": "Germany"
+        }
+    ],
+    "custom_dates": [
+        {
+            "info_id": "AAAAAAAA-8888-AAAA-8888-AAAAAAAAAAAA",
+            "label": "_$!<Anniversary>!$_",
+            "value": "July 7, 1977"
+        },
+        {
+            "info_id": "AAAAAAAA-8888-AAAA-8889-AAAAAAAAAAAA",
+            "label": "_$!<Anniversary>!$_",
+            "value": "July 7, 1977"
+        },
+        {
+            "info_id": "AAAAAAAA-8888-AAAA-8890-AAAAAAAAAAAA",
+            "label": "favorite",
+            "value": "July 7, 1977"
+        }
+    ],
+    "social_profiles": [
+        {
+            "info_id": "AAAAAAAA-1010-AAAA-1010-AAAAAAAAAAAA",
+            "label": "LinkedIn",
+            "value": "warnensanft",
+            "url": "http://www.linkedin.com/in/warnensanft"
+        },
+        {
+            "info_id": "AAAAAAAA-1010-AAAA-1011-AAAAAAAAAAAA",
+            "label": "LinkedIn",
+            "value": "warnensanft",
+            "url": "http://www.linkedin.com/in/warnensanft"
+        },
+        {
+            "info_id": "AAAAAAAA-1010-AAAA-1012-AAAAAAAAAAAA",
+            "label": "Twitter",
+            "value": "warnensanft"
+        }
+    ],
+    "instant_messages": [
+        {
+            "info_id": "AAAAAAAA-1020-AAAA-1021-AAAAAAAAAAAA",
+            "label": "WhatsApp",
+            "value": "+1 (817) 200-0000"
+        },
+        {
+            "info_id": "AAAAAAAA-1020-AAAA-1022-AAAAAAAAAAAA",
+            "label": "iMessage",
+            "value": "+1 (817) 200-0000"
+        },
+        {
+            "info_id": "AAAAAAAA-1020-AAAA-1023-AAAAAAAAAAAA",
+            "label": "WhatsApp",
+            "value": "+1 (817) 200-0000"
+        }
+    ],
     "home_page": "http://warnen.blog"
 }

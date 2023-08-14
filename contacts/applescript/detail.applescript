@@ -199,43 +199,45 @@ on detailContact(theIds)
             set theContact to person id theId
             set theEntries to {}
 
-            copy my logContactValue("contact_id", id of theContact) to the end of theEntries
+            tell theContact
+                copy my logContactValue("contact_id", id) to the end of theEntries
 
-            copy my logContactValue("name", name of theContact) to the end of theEntries
-            copy my logContactValue("has_image", image of theContact exists) to the end of theEntries
-            copy my logContactValue("is_company", company of theContact) to the end of theEntries
+                copy my logContactValue("name", name) to the end of theEntries
+                copy my logContactValue("has_image", image of theContact exists) to the end of theEntries
+                copy my logContactValue("is_company", company) to the end of theEntries
 
-            copy my logContactValue("prefix", title of theContact) to the end of theEntries
-            copy my logContactValue("first_name", first name of theContact) to the end of theEntries
-            copy my logContactValue("phonetic_first_name", phonetic first name of theContact) to the end of theEntries
-            copy my logContactValue("middle_name", middle name of theContact) to the end of theEntries
-            copy my logContactValue("phonetic_middle_name", phonetic middle name of theContact) to the end of theEntries
-            copy my logContactValue("last_name", last name of theContact) to the end of theEntries
-            copy my logContactValue("phonetic_last_name", phonetic last name of theContact) to the end of theEntries
-            copy my logContactValue("maiden_name", maiden name of theContact) to the end of theEntries
-            copy my logContactValue("suffix", suffix of theContact) to the end of theEntries
-            copy my logContactValue("nickname", nickname of theContact) to the end of theEntries
+                copy my logContactValue("prefix", title) to the end of theEntries
+                copy my logContactValue("first_name", first name) to the end of theEntries
+                copy my logContactValue("phonetic_first_name", phonetic first name) to the end of theEntries
+                copy my logContactValue("middle_name", middle name) to the end of theEntries
+                copy my logContactValue("phonetic_middle_name", phonetic middle name) to the end of theEntries
+                copy my logContactValue("last_name", last name) to the end of theEntries
+                copy my logContactValue("phonetic_last_name", phonetic last name) to the end of theEntries
+                copy my logContactValue("maiden_name", maiden name) to the end of theEntries
+                copy my logContactValue("suffix", suffix) to the end of theEntries
+                copy my logContactValue("nickname", nickname) to the end of theEntries
 
-            copy my logContactValue("job_title", job title of theContact) to the end of theEntries
-            copy my logContactValue("department", department of theContact) to the end of theEntries
-            copy my logContactValue("organization", organization of theContact) to the end of theEntries
+                copy my logContactValue("job_title", job title) to the end of theEntries
+                copy my logContactValue("department", department) to the end of theEntries
+                copy my logContactValue("organization", organization) to the end of theEntries
 
-            copy my logContactInfo("phones", every phone of theContact, false) to the end of theEntries
-            copy my logContactInfo("emails", every email of theContact, false) to the end of theEntries
-            copy my logContactValue("home_page", home page of theContact) to the end of theEntries
-            copy my logContactInfo("urls", every url of theContact, false) to the end of theEntries
+                copy my logContactInfo("phones", every phone of theContact, false) to the end of theEntries
+                copy my logContactInfo("emails", every email of theContact, false) to the end of theEntries
+                copy my logContactValue("home_page", home page) to the end of theEntries
+                copy my logContactInfo("urls", every url of theContact, false) to the end of theEntries
 
-            copy my logContactAddresses(theContact) to the end of theEntries
+                copy my logContactAddresses(theContact) to the end of theEntries
 
-            copy my logContactBirthDate(theContact) to the end of theEntries
-            copy my logContactInfo("custom_dates", custom dates of theContact, true) to the end of theEntries
+                copy my logContactBirthDate(theContact) to the end of theEntries
+                copy my logContactInfo("custom_dates", custom dates of theContact, true) to the end of theEntries
 
-            copy my logContactInfo("related_names", every related names of theContact, false) to the end of theEntries
+                copy my logContactInfo("related_names", every related names of theContact, false) to the end of theEntries
 
-            copy my logContactSocialProfiles(theContact) to the end of theEntries
-            copy my logInstantMessages(theContact) to the end of theEntries
+                copy my logContactSocialProfiles(theContact) to the end of theEntries
+                copy my logInstantMessages(theContact) to the end of theEntries
 
-            copy my logContactValue("note", note of theContact) to the end of theEntries
+                copy my logContactValue("note", note) to the end of theEntries
+            end tell
 
             copy my encloseList(" {", "    ", theEntries, "  }") to the end of theResults
         end repeat

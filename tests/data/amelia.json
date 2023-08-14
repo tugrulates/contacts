@@ -88,12 +88,12 @@
     ],
     "social_profiles": [
         {
-            "info_id": "AAAAAAAA-5555-AAAA-5555-AAAAAAAAAAAA",
+            "info_id": "AAAAAAAA-1010-AAAA-1010-AAAAAAAAAAAA",
             "label": "Duolingo",
             "value": "amelie"
         },
         {
-            "info_id": "AAAAAAAA-5555-AAAA-5556-AAAAAAAAAAAA",
+            "info_id": "AAAAAAAA-1010-AAAA-1011-AAAAAAAAAAAA",
             "label": "LinkedIn",
             "value": "AmeliaAvery",
             "url": "http://www.linkedin.com/in/AmeliaAvery"
@@ -101,12 +101,12 @@
     ],
     "instant_messages": [
         {
-            "info_id": "AAAAAAAA-6666-AAAA-6666-AAAAAAAAAAAA",
+            "info_id": "AAAAAAAA-1020-AAAA-1021-AAAAAAAAAAAA",
             "label": "WhatsApp",
             "value": "+11111111111"
         },
         {
-            "info_id": "AAAAAAAA-6666-AAAA-6667-AAAAAAAAAAAA",
+            "info_id": "AAAAAAAA-1020-AAAA-1021-AAAAAAAAAAAA",
             "label": "ICQ",
             "value": "1111111"
         }

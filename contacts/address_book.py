@@ -143,6 +143,49 @@ def add_url(contact: Contact, label: str, value: str) -> str:
     return _run_and_read_output("add", contact.contact_id, "urls", label, value)
 
 
+def delete_phone(contact: Contact, phone: ContactInfo) -> str:
+    """Delete contact phone."""
+    return _run_and_read_output("delete", contact.contact_id, "phones", phone.info_id)
+
+
+def delete_email(contact: Contact, email: ContactInfo) -> str:
+    """Delete contact email."""
+    return _run_and_read_output("delete", contact.contact_id, "emails", email.info_id)
+
+
 def delete_home_page(contact: Contact) -> str:
     """Delete contact home page."""
     return _run_and_read_output("delete", contact.contact_id, "home_page")
+
+
+def delete_url(contact: Contact, url: ContactInfo) -> str:
+    """Delete contact url."""
+    return _run_and_read_output("delete", contact.contact_id, "urls", url.info_id)
+
+
+def delete_address(contact: Contact, address: ContactInfo) -> str:
+    """Delete contact address."""
+    return _run_and_read_output(
+        "delete", contact.contact_id, "addresses", address.info_id
+    )
+
+
+def delete_custom_date(contact: Contact, custom_date: ContactInfo) -> str:
+    """Delete contact custom date."""
+    return _run_and_read_output(
+        "delete", contact.contact_id, "custom_dates", custom_date.info_id
+    )
+
+
+def delete_social_profile(contact: Contact, social_profile: ContactInfo) -> str:
+    """Delete contact social profile."""
+    return _run_and_read_output(
+        "delete", contact.contact_id, "social_profiles", social_profile.info_id
+    )
+
+
+def delete_instant_message(contact: Contact, instant_message: ContactInfo) -> str:
+    """Delete contact instant message."""
+    return _run_and_read_output(
+        "delete", contact.contact_id, "instant_messages", instant_message.info_id
+    )
