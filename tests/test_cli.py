@@ -48,13 +48,13 @@ def test_help() -> None:
 def test_applescript_error(mock_applescript: MockApplescript) -> None:
     """Test applescript error."""
     mock_applescript.error()
-    result = runner.invoke(cli.app, "amelia")
+    result = runner.invoke(cli.app, "amelie")
     assert result.exit_code == 1
 
 
 def test_all_contacts(mock_applescript: MockApplescript) -> None:
     """Test find with no keywords returning all contacts."""
-    mock_applescript.provide("amelia", "bob", "carnival")
+    mock_applescript.provide("amelie", "bob", "carnival")
     result = runner.invoke(cli.app, "waldo")
     assert result.exit_code == 0
     assert result.stdout.rstrip().split("\n") == [
@@ -66,8 +66,8 @@ def test_all_contacts(mock_applescript: MockApplescript) -> None:
 
 def test_single_contact(mock_applescript: MockApplescript) -> None:
     """Test find with single contact."""
-    mock_applescript.provide("amelia")
-    result = runner.invoke(cli.app, "amelia")
+    mock_applescript.provide("amelie")
+    result = runner.invoke(cli.app, "amelie")
     assert result.exit_code == 0
     assert result.stdout.rstrip().split("\n") == [
         "👤 Ms. Amelia Avery Arch.",
@@ -87,8 +87,8 @@ def test_multiple_contact(mock_applescript: MockApplescript) -> None:
 
 def test_multiple_keywords(mock_applescript: MockApplescript) -> None:
     """Test find with single contact."""
-    mock_applescript.provide("amelia", "bob")
-    result = runner.invoke(cli.app, "amelia bob")
+    mock_applescript.provide("amelie", "bob")
+    result = runner.invoke(cli.app, "amelie bob")
     assert result.exit_code == 0
     assert result.stdout.rstrip().split("\n") == [
         "👤 Ms. Amelia Avery Arch.",
@@ -134,21 +134,21 @@ def test_errors(mock_applescript: MockApplescript) -> None:
 
 def test_details_single(data_path: Path, mock_applescript: MockApplescript) -> None:
     """Test detail with single contact."""
-    mock_applescript.provide("amelia")
+    mock_applescript.provide("amelie")
     result = runner.invoke(cli.app, "--detail --width=79 --no-safe-box")
     assert result.exit_code == 0
-    expected_output = (data_path / "amelia.detail").read_text(encoding="utf-8").strip()
+    expected_output = (data_path / "amelie.detail").read_text(encoding="utf-8").strip()
     assert result.stdout.strip() == expected_output
 
 
 def test_details_multiple(data_path: Path, mock_applescript: MockApplescript) -> None:
     """Test detail with multiple contacts."""
-    mock_applescript.provide("amelia", "bob", "carnival")
+    mock_applescript.provide("amelie", "bob", "carnival")
     result = runner.invoke(cli.app, "--detail --width=79 --no-safe-box")
     assert result.exit_code == 0
     expected_output = "\n".join(
         (data_path / x).with_suffix(".detail").read_text(encoding="utf-8").strip()
-        for x in ["amelia", "bob", "carnival"]
+        for x in ["amelie", "bob", "carnival"]
     )
     assert result.stdout.strip() == expected_output
 
