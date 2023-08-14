@@ -18,5 +18,5 @@ class Checks(Enum):
     NAME_CAPITALIZATION_CHECK = CapitalizationCheck()
     NICK_NAME_CHECK = NicknameCheck()
     HOME_PAGE_CHECK = HomePageCheck()
-    NICK_NAURL_CHECK = UrlCheck()
+    URL_CHECK = UrlCheck()
     DUPLICATE_CHECK = DuplicateCheck()  # must be the last item
