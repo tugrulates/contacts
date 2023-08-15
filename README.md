@@ -18,6 +18,6 @@ $ python -m pip install .
 ## Usage
 
 ```shell
-$ contacts find ates
+$ contacts ates
 👤 Tugrul Ates
 ```
