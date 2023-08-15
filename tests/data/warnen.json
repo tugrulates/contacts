@@ -72,6 +72,11 @@
             "info_id": "WWWWWWWW-4444-WWWW-4445-WWWWWWWWWWWW",
             "label": "_$!<Work>!$_",
             "value": "http://warnen.com"
+        },
+        {
+            "info_id": "WWWWWWWW-4444-WWWW-4446-WWWWWWWWWWWW",
+            "label": "_$!<Other>!$_",
+            "value": " HTTPS://warnen.blog "
         }
     ],
     "addresses": [

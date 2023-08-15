@@ -50,6 +50,11 @@
         },
         {
             "info_id": "WWWWWWWW-4444-WWWW-4446-WWWWWWWWWWWW",
+            "label": "_$!<Other>!$_",
+            "value": "https://warnen.blog"
+        },
+        {
+            "info_id": "WWWWWWWW-4444-WWWW-4447-WWWWWWWWWWWW",
             "label": "_$!<HomePage>!$_",
             "value": "http://warnen.blog"
         }

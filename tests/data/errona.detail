@@ -6,8 +6,10 @@
 │               Nickname │ 🔖 │ Error                                         │
 │                 Phones │ 📱 │ +1 800 NOT A PHONE NUMBER                     │
 │                 Emails │ 🏠 │ NOT AN E-MAIL ADDRESS                         │
+│                   Urls │ 💼 │ NOT A URL                                     │
 │               Problems │ ⛔ │ Nickname 'Error' is not a full name.          │
 │                        │ ⛔ │ Phone number '+1 800 NOT A PHONE NUMBER' is   │
 │                        │    │ not valid.                                    │
 │                        │ ⛔ │ E-mail 'NOT AN E-MAIL ADDRESS' is not valid.  │
+│                        │ ⛔ │ URL 'NOT A URL' is not valid.                 │
 ╰────────────────────────┴────┴───────────────────────────────────────────────╯
