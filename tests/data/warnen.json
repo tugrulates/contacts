@@ -42,7 +42,7 @@
         {
             "info_id": "WWWWWWWW-2222-WWWW-2227-WWWWWWWWWWWW",
             "label": "_$!<Home>!$_",
-            "value": "+1 (817) 200-0002"
+            "value": " +1 (817)  200-0002 "
         }
     ],
     "emails": [
@@ -55,6 +55,11 @@
             "info_id": "WWWWWWWW-3333-WWWW-3334-WWWWWWWWWWWW",
             "label": "_$!<Home>!$_",
             "value": "warnen@warnen.blog"
+        },
+        {
+            "info_id": "WWWWWWWW-3333-WWWW-3335-WWWWWWWWWWWW",
+            "label": "_$!<Home>!$_",
+            "value": " warnen+test@WARNEN.BLOG "
         }
     ],
     "urls": [

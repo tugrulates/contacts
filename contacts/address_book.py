@@ -138,6 +138,13 @@ def update_phone(contact: Contact, phone: ContactInfo, label: str, value: str) -
     )
 
 
+def update_email(contact: Contact, email: ContactInfo, label: str, value: str) -> str:
+    """Update contact e-mail with given label and value."""
+    return _run_and_read_output(
+        "update", contact.contact_id, "emails", email.info_id, label, value
+    )
+
+
 def update_url(contact: Contact, url: ContactInfo, label: str, value: str) -> str:
     """Update contact url with given label and value."""
     return _run_and_read_output(
@@ -161,7 +168,7 @@ def delete_phone(contact: Contact, phone: ContactInfo) -> str:
 
 
 def delete_email(contact: Contact, email: ContactInfo) -> str:
-    """Delete contact email."""
+    """Delete contact e-mail address."""
     return _run_and_read_output("delete", contact.contact_id, "emails", email.info_id)
 
 
