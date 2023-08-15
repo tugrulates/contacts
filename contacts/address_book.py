@@ -145,6 +145,11 @@ def update_url(contact: Contact, url: ContactInfo, label: str, value: str) -> st
     )
 
 
+def add_phone(contact: Contact, label: str, value: str) -> str:
+    """Add a contact phone."""
+    return _run_and_read_output("add", contact.contact_id, "phones", label, value)
+
+
 def add_url(contact: Contact, label: str, value: str) -> str:
     """Add a contact URL."""
     return _run_and_read_output("add", contact.contact_id, "urls", label, value)
