@@ -18,7 +18,7 @@ class PhoneCheck(Check):
     def check(self, contact: Contact) -> list[Problem]:
         """Check contact."""
 
-        def check_format(phone: ContactInfo) -> Optional[Problem]:
+        def check_value(phone: ContactInfo) -> Optional[Problem]:
             try:
                 formatted = phonenumbers.format_number(
                     phonenumbers.parse(phone.value),
@@ -35,5 +35,5 @@ class PhoneCheck(Check):
                 ),
             )
 
-        problems = [check_format(phone) for phone in contact.phones]
+        problems = [check_value(phone) for phone in contact.phones]
         return [x for x in problems if x]

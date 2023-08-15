@@ -18,12 +18,10 @@ class EmailCheck(Check):
     def check(self, contact: Contact) -> list[Problem]:
         """Check contact."""
 
-        def check_format(email: ContactInfo) -> Optional[Problem]:
+        def check_value(email: ContactInfo) -> Optional[Problem]:
             try:
                 formatted = validate_email(
-                    email.value.strip(),
-                    allow_quoted_local=True,
-                    check_deliverability=True,
+                    email.value.strip(), check_deliverability=True
                 ).normalized
             except EmailNotValidError:
                 return Problem(f"E-mail '{email.value}' is not valid.")
@@ -36,5 +34,5 @@ class EmailCheck(Check):
                 ),
             )
 
-        problems = [check_format(email) for email in contact.emails]
+        problems = [check_value(email) for email in contact.emails]
         return [x for x in problems if x]

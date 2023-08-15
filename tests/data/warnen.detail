@@ -23,6 +23,7 @@
 │              Home page │ 🌐 │ http://warnen.blog                            │
 │                   Urls │ 🏠 │ http://warnen.com                             │
 │                        │ 💼 │ http://warnen.com                             │
+│                        │ 🗂️  │  HTTPS://warnen.blog                          │
 │              Addresses │ 💼 │ Walther-von-der-Vogelweide-Straße 7777 A      │
 │                        │    │ Würzburg Bavaria 97074                        │
 │                        │    │ Germany                                       │
@@ -57,6 +58,8 @@
 │                        │    │ URL.                                          │
 │                        │ ⚠️  │ URL 'http://warnen.com' should have a         │
 │                        │    │ <HomePage> label.                             │
+│                        │ ⚠️  │ URL ' HTTPS://warnen.blog ' should be         │
+│                        │    │ formatted as 'https://warnen.blog'.           │
 │                        │ ⚠️  │ Phone '+18172000000' has duplicate(s).        │
 │                        │ ⚠️  │ Phone '+18172000001' has duplicate(s).        │
 │                        │ ⚠️  │ Email 'warnen@warnen.blog' has duplicate(s).  │

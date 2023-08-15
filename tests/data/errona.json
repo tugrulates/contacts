@@ -19,5 +19,12 @@
             "label": "_$!<Home>!$_",
             "value": "NOT AN E-MAIL ADDRESS"
         }
+    ],
+    "urls": [
+        {
+            "info_id": "EEEEEEEE-4444-EEEE-4444-EEEEEEEEEEEEE",
+            "label": "_$!<Work>!$_",
+            "value": "NOT A URL"
+        }
     ]
 }
