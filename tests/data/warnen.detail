@@ -29,13 +29,13 @@
 │                        │    │ Germany                                       │
 │           Custom dates │ 💍 │ July 7, 1977                                  │
 │                        │ 💍 │ July 7, 1977                                  │
-│                        │ 📅 │ July 7, 1977                                  │
-│        Social profiles │ 🌐 │ warnensanft (LinkedIn)                        │
-│                        │ 🌐 │ warnensanft (LinkedIn)                        │
-│                        │ 🌐 │ warnensanft (Twitter)                         │
-│       Instant messages │ 💬 │ +1 (817) 200-0000 (WhatsApp)                  │
-│                        │ 💬 │ +1 (817) 200-0000 (iMessage)                  │
-│                        │ 💬 │ +1 (817) 200-0000 (WhatsApp)                  │
+│                        │ 📅 │ July 7, 1977 <favorite>                       │
+│        Social profiles │ 🌐 │ warnensanft <LinkedIn>                        │
+│                        │ 🌐 │ warnensanft <LinkedIn>                        │
+│                        │ 🌐 │ warnensanft <Twitter>                         │
+│       Instant messages │ 💬 │ +1 (817) 200-0000 <WhatsApp>                  │
+│                        │ 💬 │ +1 (817) 200-0000 <iMessage>                  │
+│                        │ 💬 │ +1 (817) 200-0000 <WhatsApp>                  │
 │               Problems │ ⚠️  │ Prefix 'dr.' should be 'Dr.'.                 │
 │                        │ ⚠️  │ First name 'warnen' should be 'Warnen'.       │
 │                        │ ⚠️  │ Middle name 'bitte' should be 'Bitte'.        │
@@ -59,8 +59,8 @@
 │                        │    │ 7777 A Würzburg Bavaria 97074 Germany' has    │
 │                        │    │ duplicate(s).                                 │
 │                        │ ⚠️  │ Custom date 'July 7, 1977' has duplicate(s).  │
-│                        │ ⚠️  │ Social profile 'warnensanft (LinkedIn)' has   │
+│                        │ ⚠️  │ Social profile 'warnensanft <LinkedIn>' has   │
 │                        │    │ duplicate(s).                                 │
 │                        │ ⚠️  │ Instant message '+1 (817) 200-0000            │
-│                        │    │ (WhatsApp)' has duplicate(s).                 │
+│                        │    │ <WhatsApp>' has duplicate(s).                 │
 ╰────────────────────────┴────┴───────────────────────────────────────────────╯

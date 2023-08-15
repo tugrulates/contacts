@@ -26,6 +26,9 @@ class ContactInfo:
 
     def __str__(self) -> str:
         """Short string for info."""
+        if Category.from_label(self.label) is None:
+            label = self.label.removeprefix("_$!<").removesuffix(">!$_")
+            return f"{self.value} <{label}>"
         return self.value
 
 
@@ -47,19 +50,6 @@ class ContactSocialProfile(ContactInfo):
 
     user_identifier: Optional[str] = None
     url: Optional[str] = None
-
-    def __str__(self) -> str:
-        """Short string for profile."""
-        return f"{self.value} ({self.label})"
-
-
-@dataclass
-class ContactInstantMessage(ContactInfo):
-    """A single instant messaging profile."""
-
-    def __str__(self) -> str:
-        """Short string for profile."""
-        return f"{self.value} ({self.label})"
 
 
 @dataclass
@@ -124,7 +114,7 @@ class Contact:
     social_profiles: list[ContactSocialProfile] = field(
         default_factory=list, metadata={"category": Category.URL}
     )
-    instant_messages: list[ContactInstantMessage] = field(
+    instant_messages: list[ContactInfo] = field(
         default_factory=list, metadata={"category": Category.MESSAGING}
     )
     note: Optional[str] = field(default=None, metadata={"category": Category.NOTE})
