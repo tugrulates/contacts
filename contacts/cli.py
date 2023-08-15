@@ -83,7 +83,7 @@ def find(
                 else f"{person.category.icon} {person.name}"
             )
             del person.first_name
-            progress.advance(task)
+            progress.update(task, advance=1, description="Fetching contacts")
 
 
 if __name__ == "__main__":
