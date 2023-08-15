@@ -38,12 +38,12 @@ class DuplicateCheck(Check):
             fix: Callable[[Contact, ContactInfo], str],
         ) -> Optional[Problem]:
             duplicates = list(group)[1:]
-            if duplicates:
-                return Problem(
-                    f"{field} '{duplicates[0]}' has duplicate(s).",
-                    fix=lambda: [fix(contact, x) for x in duplicates],
-                )
-            return None
+            if not duplicates:
+                return None
+            return Problem(
+                f"{field} '{duplicates[0]}' has duplicate(s).",
+                fix=lambda: [fix(contact, x) for x in duplicates],
+            )
 
         problems = chain(
             check_infos(

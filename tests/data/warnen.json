@@ -17,27 +17,32 @@
         {
             "info_id": "WWWWWWWW-2222-WWWW-2222-WWWWWWWWWWWW",
             "label": "_$!<Mobile>!$_",
-            "value": "+1 (817) 200-0000"
+            "value": "+18172000000"
         },
         {
             "info_id": "WWWWWWWW-2222-WWWW-2223-WWWWWWWWWWWW",
             "label": "_$!<Work>!$_",
-            "value": "+1 (817) 200-0001"
+            "value": "+18172000001"
         },
         {
             "info_id": "WWWWWWWW-2222-WWWW-2224-WWWWWWWWWWWW",
             "label": "_$!<Work>!$_",
-            "value": "+1 (817) 200-0000"
+            "value": "+18172000000"
         },
         {
             "info_id": "WWWWWWWW-2222-WWWW-2225-WWWWWWWWWWWW",
             "label": "_$!<Work>!$_",
-            "value": "+1 (817) 200-0001"
+            "value": "+18172000001"
         },
         {
             "info_id": "WWWWWWWW-2222-WWWW-2226-WWWWWWWWWWWW",
             "label": "_$!<Home>!$_",
-            "value": "+1 (817) 200-0001"
+            "value": "+18172000001"
+        },
+        {
+            "info_id": "WWWWWWWW-2222-WWWW-2227-WWWWWWWWWWWW",
+            "label": "_$!<Home>!$_",
+            "value": "+1 (817) 200-0002"
         }
     ],
     "emails": [

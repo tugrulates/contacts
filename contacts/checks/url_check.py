@@ -17,14 +17,14 @@ class UrlCheck(Check):
         """Check contact."""
 
         def check_label(url: ContactInfo) -> Optional[Problem]:
-            if url.label == "_$!<Home>!$_":
-                return Problem(
-                    f"URL '{url.value}' should have a <HomePage> label.",
-                    fix=lambda: address_book.update_url(
-                        contact, url, "_$!<HomePage>!$_", url.value
-                    ),
-                )
-            return None
+            if url.label != "_$!<Home>!$_":
+                return None
+            return Problem(
+                f"URL '{url.value}' should have a <HomePage> label.",
+                fix=lambda: address_book.update_url(
+                    contact, url, "_$!<HomePage>!$_", url.value
+                ),
+            )
 
         problems = [check_label(url) for url in contact.urls]
         return [x for x in problems if x]

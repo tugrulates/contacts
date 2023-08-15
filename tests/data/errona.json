@@ -5,5 +5,12 @@
     "is_company": false,
     "first_name": "Errona",
     "last_name": "Tragedia",
-    "nickname": "Error"
+    "nickname": "Error",
+    "phones": [
+        {
+            "info_id": "EEEEEEEE-2222-EEEE-2222-EEEEEEEEEEEEE",
+            "label": "_$!<Mobile>!$_",
+            "value": "+1 800 NOT A PHONE NUMBER"
+        }
+    ]
 }
