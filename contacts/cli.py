@@ -15,6 +15,11 @@ from contacts.category import Category
 app = typer.Typer(help=__doc__)
 
 
+def with_icon(person: contact.Contact) -> str:
+    """Contact with display icon."""
+    return f"{person.category.icon} {person.name}"
+
+
 def table(person: contact.Contact, width: Optional[int], safe_box: bool) -> Table:
     """Create a table view for contact."""
     table = Table(highlight=True, box=box.ROUNDED, width=width, safe_box=safe_box)
@@ -74,14 +79,10 @@ def find(
         for person in address_book.by_keyword(keywords, brief=brief, batch=batch):
             if fix:
                 for problem in person.problems:
-                    progress.update(task, description=f"Fixing {person}")
+                    progress.update(task, description=f"Fixing {with_icon(person)}")
                     problem.try_fix()
                 person = address_book.reload(person)
-            print(
-                table(person, width, safe_box)
-                if detail
-                else f"{person.category.icon} {person.name}"
-            )
+            print(table(person, width, safe_box) if detail else f"{with_icon(person)}")
             del person.first_name
             progress.update(task, advance=1, description="Fetching contacts")
 
