@@ -3,6 +3,7 @@
 
 from pathlib import Path
 
+import email_validator
 import pytest
 from typer.testing import CliRunner
 
@@ -12,6 +13,13 @@ from tests.contact_diff import ContactDiff
 from tests.mocks import MockApplescript
 
 runner = CliRunner(mix_stderr=True)
+
+
+@pytest.fixture(scope="session", autouse=True)
+def test_environment() -> None:
+    """Initialize the test environment."""
+    # disable DNS checks for e-mail address validation
+    email_validator.TEST_ENVIRONMENT = True
 
 
 @pytest.fixture(autouse=True)

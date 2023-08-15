@@ -15,6 +15,8 @@ on updateInfo(thePersonId, theField, theInfoId, theLabel, theValue)
         tell person id thePersonId
             if theField is "phones"
                 set theInfo to phone id theInfoId
+            else if theField is "emails"
+                set theInfo to email id theInfoId
             else if theField is "urls"
                 set theInfo to url id theInfoId
             end if

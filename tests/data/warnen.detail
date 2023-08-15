@@ -16,9 +16,10 @@
 │                        │ 💼 │ +18172000000                                  │
 │                        │ 💼 │ +18172000001                                  │
 │                        │ 🏠 │ +18172000001                                  │
-│                        │ 🏠 │ +1 (817) 200-0002                             │
+│                        │ 🏠 │  +1 (817)  200-0002                           │
 │                 Emails │ 🏠 │ warnen@warnen.blog                            │
 │                        │ 🏠 │ warnen@warnen.blog                            │
+│                        │ 🏠 │  warnen@WARNEN.BLOG                           │
 │              Home page │ 🌐 │ http://warnen.blog                            │
 │                   Urls │ 🏠 │ http://warnen.com                             │
 │                        │ 💼 │ http://warnen.com                             │
@@ -48,8 +49,10 @@
 │                        │ ⚠️  │ Job title 'warner manager' should be 'Warner  │
 │                        │    │ manager'.                                     │
 │                        │ ⚠️  │ Department 'warning' should be 'Warning'.     │
-│                        │ ⚠️  │ Phone number '+1 (817) 200-0002' should be    │
+│                        │ ⚠️  │ Phone number ' +1 (817)  200-0002 ' should be │
 │                        │    │ formatted as '+18172000002'.                  │
+│                        │ ⚠️  │ E-mail ' warnen@WARNEN.BLOG ' should be       │
+│                        │    │ formatted as 'warnen@warnen.blog'.            │
 │                        │ ⚠️  │ Home page 'http://warnen.blog' should be a    │
 │                        │    │ URL.                                          │
 │                        │ ⚠️  │ URL 'http://warnen.com' should have a         │

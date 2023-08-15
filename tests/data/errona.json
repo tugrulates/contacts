@@ -12,5 +12,12 @@
             "label": "_$!<Mobile>!$_",
             "value": "+1 800 NOT A PHONE NUMBER"
         }
+    ],
+    "emails": [
+        {
+            "info_id": "EEEEEEEE-3333-EEEE-3333-EEEEEEEEEEEEE",
+            "label": "_$!<Home>!$_",
+            "value": "NOT AN E-MAIL ADDRESS"
+        }
     ]
 }
