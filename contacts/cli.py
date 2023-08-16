@@ -9,7 +9,9 @@ from rich import box, print
 from rich.progress import Progress
 from rich.table import Table
 
-from contacts import address_book, contact, keyword
+from contacts import contact, keyword
+from contacts.address_book import AddressBook
+from contacts.applescript_address_book import AppleScriptBasedAddressBook
 from contacts.category import Category
 
 app = typer.Typer(help=__doc__)
@@ -27,23 +29,22 @@ def table(person: contact.Contact, width: Optional[int], safe_box: bool) -> Tabl
     table.add_column(person.category.icon)
     table.add_column(person.name, ratio=2)
 
-    for field in dataclasses.fields(contact.Contact):
-        field_key = field.name.capitalize().replace("_", " ")
-        field_value = getattr(person, field.name)
-        field_category = Category.from_field(field)
-        if not (field_value and field_category):
+    for field in dataclasses.fields(person):
+        metadata = contact.Contact.metadata(field.name)
+        value = getattr(person, field.name)
+        if not (metadata and value):
             continue
-        if isinstance(field_value, list):
-            for index, info in enumerate(field_value):
+        if isinstance(value, list):
+            for index, info in enumerate(value):
                 if isinstance(info, contact.ContactInfo):
                     info_category = Category.from_label(info.label)
                     table.add_row(
-                        field_key if index == 0 else None,
-                        (info_category or field_category).icon,
+                        metadata.plural() if index == 0 else None,
+                        (info_category or metadata.category).icon,
                         str(info),
                     )
         else:
-            table.add_row(field_key, field_category.icon, field_value)
+            table.add_row(metadata.singular, metadata.category.icon, value)
 
     for index, problem in enumerate(person.problems):
         table.add_row(
@@ -55,6 +56,11 @@ def table(person: contact.Contact, width: Optional[int], safe_box: bool) -> Tabl
     return table
 
 
+def get_address_book(brief: bool, batch: int) -> AddressBook:
+    """Return an address book implementation given the configuration."""
+    return AppleScriptBasedAddressBook(brief=brief, batch=batch)
+
+
 @app.command()
 def find(
     keywords: Annotated[Optional[list[str]], typer.Argument()] = None,
@@ -63,6 +69,7 @@ def find(
     detail: bool = False,
     check: bool = False,
     fix: bool = False,
+    applescript: bool = True,
     batch: Optional[int] = None,
     width: Optional[int] = None,
     safe_box: bool = True,
@@ -70,18 +77,23 @@ def find(
     """List contacts matching given keyword."""
     with Progress(transient=True) as progress:
         task = progress.add_task("Counting contacts")
-        keywords = keyword.prepare_keywords(keywords or [], extend=extend)
+        keywords = keywords or []
+        if applescript:
+            keywords = keyword.prepare_keywords(keywords, extend=extend)
+
+        address_book = get_address_book(
+            brief=not (detail or check or fix),
+            batch=batch or (1 if keywords else 10),
+        )
         count = address_book.count(keywords)
-        brief = not (detail or check or fix)
-        batch = batch or (1 if keywords else 10)
         progress.update(task, total=count, description="Fetching contacts")
 
-        for person in address_book.by_keyword(keywords, brief=brief, batch=batch):
+        for person in address_book.find(keywords):
             if fix:
                 for problem in person.problems:
                     progress.update(task, description=f"Fixing {with_icon(person)}")
-                    problem.try_fix()
-                person = address_book.reload(person)
+                    problem.try_fix(address_book)
+                person = address_book.get(person.contact_id)
             print(table(person, width, safe_box) if detail else f"{with_icon(person)}")
             del person.first_name
             progress.update(task, advance=1, description="Fetching contacts")

@@ -7,7 +7,7 @@ from typing import Optional
 
 from email_validator import EmailNotValidError, validate_email
 
-from contacts import address_book
+from contacts.address_book import AddressBook
 from contacts.contact import Contact, ContactInfo
 from contacts.problem import Check, Problem
 
@@ -27,11 +27,15 @@ class EmailCheck(Check):
                 return Problem(f"E-mail '{email.value}' is not valid.")
             if email.value == formatted:
                 return None
+
+            def fix(address_book: AddressBook) -> None:
+                address_book.update_info(
+                    contact.contact_id, "emails", email.info_id, email.label, formatted
+                )
+
             return Problem(
                 f"E-mail '{email.value}' should be formatted as '{formatted}'.",
-                fix=lambda: address_book.update_email(
-                    contact, email, email.label, formatted
-                ),
+                fix=fix,
             )
 
         problems = [check_value(email) for email in contact.emails]

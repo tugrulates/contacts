@@ -6,7 +6,7 @@ from __future__ import annotations
 import abc
 from typing import Any, Callable, Optional
 
-from contacts import contact
+from contacts import address_book, contact
 from contacts.category import Category
 
 
@@ -24,7 +24,7 @@ class Problem:
     def __init__(
         self,
         message: str,
-        fix: Optional[Callable[[], Any]] = None,
+        fix: Optional[Callable[[address_book.AddressBook], Any]] = None,
     ):
         """Initialize problem details."""
         self.message = message.replace("\n", " ")
@@ -35,10 +35,10 @@ class Problem:
         """Return the category of this problem."""
         return Category.WARNING if self.fix else Category.ERROR
 
-    def try_fix(self) -> None:
+    def try_fix(self, address_book: address_book.AddressBook) -> None:
         """Attempt to fix this problem."""
         if self.fix:
-            self.fix()
+            self.fix(address_book)
 
 
 def find_problems(contact: contact.Contact) -> list[Problem]:

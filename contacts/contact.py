@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import dataclasses
 import json
 from copy import deepcopy
 from dataclasses import field
@@ -53,6 +54,19 @@ class ContactSocialProfile(ContactInfo):
 
 
 @dataclass
+class FieldMetadata:
+    """Metadata on Contact fields."""
+
+    category: Category
+    singular: str
+    plural_suffix: str = "s"
+
+    def plural(self) -> str:
+        """Return plural display value."""
+        return self.singular + self.plural_suffix
+
+
+@dataclass
 class Contact:
     """A single contact person or company."""
 
@@ -60,64 +74,102 @@ class Contact:
     name: str
     is_company: bool = False
     has_image: bool = False
-    prefix: Optional[str] = field(default=None, metadata={"category": Category.NAME})
+    prefix: Optional[str] = field(
+        default=None,
+        metadata={"metadata": FieldMetadata(Category.NAME, "Prefix")},
+    )
     first_name: Optional[str] = field(
-        default=None, metadata={"category": Category.NAME}
+        default=None,
+        metadata={"metadata": FieldMetadata(Category.NAME, "First name")},
     )
     phonetic_first_name: Optional[str] = field(
-        default=None, metadata={"category": Category.NAME}
+        default=None,
+        metadata={"metadata": FieldMetadata(Category.NAME, "Phonetic first name")},
     )
     middle_name: Optional[str] = field(
-        default=None, metadata={"category": Category.NAME}
+        default=None,
+        metadata={"metadata": FieldMetadata(Category.NAME, "Middle name")},
     )
     phonetic_middle_name: Optional[str] = field(
-        default=None, metadata={"category": Category.NAME}
+        default=None,
+        metadata={"metadata": FieldMetadata(Category.NAME, "Phonetic middle name")},
     )
-    last_name: Optional[str] = field(default=None, metadata={"category": Category.NAME})
+    last_name: Optional[str] = field(
+        default=None,
+        metadata={"metadata": FieldMetadata(Category.NAME, "Last name")},
+    )
     phonetic_last_name: Optional[str] = field(
-        default=None, metadata={"category": Category.NAME}
+        default=None,
+        metadata={"metadata": FieldMetadata(Category.NAME, "Phonetic last name")},
     )
     maiden_name: Optional[str] = field(
-        default=None, metadata={"category": Category.NAME}
+        default=None,
+        metadata={"metadata": FieldMetadata(Category.NAME, "Maiden name")},
     )
-    suffix: Optional[str] = field(default=None, metadata={"category": Category.NAME})
-    nickname: Optional[str] = field(default=None, metadata={"category": Category.NAME})
-    job_title: Optional[str] = field(default=None, metadata={"category": Category.WORK})
+    suffix: Optional[str] = field(
+        default=None,
+        metadata={"metadata": FieldMetadata(Category.NAME, "Suffix")},
+    )
+    nickname: Optional[str] = field(
+        default=None,
+        metadata={"metadata": FieldMetadata(Category.NAME, "Nickname")},
+    )
+    job_title: Optional[str] = field(
+        default=None,
+        metadata={"metadata": FieldMetadata(Category.WORK, "Job title")},
+    )
     department: Optional[str] = field(
-        default=None, metadata={"category": Category.WORK}
+        default=None,
+        metadata={"metadata": FieldMetadata(Category.WORK, "Department")},
     )
     organization: Optional[str] = field(
-        default=None, metadata={"category": Category.WORK}
+        default=None,
+        metadata={"metadata": FieldMetadata(Category.WORK, "Organization")},
     )
     phones: list[ContactInfo] = field(
-        default_factory=list, metadata={"category": Category.PHONE}
+        default_factory=list,
+        metadata={"metadata": FieldMetadata(Category.PHONE, "Phone")},
     )
     emails: list[ContactInfo] = field(
-        default_factory=list, metadata={"category": Category.EMAIL}
+        default_factory=list,
+        metadata={"metadata": FieldMetadata(Category.EMAIL, "E-mail")},
     )
-    home_page: Optional[str] = field(default=None, metadata={"category": Category.URL})
+    home_page: Optional[str] = field(
+        default=None,
+        metadata={"metadata": FieldMetadata(Category.URL, "Home page")},
+    )
     urls: list[ContactInfo] = field(
-        default_factory=list, metadata={"category": Category.URL}
+        default_factory=list,
+        metadata={"metadata": FieldMetadata(Category.URL, "URL")},
     )
     addresses: list[ContactAddress] = field(
-        default_factory=list, metadata={"category": Category.ADDRESS}
+        default_factory=list,
+        metadata={"metadata": FieldMetadata(Category.ADDRESS, "Address", "es")},
     )
     birth_date: Optional[str] = field(
-        default=None, metadata={"category": Category.DATE}
+        default=None,
+        metadata={"metadata": FieldMetadata(Category.DATE, "Birth date")},
     )
     custom_dates: list[ContactInfo] = field(
-        default_factory=list, metadata={"category": Category.DATE}
+        default_factory=list,
+        metadata={"metadata": FieldMetadata(Category.DATE, "Custom date")},
     )
     related_names: list[ContactInfo] = field(
-        default_factory=list, metadata={"category": Category.RELATED}
+        default_factory=list,
+        metadata={"metadata": FieldMetadata(Category.RELATED, "Related name")},
     )
     social_profiles: list[ContactSocialProfile] = field(
-        default_factory=list, metadata={"category": Category.URL}
+        default_factory=list,
+        metadata={"metadata": FieldMetadata(Category.URL, "Social profile")},
     )
     instant_messages: list[ContactInfo] = field(
-        default_factory=list, metadata={"category": Category.MESSAGING}
+        default_factory=list,
+        metadata={"metadata": FieldMetadata(Category.MESSAGING, "Instant message")},
     )
-    note: Optional[str] = field(default=None, metadata={"category": Category.NOTE})
+    note: Optional[str] = field(
+        default=None,
+        metadata={"metadata": FieldMetadata(Category.NOTE, "Note")},
+    )
 
     def __post_init__(self) -> None:
         """Keep a copy of the originating data to keep track of changes."""
@@ -138,6 +190,16 @@ class Contact:
     def problems(self) -> list[Problem]:
         """Return all problems for this contact."""
         return find_problems(self)
+
+    @staticmethod
+    def metadata(field: str) -> Optional[FieldMetadata]:
+        """Return metadata for a contact field."""
+        metadata: list[FieldMetadata] = [
+            x.metadata["metadata"]
+            for x in dataclasses.fields(Contact)
+            if x.name == field and "metadata" in x.metadata
+        ]
+        return metadata[0] if metadata else None
 
     @staticmethod
     def read(path: Path) -> Contact:
