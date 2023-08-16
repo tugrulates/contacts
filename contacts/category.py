@@ -3,9 +3,8 @@
 
 from __future__ import annotations
 
-from dataclasses import Field
 from enum import Enum
-from typing import AbstractSet, Any, Optional
+from typing import AbstractSet, Optional
 
 
 class Category(Enum):
@@ -38,11 +37,6 @@ class Category(Enum):
         """Initialize category."""
         self.icon = icon
         self.labels = labels
-
-    @staticmethod
-    def from_field(field: Field[Any]) -> Optional[Category]:
-        """Return the category of given Contact field."""
-        return field.metadata.get("category")
 
     @staticmethod
     def from_label(

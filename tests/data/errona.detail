@@ -5,8 +5,8 @@
 │              Last name │ 🔖 │ Tragedia                                      │
 │               Nickname │ 🔖 │ Error                                         │
 │                 Phones │ 📱 │ +1 800 NOT A PHONE NUMBER                     │
-│                 Emails │ 🏠 │ NOT AN E-MAIL ADDRESS                         │
-│                   Urls │ 💼 │ NOT A URL                                     │
+│                E-mails │ 🏠 │ NOT AN E-MAIL ADDRESS                         │
+│                   URLs │ 💼 │ NOT A URL                                     │
 │               Problems │ ⛔ │ Nickname 'Error' is not a full name.          │
 │                        │ ⛔ │ Phone number '+1 800 NOT A PHONE NUMBER' is   │
 │                        │    │ not valid.                                    │

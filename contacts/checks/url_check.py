@@ -8,7 +8,7 @@ from itertools import chain
 from typing import Optional
 from urllib.parse import unwrap, urlparse
 
-from contacts import address_book
+from contacts.address_book import AddressBook
 from contacts.contact import Contact, ContactInfo
 from contacts.problem import Check, Problem
 
@@ -24,11 +24,18 @@ class UrlCheck(Check):
         def check_label(url: ContactInfo) -> Optional[Problem]:
             if url.label != "_$!<Home>!$_":
                 return None
+
+            def fix(address_book: AddressBook) -> None:
+                address_book.update_info(
+                    contact.contact_id,
+                    "urls",
+                    url.info_id,
+                    "_$!<HomePage>!$_",
+                    url.value,
+                )
+
             return Problem(
-                f"URL '{url.value}' should have a <HomePage> label.",
-                fix=lambda: address_book.update_url(
-                    contact, url, "_$!<HomePage>!$_", url.value
-                ),
+                f"URL '{url.value}' should have a <HomePage> label.", fix=fix
             )
 
         def check_value(url: ContactInfo) -> Optional[Problem]:
@@ -45,9 +52,15 @@ class UrlCheck(Check):
 
             if url.value == formatted:
                 return None
+
+            def fix(address_book: AddressBook) -> None:
+                address_book.update_info(
+                    contact.contact_id, "urls", url.info_id, url.label, formatted
+                )
+
             return Problem(
                 f"URL '{url.value}' should be formatted as '{formatted}'.",
-                fix=lambda: address_book.update_url(contact, url, url.label, formatted),
+                fix=fix,
             )
 
         problems = chain(

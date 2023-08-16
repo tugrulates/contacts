@@ -7,11 +7,11 @@ import email_validator
 import pytest
 from typer.testing import CliRunner
 
-from contacts import address_book, cli
+from contacts import cli
 from contacts.checks import url_check
 from contacts.contact import Contact
 from tests.contact_diff import ContactDiff
-from tests.mocks import MockApplescript
+from tests.mock_address_book import MockAddressBook
 
 runner = CliRunner(mix_stderr=True)
 
@@ -31,13 +31,12 @@ def data_path(request: pytest.FixtureRequest) -> Path:
 
 
 @pytest.fixture(autouse=True)
-def mock_applescript(
+def mock_address_book(
     data_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> MockApplescript:
+) -> MockAddressBook:
     """Fixture for prefs."""
-    mock = MockApplescript(data_path)
-    monkeypatch.setattr(address_book, "_run_and_read_output", mock._run_and_read_output)
-    monkeypatch.setattr(address_book, "_run_and_read_log", mock._run_and_read_log)
+    mock = MockAddressBook(data_path)
+    monkeypatch.setattr(cli, "get_address_book", lambda *args, **kwargs: mock)
     return mock
 
 
@@ -55,16 +54,16 @@ def test_help() -> None:
     assert "Usage:" in result.stdout
 
 
-def test_applescript_error(mock_applescript: MockApplescript) -> None:
+def test_applescript_error(mock_address_book: MockAddressBook) -> None:
     """Test applescript error."""
-    mock_applescript.error()
+    mock_address_book.error()
     result = runner.invoke(cli.app, "amelie")
     assert result.exit_code == 1
 
 
-def test_all_contacts(mock_applescript: MockApplescript) -> None:
+def test_all_contacts(mock_address_book: MockAddressBook) -> None:
     """Test find with no keywords returning all contacts."""
-    mock_applescript.provide("amelie", "bob", "carnival")
+    mock_address_book.provide("amelie", "bob", "carnival")
     result = runner.invoke(cli.app, "waldo")
     assert result.exit_code == 0
     assert result.stdout.rstrip().split("\n") == [
@@ -74,9 +73,9 @@ def test_all_contacts(mock_applescript: MockApplescript) -> None:
     ]
 
 
-def test_single_contact(mock_applescript: MockApplescript) -> None:
+def test_single_contact(mock_address_book: MockAddressBook) -> None:
     """Test find with single contact."""
-    mock_applescript.provide("amelie")
+    mock_address_book.provide("amelie")
     result = runner.invoke(cli.app, "amelie")
     assert result.exit_code == 0
     assert result.stdout.rstrip().split("\n") == [
@@ -84,9 +83,9 @@ def test_single_contact(mock_applescript: MockApplescript) -> None:
     ]
 
 
-def test_multiple_contact(mock_applescript: MockApplescript) -> None:
+def test_multiple_contact(mock_address_book: MockAddressBook) -> None:
     """Test find with multiple contacts."""
-    mock_applescript.provide("bob", "carnival")
+    mock_address_book.provide("bob", "carnival")
     result = runner.invoke(cli.app, "balloon")
     assert result.exit_code == 0
     assert result.stdout.rstrip().split("\n") == [
@@ -95,9 +94,9 @@ def test_multiple_contact(mock_applescript: MockApplescript) -> None:
     ]
 
 
-def test_multiple_keywords(mock_applescript: MockApplescript) -> None:
+def test_multiple_keywords(mock_address_book: MockAddressBook) -> None:
     """Test find with single contact."""
-    mock_applescript.provide("amelie", "bob")
+    mock_address_book.provide("amelie", "bob")
     result = runner.invoke(cli.app, "amelie bob")
     assert result.exit_code == 0
     assert result.stdout.rstrip().split("\n") == [
@@ -106,9 +105,9 @@ def test_multiple_keywords(mock_applescript: MockApplescript) -> None:
     ]
 
 
-def test_warnings(mock_applescript: MockApplescript) -> None:
+def test_warnings(mock_address_book: MockAddressBook) -> None:
     """Test reporting warnings."""
-    mock_applescript.provide("warnen")
+    mock_address_book.provide("warnen")
     result = runner.invoke(cli.app, "--check")
     assert result.exit_code == 0
     assert result.stdout.rstrip().split("\n") == [
@@ -116,9 +115,9 @@ def test_warnings(mock_applescript: MockApplescript) -> None:
     ]
 
 
-def test_fix_warnings(data_path: Path, mock_applescript: MockApplescript) -> None:
+def test_fix_warnings(data_path: Path, mock_address_book: MockAddressBook) -> None:
     """Test fixing warnings."""
-    mock_applescript.provide("warnen")
+    mock_address_book.provide("warnen")
     result = runner.invoke(cli.app, "--fix")
     assert result.exit_code == 0
     assert result.stdout.rstrip().split("\n") == [
@@ -127,14 +126,14 @@ def test_fix_warnings(data_path: Path, mock_applescript: MockApplescript) -> Non
     before = Contact.read(data_path / "warnen.json")
     after = Contact.read(data_path / "warnen.fixed.json")
     diff = ContactDiff(before, after)
-    assert sorted(mock_applescript._updates) == sorted(diff.updates)
-    assert sorted(mock_applescript._adds) == sorted(diff.adds)
-    assert sorted(mock_applescript._deletes) == sorted(diff.deletes)
+    assert sorted(mock_address_book._updates) == sorted(diff.updates)
+    assert sorted(mock_address_book._adds) == sorted(diff.adds)
+    assert sorted(mock_address_book._deletes) == sorted(diff.deletes)
 
 
-def test_errors(mock_applescript: MockApplescript) -> None:
+def test_errors(mock_address_book: MockAddressBook) -> None:
     """Test reporting errors."""
-    mock_applescript.provide("errona")
+    mock_address_book.provide("errona")
     result = runner.invoke(cli.app, "--check")
     assert result.exit_code == 0
     assert result.stdout.rstrip().split("\n") == [
@@ -142,18 +141,18 @@ def test_errors(mock_applescript: MockApplescript) -> None:
     ]
 
 
-def test_details_single(data_path: Path, mock_applescript: MockApplescript) -> None:
+def test_details_single(data_path: Path, mock_address_book: MockAddressBook) -> None:
     """Test detail with single contact."""
-    mock_applescript.provide("amelie")
+    mock_address_book.provide("amelie")
     result = runner.invoke(cli.app, "--detail --width=79 --no-safe-box")
     assert result.exit_code == 0
     expected_output = (data_path / "amelie.detail").read_text(encoding="utf-8").strip()
     assert result.stdout.strip() == expected_output
 
 
-def test_details_multiple(data_path: Path, mock_applescript: MockApplescript) -> None:
+def test_details_multiple(data_path: Path, mock_address_book: MockAddressBook) -> None:
     """Test detail with multiple contacts."""
-    mock_applescript.provide("amelie", "bob", "carnival")
+    mock_address_book.provide("amelie", "bob", "carnival")
     result = runner.invoke(cli.app, "--detail --width=79 --no-safe-box")
     assert result.exit_code == 0
     expected_output = "\n".join(
@@ -163,18 +162,18 @@ def test_details_multiple(data_path: Path, mock_applescript: MockApplescript) ->
     assert result.stdout.strip() == expected_output
 
 
-def test_details_warnings(data_path: Path, mock_applescript: MockApplescript) -> None:
+def test_details_warnings(data_path: Path, mock_address_book: MockAddressBook) -> None:
     """Test warnings on detail."""
-    mock_applescript.provide("warnen")
+    mock_address_book.provide("warnen")
     result = runner.invoke(cli.app, "warnen --detail --width=79 --no-safe-box")
     assert result.exit_code == 0
     expected_output = (data_path / "warnen.detail").read_text(encoding="utf-8").strip()
     assert result.stdout.strip() == expected_output
 
 
-def test_details_errors(data_path: Path, mock_applescript: MockApplescript) -> None:
+def test_details_errors(data_path: Path, mock_address_book: MockAddressBook) -> None:
     """Test errors on detail."""
-    mock_applescript.provide("errona")
+    mock_address_book.provide("errona")
     result = runner.invoke(cli.app, "errona --detail --width=79 --no-safe-box")
     assert result.exit_code == 0
     expected_output = (data_path / "errona.detail").read_text(encoding="utf-8").strip()
