@@ -1,8 +1,8 @@
 {
     "contact_id": "CCCCCCCC-1111-CCCC-1111-CCCCCCCCCCCC:ABPerson",
     "name": "Carnival Balloon Co.",
-    "has_image": true,
     "is_company": true,
+    "has_image": true,
     "phones": [
         {
             "info_id": "CCCCCCCC-2222-CCCC-2222-CCCCCCCCCCCC",

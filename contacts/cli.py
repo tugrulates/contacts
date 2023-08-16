@@ -67,6 +67,7 @@ def find(
     *,
     extend: bool = True,
     detail: bool = False,
+    json: bool = False,
     check: bool = False,
     fix: bool = False,
     applescript: bool = True,
@@ -82,21 +83,30 @@ def find(
             keywords = keyword.prepare_keywords(keywords, extend=extend)
 
         address_book = get_address_book(
-            brief=not (detail or check or fix),
+            brief=not (detail or json or check or fix),
             batch=batch or (1 if keywords else 10),
         )
         count = address_book.count(keywords)
         progress.update(task, total=count, description="Fetching contacts")
 
+        people = contact.Contacts()
         for person in address_book.find(keywords):
             if fix:
                 for problem in person.problems:
                     progress.update(task, description=f"Fixing {with_icon(person)}")
                     problem.try_fix(address_book)
                 person = address_book.get(person.contact_id)
-            print(table(person, width, safe_box) if detail else f"{with_icon(person)}")
-            del person.first_name
+
+            if detail:
+                print(table(person, width, safe_box))
+            elif not json:
+                print(f"{with_icon(person)}")
+
+            people.contacts.append(person)
             progress.update(task, advance=1, description="Fetching contacts")
+
+        if json:
+            print(people.dumps())
 
 
 if __name__ == "__main__":

@@ -1,8 +1,8 @@
 {
     "contact_id": "AAAAAAAA-1111-AAAA-1111-AAAAAAAAAAAA:ABPerson",
     "name": "Ms. Amelia Avery Arch.",
-    "has_image": true,
     "is_company": false,
+    "has_image": true,
     "prefix": "Ms.",
     "first_name": "Amelia",
     "phonetic_first_name": "a-mel-ia",
