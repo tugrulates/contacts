@@ -4,11 +4,11 @@ bug:
 feature:
   - head-branch: "^feature/"
 
-documentation:
-  - head-branch: ^doc/"
-
 dependencies:
   - head-branch: ^deps/"
+
+documentation:
+  - head-branch: ^doc/"
 
 performance:
   - head-branch: "^perf/"
