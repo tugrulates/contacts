@@ -1,11 +1,14 @@
-feature:
-  - head-branch: "^feature/"
-
 bug:
   - head-branch: "^fix/"
 
-testing:
-  - head-branch: "^test/"
+feature:
+  - head-branch: "^feature/"
+
+documentation:
+  - head-branch: ^doc/"
+
+dependencies:
+  - head-branch: ^deps/"
 
 performance:
   - head-branch: "^perf/"
@@ -13,5 +16,5 @@ performance:
 refactor:
   - head-branch: "^refactor/"
 
-documentation:
-  - head-branch: ^doc/"
+testing:
+  - head-branch: "^test/"
