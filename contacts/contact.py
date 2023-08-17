@@ -11,6 +11,7 @@ from functools import cached_property
 from pathlib import Path
 from typing import Optional
 
+from pydantic import RootModel
 from pydantic.dataclasses import dataclass
 
 from contacts.category import Category
@@ -202,7 +203,7 @@ class Contact:
         return metadata[0] if metadata else None
 
     @staticmethod
-    def read(path: Path) -> Contact:
+    def load(path: Path) -> Contact:
         """Load contact from json file."""
         with path.open(encoding="utf-8") as file:
             return Contact(**json.load(file))
@@ -210,3 +211,17 @@ class Contact:
     def __str__(self) -> str:
         """Short string for contact."""
         return self.name
+
+
+@dataclass
+class Contacts:
+    """A list of contacts."""
+
+    contacts: list[Contact] = field(default_factory=list)
+
+    def dumps(self) -> str:
+        """Dump JSON string."""
+        return RootModel[Contacts](self).model_dump_json(
+            indent=4,
+            exclude_defaults=True,
+        )

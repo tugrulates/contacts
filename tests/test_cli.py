@@ -1,6 +1,7 @@
 """Unittests for cli."""
 
 
+import json
 from pathlib import Path
 
 import email_validator
@@ -123,8 +124,8 @@ def test_fix_warnings(data_path: Path, mock_address_book: MockAddressBook) -> No
     assert result.stdout.rstrip().split("\n") == [
         "⚠️  dr. warnen bitte sanft jr.",
     ]
-    before = Contact.read(data_path / "warnen.json")
-    after = Contact.read(data_path / "warnen.fixed.json")
+    before = Contact.load(data_path / "warnen.json")
+    after = Contact.load(data_path / "warnen.fixed.json")
     diff = ContactDiff(before, after)
     assert sorted(mock_address_book._updates) == sorted(diff.updates)
     assert sorted(mock_address_book._adds) == sorted(diff.adds)
@@ -141,7 +142,7 @@ def test_errors(mock_address_book: MockAddressBook) -> None:
     ]
 
 
-def test_details_single(data_path: Path, mock_address_book: MockAddressBook) -> None:
+def test_detail_single(data_path: Path, mock_address_book: MockAddressBook) -> None:
     """Test detail with single contact."""
     mock_address_book.provide("amelie")
     result = runner.invoke(cli.app, "--detail --width=79 --no-safe-box")
@@ -150,7 +151,7 @@ def test_details_single(data_path: Path, mock_address_book: MockAddressBook) -> 
     assert result.stdout.strip() == expected_output
 
 
-def test_details_multiple(data_path: Path, mock_address_book: MockAddressBook) -> None:
+def test_detail_multiple(data_path: Path, mock_address_book: MockAddressBook) -> None:
     """Test detail with multiple contacts."""
     mock_address_book.provide("amelie", "bob", "carnival")
     result = runner.invoke(cli.app, "--detail --width=79 --no-safe-box")
@@ -162,7 +163,7 @@ def test_details_multiple(data_path: Path, mock_address_book: MockAddressBook) -
     assert result.stdout.strip() == expected_output
 
 
-def test_details_warnings(data_path: Path, mock_address_book: MockAddressBook) -> None:
+def test_detail_warnings(data_path: Path, mock_address_book: MockAddressBook) -> None:
     """Test warnings on detail."""
     mock_address_book.provide("warnen")
     result = runner.invoke(cli.app, "warnen --detail --width=79 --no-safe-box")
@@ -171,10 +172,23 @@ def test_details_warnings(data_path: Path, mock_address_book: MockAddressBook) -
     assert result.stdout.strip() == expected_output
 
 
-def test_details_errors(data_path: Path, mock_address_book: MockAddressBook) -> None:
+def test_detail_errors(data_path: Path, mock_address_book: MockAddressBook) -> None:
     """Test errors on detail."""
     mock_address_book.provide("errona")
     result = runner.invoke(cli.app, "errona --detail --width=79 --no-safe-box")
     assert result.exit_code == 0
     expected_output = (data_path / "errona.detail").read_text(encoding="utf-8").strip()
     assert result.stdout.strip() == expected_output
+
+
+def test_json(data_path: Path, mock_address_book: MockAddressBook) -> None:
+    """Test detail with multiple contacts."""
+    mock_address_book.provide("amelie", "bob", "carnival")
+    result = runner.invoke(cli.app, "--json --width=1000")
+    assert result.exit_code == 0
+    contacts = [
+        json.loads(Path(data_path / x).read_text(encoding="utf-8"))
+        for x in ["amelie.json", "bob.json", "carnival.json"]
+    ]
+    expected = json.dumps({"contacts": contacts}, indent=4, ensure_ascii=False)
+    assert result.stdout.strip() == expected

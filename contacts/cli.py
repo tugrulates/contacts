@@ -5,7 +5,8 @@ import dataclasses
 from typing import Annotated, Optional
 
 import typer
-from rich import box, print
+from rich import box
+from rich.console import Console
 from rich.progress import Progress
 from rich.table import Table
 
@@ -22,9 +23,9 @@ def with_icon(person: contact.Contact) -> str:
     return f"{person.category.icon} {person.name}"
 
 
-def table(person: contact.Contact, width: Optional[int], safe_box: bool) -> Table:
+def table(person: contact.Contact, width: Optional[int]) -> Table:
     """Create a table view for contact."""
-    table = Table(highlight=True, box=box.ROUNDED, width=width, safe_box=safe_box)
+    table = Table(highlight=True, box=box.ROUNDED, width=width)
     table.add_column(ratio=1, justify="right", style="magenta")
     table.add_column(person.category.icon)
     table.add_column(person.name, ratio=2)
@@ -67,6 +68,7 @@ def find(
     *,
     extend: bool = True,
     detail: bool = False,
+    json: bool = False,
     check: bool = False,
     fix: bool = False,
     applescript: bool = True,
@@ -75,6 +77,7 @@ def find(
     safe_box: bool = True,
 ) -> None:
     """List contacts matching given keyword."""
+    console = Console(width=width, safe_box=safe_box)
     with Progress(transient=True) as progress:
         task = progress.add_task("Counting contacts")
         keywords = keywords or []
@@ -82,21 +85,30 @@ def find(
             keywords = keyword.prepare_keywords(keywords, extend=extend)
 
         address_book = get_address_book(
-            brief=not (detail or check or fix),
+            brief=not (detail or json or check or fix),
             batch=batch or (1 if keywords else 10),
         )
         count = address_book.count(keywords)
         progress.update(task, total=count, description="Fetching contacts")
 
+        people = contact.Contacts()
         for person in address_book.find(keywords):
             if fix:
                 for problem in person.problems:
                     progress.update(task, description=f"Fixing {with_icon(person)}")
                     problem.try_fix(address_book)
                 person = address_book.get(person.contact_id)
-            print(table(person, width, safe_box) if detail else f"{with_icon(person)}")
-            del person.first_name
+
+            if detail:
+                console.print(table(person, width))
+            elif not json:
+                console.print(f"{with_icon(person)}")
+
+            people.contacts.append(person)
             progress.update(task, advance=1, description="Fetching contacts")
+
+        if json:
+            print(people.dumps())
 
 
 if __name__ == "__main__":
