@@ -10,6 +10,6 @@ jobs:
 
     steps:
       - if: github.event.action == 'opened'
-      - uses: actions/labeler@v5.0.0-alpha.1
+        uses: actions/labeler@v5.0.0-alpha.1
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
