@@ -1,0 +1,17 @@
+feature:
+  - head-branch: "^feature/"
+
+bug:
+  - head-branch: "^fix/"
+
+testing:
+  - head-branch: "^test/"
+
+performance:
+  - head-branch: "^perf/"
+
+refactor:
+  - head-branch: "^refactor/"
+
+documentation:
+  - head-branch: ^doc/"
