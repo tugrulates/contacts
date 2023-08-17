@@ -183,9 +183,12 @@ def test_detail_errors(data_path: Path, mock_address_book: MockAddressBook) -> N
 
 def test_json(data_path: Path, mock_address_book: MockAddressBook) -> None:
     """Test detail with multiple contacts."""
-    mock_address_book.provide("carnival")
-    result = runner.invoke(cli.app, "--json --width=200")
+    mock_address_book.provide("amelie", "bob", "carnival")
+    result = runner.invoke(cli.app, "--json --width=1000")
     assert result.exit_code == 0
-    data = json.loads(Path(data_path / "carnival.json").read_text(encoding="utf-8"))
-    expected = json.dumps({"contacts": [data]}, indent=4)
+    contacts = [
+        json.loads(Path(data_path / x).read_text(encoding="utf-8"))
+        for x in ["amelie.json", "bob.json", "carnival.json"]
+    ]
+    expected = json.dumps({"contacts": contacts}, indent=4, ensure_ascii=False)
     assert result.stdout.strip() == expected

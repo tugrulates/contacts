@@ -5,7 +5,8 @@ import dataclasses
 from typing import Annotated, Optional
 
 import typer
-from rich import box, print
+from rich import box
+from rich.console import Console
 from rich.progress import Progress
 from rich.table import Table
 
@@ -22,9 +23,9 @@ def with_icon(person: contact.Contact) -> str:
     return f"{person.category.icon} {person.name}"
 
 
-def table(person: contact.Contact, width: Optional[int], safe_box: bool) -> Table:
+def table(person: contact.Contact, width: Optional[int]) -> Table:
     """Create a table view for contact."""
-    table = Table(highlight=True, box=box.ROUNDED, width=width, safe_box=safe_box)
+    table = Table(highlight=True, box=box.ROUNDED, width=width)
     table.add_column(ratio=1, justify="right", style="magenta")
     table.add_column(person.category.icon)
     table.add_column(person.name, ratio=2)
@@ -76,6 +77,7 @@ def find(
     safe_box: bool = True,
 ) -> None:
     """List contacts matching given keyword."""
+    console = Console(width=width, safe_box=safe_box)
     with Progress(transient=True) as progress:
         task = progress.add_task("Counting contacts")
         keywords = keywords or []
@@ -98,9 +100,9 @@ def find(
                 person = address_book.get(person.contact_id)
 
             if detail:
-                print(table(person, width, safe_box))
+                console.print(table(person, width))
             elif not json:
-                print(f"{with_icon(person)}")
+                console.print(f"{with_icon(person)}")
 
             people.contacts.append(person)
             progress.update(task, advance=1, description="Fetching contacts")
