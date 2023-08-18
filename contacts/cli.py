@@ -78,7 +78,7 @@ def find(
 ) -> None:
     """List contacts matching given keyword."""
     console = Console(width=width, safe_box=safe_box)
-    with Progress(transient=True) as progress:
+    with Progress(transient=True, console=console) as progress:
         task = progress.add_task("Counting contacts")
         keywords = keywords or []
         if applescript:
