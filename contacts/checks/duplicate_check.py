@@ -1,4 +1,4 @@
-"""Enforces a standard phone format."""
+"""DuplicateCheck class."""
 
 
 from __future__ import annotations

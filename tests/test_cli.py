@@ -27,7 +27,7 @@ def test_environment() -> None:
 
 @pytest.fixture(autouse=True)
 def data_path(request: pytest.FixtureRequest) -> Path:
-    """Test data directory."""
+    """Fixture for the test data directory."""
     return request.path.parent / "data"
 
 
@@ -35,7 +35,7 @@ def data_path(request: pytest.FixtureRequest) -> Path:
 def mock_address_book(
     data_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> MockAddressBook:
-    """Fixture for prefs."""
+    """Fixture for mock address book."""
     mock = MockAddressBook(data_path)
     monkeypatch.setattr(cli, "get_address_book", lambda *args, **kwargs: mock)
     return mock
@@ -127,9 +127,9 @@ def test_fix_warnings(data_path: Path, mock_address_book: MockAddressBook) -> No
     before = Contact.load(data_path / "warnen.json")
     after = Contact.load(data_path / "warnen.fixed.json")
     diff = ContactDiff(before, after)
-    assert sorted(mock_address_book._updates) == sorted(diff.updates)
-    assert sorted(mock_address_book._adds) == sorted(diff.adds)
-    assert sorted(mock_address_book._deletes) == sorted(diff.deletes)
+    assert sorted(mock_address_book.updates) == sorted(diff.updates)
+    assert sorted(mock_address_book.adds) == sorted(diff.adds)
+    assert sorted(mock_address_book.deletes) == sorted(diff.deletes)
 
 
 def test_errors(mock_address_book: MockAddressBook) -> None:

@@ -1,4 +1,4 @@
-"""Enforces a standard phone format."""
+"""CustomDateCheck class."""
 
 
 from __future__ import annotations
@@ -22,7 +22,7 @@ class CustomDateCheck(Check):
                 return None
 
             formatted = custom_date.label.lower()
-            if custom_date.value == formatted:
+            if custom_date.label == formatted:
                 return None
 
             def fix(address_book: AddressBook) -> None:

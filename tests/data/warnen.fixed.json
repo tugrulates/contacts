@@ -2,34 +2,11 @@
     "contact_id": "WWWWWWWW-1111-WWWW-1111-WWWWWWWWWWWW:ABPerson",
     "name": "Dr. Warnen Bitte Sanft Jr.",
     "has_image": false,
-    "prefix": "Dr.",
     "first_name": "Warnen",
-    "middle_name": "Bitte",
     "last_name": "Sanft",
-    "maiden_name": "Angaben",
-    "suffix": "Jr.",
-    "nickname": "Warnen sanft",
-    "job_title": "Warner manager",
-    "department": "Warning",
-    "organization": "Warner Bros.",
     "phones": [
         {
             "info_id": "WWWWWWWW-2222-WWWW-2222-WWWWWWWWWWWW",
-            "label": "_$!<Mobile>!$_",
-            "value": "+18172000000"
-        },
-        {
-            "info_id": "WWWWWWWW-2222-WWWW-2223-WWWWWWWWWWWW",
-            "label": "_$!<Work>!$_",
-            "value": "+18172000001"
-        },
-        {
-            "info_id": "WWWWWWWW-2222-WWWW-2227-WWWWWWWWWWWW",
-            "label": "_$!<Home>!$_",
-            "value": "+18172000002"
-        },
-        {
-            "info_id": "WWWWWWWW-2222-WWWW-2228-WWWWWWWWWWWW",
             "label": "_$!<Mobile>!$_",
             "value": "+18172000003"
         }
@@ -38,16 +15,6 @@
         {
             "info_id": "WWWWWWWW-3333-WWWW-3333-WWWWWWWWWWWW",
             "label": "_$!<Home>!$_",
-            "value": "warnen@warnen.blog"
-        },
-        {
-            "info_id": "WWWWWWWW-3333-WWWW-3335-WWWWWWWWWWWW",
-            "label": "_$!<Home>!$_",
-            "value": "warnen+test@warnen.blog"
-        },
-        {
-            "info_id": "WWWWWWWW-3333-WWWW-3336-WWWWWWWWWWWW",
-            "label": "_$!<Home>!$_",
             "value": "warnensanft@warnen.com"
         }
     ],
@@ -55,45 +22,12 @@
         {
             "info_id": "WWWWWWWW-4444-WWWW-4444-WWWWWWWWWWWW",
             "label": "_$!<HomePage>!$_",
-            "value": "http://warnen.com"
-        },
-        {
-            "info_id": "WWWWWWWW-4444-WWWW-4446-WWWWWWWWWWWW",
-            "label": "_$!<Other>!$_",
-            "value": "https://warnen.blog"
-        },
-        {
-            "info_id": "WWWWWWWW-4444-WWWW-4447-WWWWWWWWWWWW",
-            "label": "_$!<HomePage>!$_",
-            "value": "https://www.warnensanft.com"
-        },
-        {
-            "info_id": "WWWWWWWW-4444-WWWW-4448-WWWWWWWWWWWW",
-            "label": "_$!<HomePage>!$_",
             "value": "http://warnen.blog"
-        }
-    ],
-    "addresses": [
-        {
-            "info_id": "AAAAAAAA-7777-AAAA-7777-AAAAAAAAAAAA",
-            "label": "_$!<Work>!$_",
-            "value": "Walther-von-der-Vogelweide-Straße 7777 A\nWürzburg Bavaria 97074\nGermany",
-            "country_code": "de",
-            "street": "Walther-von-der-Vogelweide-Straße 7777 A",
-            "city": "Würzburg",
-            "state": "Bavaria",
-            "zip": "97074",
-            "country": "Germany"
         }
     ],
     "custom_dates": [
         {
             "info_id": "AAAAAAAA-8888-AAAA-8888-AAAAAAAAAAAA",
-            "label": "_$!<Anniversary>!$_",
-            "value": "July 7, 1977"
-        },
-        {
-            "info_id": "AAAAAAAA-8888-AAAA-8890-AAAAAAAAAAAA",
             "label": "favorite",
             "value": "July 7"
         }
@@ -104,23 +38,6 @@
             "label": "LinkedIn",
             "value": "warnensanft",
             "url": "http://www.linkedin.com/in/warnensanft"
-        },
-        {
-            "info_id": "AAAAAAAA-1010-AAAA-1012-AAAAAAAAAAAA",
-            "label": "Twitter",
-            "value": "warnensanft"
-        }
-    ],
-    "instant_messages": [
-        {
-            "info_id": "AAAAAAAA-1020-AAAA-1021-AAAAAAAAAAAA",
-            "label": "WhatsApp",
-            "value": "+1 (817) 200-0000"
-        },
-        {
-            "info_id": "AAAAAAAA-1020-AAAA-1022-AAAAAAAAAAAA",
-            "label": "iMessage",
-            "value": "+1 (817) 200-0000"
         }
     ]
 }

@@ -1,4 +1,4 @@
-"""Enforces a standard phone format."""
+"""UrlCheck class."""
 
 
 from __future__ import annotations
@@ -34,7 +34,8 @@ class UrlCheck(Check):
                 )
 
             return Problem(
-                f"URL '{url.value}' should have a <HomePage> label.", fix=fix
+                f"URL label for '{url.value}' should be <HomePage>.",
+                fix=fix,
             )
 
         def check_value(url: ContactInfo) -> Optional[Problem]:
@@ -58,7 +59,7 @@ class UrlCheck(Check):
                 )
 
             return Problem(
-                f"URL '{url.value}' should be formatted as '{formatted}'.",
+                f"URL '{url.value}' should be '{formatted}'.",
                 fix=fix,
             )
 
