@@ -221,7 +221,4 @@ class Contacts:
 
     def dumps(self) -> str:
         """Dump JSON string."""
-        return RootModel[Contacts](self).model_dump_json(
-            indent=4,
-            exclude_defaults=True,
-        )
+        return RootModel[Contacts](self).model_dump_json(exclude_defaults=True)
