@@ -17,13 +17,16 @@
 │                        │ 💼 │ +18172000001                                  │
 │                        │ 🏠 │ +18172000001                                  │
 │                        │ 🏠 │  +1 (817)  200-0002                           │
+│                        │ 📞 │ +18172000003 <mobile>                         │
 │                E-mails │ 🏠 │ warnen@warnen.blog                            │
 │                        │ 🏠 │ warnen@warnen.blog                            │
 │                        │ 🏠 │  warnen+test@WARNEN.BLOG                      │
+│                        │ 📧 │ warnensanft@warnen.com <Email>                │
 │              Home page │ 🌐 │ http://warnen.blog                            │
 │                   URLs │ 🏠 │ http://warnen.com                             │
 │                        │ 💼 │ http://warnen.com                             │
-│                        │ 🗂️  │  HTTPS://warnen.blog                          │
+│                        │ 🌐 │  HTTPS://warnen.blog                          │
+│                        │ 🌐 │ https://www.warnensanft.com <home>            │
 │              Addresses │ 💼 │ Walther-von-der-Vogelweide-Straße 7777 A      │
 │                        │    │ Würzburg Bavaria 97074                        │
 │                        │    │ Germany                                       │
@@ -32,7 +35,7 @@
 │                        │    │ Germany                                       │
 │           Custom dates │ 💍 │ July 7, 1977                                  │
 │                        │ 💍 │ July 7, 1977                                  │
-│                        │ 📅 │ July 7, 1977 <favorite>                       │
+│                        │ 📅 │ July 7 <Favorite>                             │
 │        Social profiles │ 🌐 │ warnensanft <LinkedIn>                        │
 │                        │ 🌐 │ warnensanft <LinkedIn>                        │
 │                        │ 🌐 │ warnensanft <Twitter>                         │
@@ -50,6 +53,12 @@
 │                        │ ⚠️  │ Job title 'warner manager' should be 'Warner  │
 │                        │    │ manager'.                                     │
 │                        │ ⚠️  │ Department 'warning' should be 'Warning'.     │
+│                        │ ⚠️  │ Phone label <mobile> should be                │
+│                        │    │ <_$!<Mobile>!$_>.                             │
+│                        │ ⚠️  │ E-mail label <Email> should be                │
+│                        │    │ <_$!<Home>!$_>.                               │
+│                        │ ⚠️  │ URL label <home> should be                    │
+│                        │    │ <_$!<HomePage>!$_>.                           │
 │                        │ ⚠️  │ Phone number ' +1 (817)  200-0002 ' should be │
 │                        │    │ formatted as '+18172000002'.                  │
 │                        │ ⚠️  │ E-mail ' warnen+test@WARNEN.BLOG ' should be  │
@@ -60,6 +69,8 @@
 │                        │    │ <HomePage> label.                             │
 │                        │ ⚠️  │ URL ' HTTPS://warnen.blog ' should be         │
 │                        │    │ formatted as 'https://warnen.blog'.           │
+│                        │ ⚠️  │ Custom date label <Favorite> should be        │
+│                        │    │ <favorite>.                                   │
 │                        │ ⚠️  │ Phone '+18172000000' has duplicate(s).        │
 │                        │ ⚠️  │ Phone '+18172000001' has duplicate(s).        │
 │                        │ ⚠️  │ E-mail 'warnen@warnen.blog' has duplicate(s). │

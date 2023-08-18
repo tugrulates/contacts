@@ -37,12 +37,12 @@ class DuplicateCheck(Check):
             if not metadata:
                 return None
 
-            duplicates = list(group)[1:]
-            if not duplicates:
+            duplicates = list(group)
+            if len(duplicates) == 1:
                 return None
 
             def fix(address_book: AddressBook) -> None:
-                for duplicate in duplicates:
+                for duplicate in duplicates[1:]:
                     address_book.delete_info(
                         contact.contact_id, field, duplicate.info_id
                     )

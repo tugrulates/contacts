@@ -67,14 +67,14 @@ class MockAddressBook(AddressBook):
         self._deletes.append((contact_id, field))
 
     def update_info(
-        self, contact_id: str, field: str, info_id: str, label: str, value: str
+        self, contact_id: str, field: str, info_id: str, **values: str
     ) -> None:
         """Update a contact info with given label and value."""
-        self._updates.append((contact_id, field, info_id, label, value))
+        self._updates.append((contact_id, field, info_id, values))
 
-    def add_info(self, contact_id: str, field: str, label: str, value: str) -> None:
+    def add_info(self, contact_id: str, field: str, **values: str) -> None:
         """Add a contact info."""
-        self._adds.append((contact_id, field, label, value))
+        self._adds.append((contact_id, field, values))
 
     def delete_info(self, contact_id: str, field: str, info_id: str) -> None:
         """Delete a contact info."""

@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import json
 import subprocess  # nosec B404
-from itertools import zip_longest
+from itertools import chain, zip_longest
 from pathlib import Path
 from typing import Iterator
 
@@ -84,11 +84,11 @@ class AppleScriptBasedAddressBook(AddressBook):
         :param brief: omit most contact details in favor of performance
         """
         output = self._run_and_read_output("brief" if brief else "detail", *contact_ids)
-        for data in json.loads(output):
+        for data in json.loads(output)["data"]:
             yield Contact(**data)
 
     def update_field(self, contact_id: str, field: str, value: str) -> None:
-        """Update contact field with given value."""
+        """Add or update contact field with given value."""
         self._run_and_read_output("update", contact_id, field, value)
 
     def delete_field(self, contact_id: str, field: str) -> None:
@@ -96,14 +96,16 @@ class AppleScriptBasedAddressBook(AddressBook):
         self._run_and_read_output("delete", contact_id, field)
 
     def update_info(
-        self, contact_id: str, field: str, info_id: str, label: str, value: str
+        self, contact_id: str, field: str, info_id: str, **values: str
     ) -> None:
         """Update contact info with given label and value."""
-        self._run_and_read_output("update", contact_id, field, info_id, label, value)
+        self._run_and_read_output(
+            "update", contact_id, field, info_id, *chain(*values.items())
+        )
 
-    def add_info(self, contact_id: str, field: str, label: str, value: str) -> None:
+    def add_info(self, contact_id: str, field: str, **values: str) -> None:
         """Add a contact info."""
-        self._run_and_read_output("add", contact_id, field, label, value)
+        self._run_and_read_output("add", contact_id, field, *chain(*values.items()))
 
     def delete_info(self, contact_id: str, field: str, info_id: str) -> None:
         """Delete a contact info."""

@@ -54,7 +54,7 @@
         },
         {
             "info_id": "AAAAAAAA-7777-AAAA-7778-AAAAAAAAAAAA",
-            "label": "mailbox",
+            "label": "_$!<Other>!$_",
             "value": "1 Arlington Blvd\nP.O. Box 11\nArlington, TX 76010\nUnited States",
             "country_code": "us",
             "street": "1 Arlington Blvd\nP.O. Box 11",
@@ -69,11 +69,6 @@
             "info_id": "AAAAAAAA-8888-AAAA-8888-AAAAAAAAAAAA",
             "label": "_$!<Anniversary>!$_",
             "value": "November 11"
-        },
-        {
-            "info_id": "AAAAAAAA-8888-AAAA-8889-AAAAAAAAAAAA",
-            "label": "favorite",
-            "value": "November 11, 2011"
         }
     ],
     "related_names": [

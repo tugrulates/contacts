@@ -18,7 +18,10 @@ class HomePageCheck(Check):
             """Replace home page with a URL."""
             if contact.home_page:
                 address_book.add_info(
-                    contact.contact_id, "urls", "_$!<HomePage>!$_", contact.home_page
+                    contact.contact_id,
+                    "urls",
+                    label="_$!<HomePage>!$_",
+                    value=contact.home_page,
                 )
                 address_book.delete_field(contact.contact_id, "home_page")
 
