@@ -108,7 +108,7 @@ def find(
             progress.update(task, advance=1, description="Fetching contacts")
 
         if json:
-            print(people.dumps())
+            console.print_json(people.dumps())
 
 
 if __name__ == "__main__":
