@@ -34,7 +34,7 @@ class UrlCheck(Check):
                 )
 
             return Problem(
-                f"URL '{url.value}' should have a <HomePage> label.",
+                f"URL label for '{url.value}' should be <HomePage>.",
                 fix=fix,
             )
 
