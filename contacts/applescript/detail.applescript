@@ -2,27 +2,29 @@
 --
 --   $ osascript brief.applescript [contact_id_1] [contact_id_2] ... [contact_id_N]
 --   stdout:
---   [
---     {
---       "contact_id": "[contact_id_1]",
---       "name": "[name_1]",
+--   {
+--     "data": [
+--       {
+--         "contact_id": "[contact_id_1]",
+--         "name": "[name_1]",
+--         ...
+--         "notes": "[notes_1]"
+--       },
+--       {
+--         "contact_id": "[contact_id_2]",
+--         "name": "[name_2]",
+--         ...
+--         "notes": "[notes_2]"
+--       },
 --       ...
---       "notes": "[notes_1]"
---     },
---     {
---       "contact_id": "[contact_id_2]",
---       "name": "[name_2]",
---       ...
---       "notes": "[notes_2]"
---     },
---     ...
---     {
---       "contact_id": "[contact_id_N]",
---       "name": "[name_N]",
---       ...
---       "notes": "[notes_N]"
---     }
---   ]
+--       {
+--         "contact_id": "[contact_id_N]",
+--         "name": "[name_N]",
+--         ...
+--         "notes": "[notes_N]"
+--       }
+--     ]
+--   }
 
 
 on findAndReplaceInText(theText, theSearchString, theReplacementString)
@@ -59,6 +61,7 @@ on logContactValue(theName, theValue)
             if class of theValue is text
                 set theValue to my findAndReplaceInText(theValue, "\\n", "\\\\n")
                 set theValue to my findAndReplaceInText(theValue, "\n", "\\n")
+                set theValue to my findAndReplaceInText(theValue, "\"", "\\\"")
                 set theValue to "\"" & theValue & "\""
             end if
             return "\"" & theName & "\": " & theValue
@@ -98,64 +101,11 @@ on logContactInfo(theName, theInfos, areDates)
                     end if
                 end tell
 
-                copy my encloseList("    {", "        ", theEntries, "      }") to the end of theResults
+                copy my encloseList("      {", "          ", theEntries, "        }") to the end of theResults
             end repeat
 
-            return my encloseList("\"" & theName & "\": [", "  ", theResults, "    ]")
+            return my encloseList("\"" & theName & "\": [", "  ", theResults, "      ]")
         end if
-    end tell
-end
-
-
-on logContactSocialProfiles(theContact)
-    tell application "Contacts"
-        tell theContact
-            if count of social profiles > 0
-                set theResults to {}
-
-                repeat with theSocialProfile in every social profile
-                    set theEntries to {}
-
-                    tell theSocialProfile
-                        copy my logContactValue("info_id", id) to the end of theEntries
-                        copy my logContactValue("label", service name) to the end of theEntries
-                        copy my logContactValue("value", user name) to the end of theEntries
-                        copy my logContactValue("user_identifier", user identifier) to the end of theEntries
-                        copy my logContactValue("url", url of theSocialProfile) to the end of theEntries
-                    end tell
-
-                    copy my encloseList("    {", "        ", theEntries, "      }") to the end of theResults
-                end repeat
-
-                return my encloseList("\"social_profiles\": [", "  ", theResults, "    ]")
-            end if
-        end tell
-    end tell
-end
-
-
-on logInstantMessages(theContact)
-    tell application "Contacts"
-        tell theContact
-            if count of instant messages > 0
-                set theResults to {}
-
-                repeat with theInstantMessage in every instant message
-                    set theEntries to {}
-
-                    tell theInstantMessage
-                        --- value is missing
-                        copy my logContactValue("info_id", id) to the end of theEntries
-                        copy my logContactValue("label", service name) to the end of theEntries
-                        copy my logContactValue("value", user name) to the end of theEntries
-                    end tell
-
-                    copy my encloseList("    {", "        ", theEntries, "      }") to the end of theResults
-                end repeat
-
-                return my encloseList("\"instant_messages\": [", "  ", theResults, "    ]")
-            end if
-        end tell
     end tell
 end
 
@@ -181,10 +131,10 @@ on logContactAddresses(theContact)
                         copy my logContactValue("country", country) to the end of theEntries
                     end tell
 
-                    copy my encloseList("    {", "        ", theEntries, "      }") to the end of theResults
+                    copy my encloseList("      {", "          ", theEntries, "        }") to the end of theResults
                 end repeat
 
-                return my encloseList("\"addresses\": [", "  ", theResults, "    ]")
+                return my encloseList("\"addresses\": [", "  ", theResults, "      ]")
             end if
         end tell
     end tell
@@ -197,6 +147,59 @@ on logContactBirthDate(theContact)
             set theBirthDate to birth date
             if theBirthDate exists
                 return my logContactDate("birth_date", theBirthDate)
+            end if
+        end tell
+    end tell
+end
+
+
+on logContactSocialProfiles(theContact)
+    tell application "Contacts"
+        tell theContact
+            if count of social profiles > 0
+                set theResults to {}
+
+                repeat with theSocialProfile in every social profile
+                    set theEntries to {}
+
+                    tell theSocialProfile
+                        copy my logContactValue("info_id", id) to the end of theEntries
+                        copy my logContactValue("label", service name) to the end of theEntries
+                        copy my logContactValue("value", user name) to the end of theEntries
+                        copy my logContactValue("user_identifier", user identifier) to the end of theEntries
+                        copy my logContactValue("url", url of theSocialProfile) to the end of theEntries
+                    end tell
+
+                    copy my encloseList("      {", "          ", theEntries, "        }") to the end of theResults
+                end repeat
+
+                return my encloseList("\"social_profiles\": [", "  ", theResults, "      ]")
+            end if
+        end tell
+    end tell
+end
+
+
+on logInstantMessages(theContact)
+    tell application "Contacts"
+        tell theContact
+            if count of instant messages > 0
+                set theResults to {}
+
+                repeat with theInstantMessage in every instant message
+                    set theEntries to {}
+
+                    tell theInstantMessage
+                        --- value is missing
+                        copy my logContactValue("info_id", id) to the end of theEntries
+                        copy my logContactValue("label", service name) to the end of theEntries
+                        copy my logContactValue("value", user name) to the end of theEntries
+                    end tell
+
+                    copy my encloseList("      {", "          ", theEntries, "        }") to the end of theResults
+                end repeat
+
+                return my encloseList("\"instant_messages\": [", "  ", theResults, "      ]")
             end if
         end tell
     end tell
@@ -253,10 +256,10 @@ on detailContact(theIds)
                 copy my logContactValue("note", note) to the end of theEntries
             end tell
 
-            copy my encloseList(" {", "    ", theEntries, "  }") to the end of theResults
+            copy my encloseList(" {", "      ", theEntries, "    }") to the end of theResults
         end repeat
 
-        return my encloseList("[", " ", theResults, "]")
+        return my encloseList("{\n  \"data\": [", "   ", theResults, "  ]\n}")
     end tell
 end
 

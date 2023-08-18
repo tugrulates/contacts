@@ -31,7 +31,7 @@ class PhoneCheck(Check):
 
             def fix(address_book: AddressBook) -> None:
                 address_book.update_info(
-                    contact.contact_id, "phones", phone.info_id, phone.label, formatted
+                    contact.contact_id, "phones", phone.info_id, value=formatted
                 )
 
             return Problem(

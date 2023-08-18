@@ -38,10 +38,12 @@ def table(person: contact.Contact, width: Optional[int]) -> Table:
         if isinstance(value, list):
             for index, info in enumerate(value):
                 if isinstance(info, contact.ContactInfo):
-                    info_category = Category.from_label(info.label)
+                    category = Category.from_label(info.label, metadata.category)
+                    if category is None or category == Category.OTHER:
+                        category = metadata.category
                     table.add_row(
                         metadata.plural() if index == 0 else None,
-                        (info_category or metadata.category).icon,
+                        category.icon,
                         str(info),
                     )
         else:

@@ -4,11 +4,11 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Any, Optional
+from typing import Any, Optional, Union
 
 from contacts.contact import Contact
 
-Mutation = tuple[str, ...]
+Mutation = tuple[Union[str, dict[str, str]], ...]
 
 
 class ContactDiff:
@@ -33,7 +33,9 @@ class ContactDiff:
             values: Optional[list[dict[str, Any]]]
         ) -> dict[str, dict[str, Any]]:
             return {
-                x["info_id"]: {k: v for k, v in x.items() if k != "info_id"}
+                x["info_id"]: {
+                    k: str(v) for k, v in x.items() if k != "info_id" and v is not None
+                }
                 for x in values or []
             }
 
@@ -56,24 +58,23 @@ class ContactDiff:
     def _diff_contact_info(
         self,
         field: str,
-        before: Optional[dict[str, Any]],
-        after: Optional[dict[str, Any]],
+        before: Optional[dict[str, str]],
+        after: Optional[dict[str, str]],
         mutation: Mutation,
     ) -> None:
         if (after is None) and (before is not None):
             self.deletes.append((*mutation, field))
         elif (after is not None) and (before is None):
-            self.adds.append((*mutation, *after.values()))
-        elif (after is not None) and (after != before):
-            self.updates.append((*mutation, field, *after.values()))
+            self.adds.append((*mutation, after))
+        elif (after is not None) and (before is not None) and (after != before):
+            values = {k: v for k, v in after.items() if v != before.get(k)}
+            self.updates.append((*mutation, field, values))
 
     def _diff_simple_info(
         self, field: str, before: Any, after: Any, mutation: Mutation
     ) -> None:
         if (after is None) and (before is not None):
             self.deletes.append((*mutation, field))
-        elif (after is not None) and (before is None):
-            self.adds.append((*mutation, field, str(after)))
         elif (after is not None) and (after != before):
             self.updates.append((*mutation, field, str(after)))
 

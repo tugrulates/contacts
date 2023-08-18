@@ -55,7 +55,7 @@ on detailContact(theIds)
             copy theEntry to the end of theResults
         end repeat
 
-        return my encloseList("[", " ", theResults, "]")
+        return my encloseList("{\n  \"data\": [", "   ", theResults, "  ]\n}")
     end tell
 end
 

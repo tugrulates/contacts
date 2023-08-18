@@ -10,6 +10,7 @@
     "suffix": "Jr.",
     "nickname": "Warnen sanft",
     "job_title": "Warner manager",
+    "department": "Warning",
     "organization": "Warner Bros.",
     "phones": [
         {
@@ -26,6 +27,11 @@
             "info_id": "WWWWWWWW-2222-WWWW-2227-WWWWWWWWWWWW",
             "label": "_$!<Home>!$_",
             "value": "+18172000002"
+        },
+        {
+            "info_id": "WWWWWWWW-2222-WWWW-2228-WWWWWWWWWWWW",
+            "label": "_$!<Mobile>!$_",
+            "value": "+18172000003"
         }
     ],
     "emails": [
@@ -38,9 +44,13 @@
             "info_id": "WWWWWWWW-3333-WWWW-3335-WWWWWWWWWWWW",
             "label": "_$!<Home>!$_",
             "value": "warnen+test@warnen.blog"
+        },
+        {
+            "info_id": "WWWWWWWW-3333-WWWW-3336-WWWWWWWWWWWW",
+            "label": "_$!<Home>!$_",
+            "value": "warnensanft@warnen.com"
         }
     ],
-    "department": "Warning",
     "urls": [
         {
             "info_id": "WWWWWWWW-4444-WWWW-4444-WWWWWWWWWWWW",
@@ -54,6 +64,11 @@
         },
         {
             "info_id": "WWWWWWWW-4444-WWWW-4447-WWWWWWWWWWWW",
+            "label": "_$!<HomePage>!$_",
+            "value": "https://www.warnensanft.com"
+        },
+        {
+            "info_id": "WWWWWWWW-4444-WWWW-4448-WWWWWWWWWWWW",
             "label": "_$!<HomePage>!$_",
             "value": "http://warnen.blog"
         }
@@ -80,7 +95,7 @@
         {
             "info_id": "AAAAAAAA-8888-AAAA-8890-AAAAAAAAAAAA",
             "label": "favorite",
-            "value": "July 7, 1977"
+            "value": "July 7"
         }
     ],
     "social_profiles": [

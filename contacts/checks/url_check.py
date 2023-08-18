@@ -30,8 +30,7 @@ class UrlCheck(Check):
                     contact.contact_id,
                     "urls",
                     url.info_id,
-                    "_$!<HomePage>!$_",
-                    url.value,
+                    label="_$!<HomePage>!$_",
                 )
 
             return Problem(
@@ -55,7 +54,7 @@ class UrlCheck(Check):
 
             def fix(address_book: AddressBook) -> None:
                 address_book.update_info(
-                    contact.contact_id, "urls", url.info_id, url.label, formatted
+                    contact.contact_id, "urls", url.info_id, value=formatted
                 )
 
             return Problem(

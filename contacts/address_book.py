@@ -26,7 +26,7 @@ class AddressBook(ABC):
 
     @abstractmethod
     def update_field(self, contact_id: str, field: str, value: str) -> None:
-        """Update a contact field with given value."""
+        """Add or update a contact field with given value."""
 
     @abstractmethod
     def delete_field(self, contact_id: str, field: str) -> None:
@@ -34,12 +34,12 @@ class AddressBook(ABC):
 
     @abstractmethod
     def update_info(
-        self, contact_id: str, field: str, info_id: str, label: str, value: str
+        self, contact_id: str, field: str, info_id: str, **values: str
     ) -> None:
         """Update a contact info with given label and value."""
 
     @abstractmethod
-    def add_info(self, contact_id: str, field: str, label: str, value: str) -> None:
+    def add_info(self, contact_id: str, field: str, **values: str) -> None:
         """Add a contact info."""
 
     @abstractmethod

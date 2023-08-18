@@ -17,11 +17,11 @@ class Category(Enum):
     DATE = "📅"
     PHONE = "📞"
     EMAIL = "📧"
-    URL = "🌐"
+    URL = ("🌐", {"_$!<HomePage>!$_"})
     MESSAGING = "💬"
     ADDRESS = "📫"
     MOBILE = ("📱", {"_$!<Mobile>!$_"})
-    HOME = ("🏠", {"_$!<Home>!$_", "_$!<Main>!$_", "_$!<HomePage>!$_"})
+    HOME = ("🏠", {"_$!<Home>!$_", "_$!<Main>!$_"})
     WORK = ("💼", {"_$!<Work>!$_"})
     SCHOOL = ("🏫", {"_$!<School>!$_"})
     FAX = ("📠", {"_$!<HomeFAX>!$_", "_$!<WorkFAX>!$_", "_$!<OtherFAX>!$_"})

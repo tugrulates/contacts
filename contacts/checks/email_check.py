@@ -30,7 +30,7 @@ class EmailCheck(Check):
 
             def fix(address_book: AddressBook) -> None:
                 address_book.update_info(
-                    contact.contact_id, "emails", email.info_id, email.label, formatted
+                    contact.contact_id, "emails", email.info_id, value=formatted
                 )
 
             return Problem(

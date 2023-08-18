@@ -9,6 +9,8 @@ from typing import Any, Callable, Optional
 from contacts import address_book, contact
 from contacts.category import Category
 
+Fix = Callable[[address_book.AddressBook], Any]
+
 
 class Check(metaclass=abc.ABCMeta):
     """A single problem check."""
@@ -21,11 +23,7 @@ class Check(metaclass=abc.ABCMeta):
 class Problem:
     """Represents something being off in a contact."""
 
-    def __init__(
-        self,
-        message: str,
-        fix: Optional[Callable[[address_book.AddressBook], Any]] = None,
-    ):
+    def __init__(self, message: str, fix: Optional[Fix] = None):
         """Initialize problem details."""
         self.message = message.replace("\n", " ")
         self.fix = fix
