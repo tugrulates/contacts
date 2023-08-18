@@ -18,9 +18,9 @@ class MockAddressBook(AddressBook):
         self._test_data_path = test_data_path
         self._error = False
         self._data: dict[str, Contact] = {}
-        self._updates: list[Mutation] = []
-        self._adds: list[Mutation] = []
-        self._deletes: list[Mutation] = []
+        self.updates: list[Mutation] = []
+        self.adds: list[Mutation] = []
+        self.deletes: list[Mutation] = []
 
     def error(self) -> None:
         """Raise an error upon invocation."""
@@ -60,22 +60,22 @@ class MockAddressBook(AddressBook):
 
     def update_field(self, contact_id: str, field: str, value: str) -> None:
         """Update a contact field with given value."""
-        self._updates.append((contact_id, field, value))
+        self.updates.append((contact_id, field, value))
 
     def delete_field(self, contact_id: str, field: str) -> None:
         """Delete a contact field."""
-        self._deletes.append((contact_id, field))
+        self.deletes.append((contact_id, field))
 
     def update_info(
         self, contact_id: str, field: str, info_id: str, **values: str
     ) -> None:
         """Update a contact info with given label and value."""
-        self._updates.append((contact_id, field, info_id, values))
+        self.updates.append((contact_id, field, info_id, values))
 
     def add_info(self, contact_id: str, field: str, **values: str) -> None:
         """Add a contact info."""
-        self._adds.append((contact_id, field, values))
+        self.adds.append((contact_id, field, values))
 
     def delete_info(self, contact_id: str, field: str, info_id: str) -> None:
         """Delete a contact info."""
-        self._deletes.append((contact_id, field, info_id))
+        self.deletes.append((contact_id, field, info_id))

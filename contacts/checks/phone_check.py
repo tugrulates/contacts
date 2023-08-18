@@ -1,4 +1,4 @@
-"""Enforces a standard phone format."""
+"""PhoneCheck class."""
 
 
 from __future__ import annotations
@@ -35,7 +35,7 @@ class PhoneCheck(Check):
                 )
 
             return Problem(
-                f"Phone number '{phone.value}' should be formatted as '{formatted}'.",
+                f"Phone number '{phone.value}' should be '{formatted}'.",
                 fix=fix,
             )
 

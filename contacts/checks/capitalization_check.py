@@ -1,4 +1,4 @@
-"""Enforces a standard phone format."""
+"""CapitalizationCheck class."""
 
 
 from __future__ import annotations

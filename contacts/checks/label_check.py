@@ -1,4 +1,4 @@
-"""Enforces a standard phone format."""
+"""LabelCheck class."""
 
 
 from __future__ import annotations
@@ -32,7 +32,7 @@ class LabelCheck(Check):
     def check(self, contact: Contact) -> list[Problem]:
         """Check contact."""
 
-        def check_info(field: str, info: ContactInfo) -> Optional[Problem]:
+        def check_label(field: str, info: ContactInfo) -> Optional[Problem]:
             metadata = Contact.metadata(field)
             if not metadata:
                 return None
@@ -64,9 +64,9 @@ class LabelCheck(Check):
             )
 
         problems = chain(
-            (check_info("phones", x) for x in contact.phones),
-            (check_info("emails", x) for x in contact.emails),
-            (check_info("urls", x) for x in contact.urls),
-            (check_info("addresses", x) for x in contact.addresses),
+            (check_label("phones", x) for x in contact.phones),
+            (check_label("emails", x) for x in contact.emails),
+            (check_label("urls", x) for x in contact.urls),
+            (check_label("addresses", x) for x in contact.addresses),
         )
         return [x for x in problems if x]

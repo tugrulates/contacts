@@ -1,6 +1,5 @@
 """Problem checks."""
 
-
 from __future__ import annotations
 
 import abc
@@ -8,8 +7,6 @@ from typing import Any, Callable, Optional
 
 from contacts import address_book, contact
 from contacts.category import Category
-
-Fix = Callable[[address_book.AddressBook], Any]
 
 
 class Check(metaclass=abc.ABCMeta):
@@ -23,7 +20,11 @@ class Check(metaclass=abc.ABCMeta):
 class Problem:
     """Represents something being off in a contact."""
 
-    def __init__(self, message: str, fix: Optional[Fix] = None):
+    def __init__(
+        self,
+        message: str,
+        fix: Optional[Callable[[address_book.AddressBook], Any]] = None,
+    ):
         """Initialize problem details."""
         self.message = message.replace("\n", " ")
         self.fix = fix
@@ -38,12 +39,6 @@ class Problem:
         if self.fix:
             self.fix(address_book)
 
-
-def find_problems(contact: contact.Contact) -> list[Problem]:
-    """Return all problems in a given contact."""
-    from contacts.checks import Checks
-
-    problems = []
-    for check in Checks:
-        problems.extend(check.value.check(contact))
-    return problems
+    def __repr__(self) -> str:
+        """Return problem representation."""
+        return f"Problem({self.message}, {self.fix})"

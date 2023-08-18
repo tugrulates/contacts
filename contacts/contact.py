@@ -15,7 +15,7 @@ from pydantic import RootModel
 from pydantic.dataclasses import dataclass
 
 from contacts.category import Category
-from contacts.problem import Problem, find_problems
+from contacts.problem import Problem
 
 
 @dataclass
@@ -190,7 +190,12 @@ class Contact:
     @cached_property
     def problems(self) -> list[Problem]:
         """Return all problems for this contact."""
-        return find_problems(self)
+        from contacts.checks import Checks
+
+        problems = []
+        for check in Checks:
+            problems.extend(check.value.check(self))
+        return problems
 
     @staticmethod
     def metadata(field: str) -> Optional[FieldMetadata]:

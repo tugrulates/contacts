@@ -1,4 +1,4 @@
-"""Enforces a standard phone format."""
+"""NicknameCheck class."""
 
 
 from __future__ import annotations

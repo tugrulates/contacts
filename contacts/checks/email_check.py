@@ -1,4 +1,4 @@
-"""Enforces a standard phone format."""
+"""EmailCheck class."""
 
 
 from __future__ import annotations
@@ -34,7 +34,7 @@ class EmailCheck(Check):
                 )
 
             return Problem(
-                f"E-mail '{email.value}' should be formatted as '{formatted}'.",
+                f"E-mail '{email.value}' should be '{formatted}'.",
                 fix=fix,
             )
 
