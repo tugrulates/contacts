@@ -4,11 +4,11 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Any, Optional
+from typing import Any, Optional, Union
 
 from contacts.contact import Contact
 
-Mutation = tuple[str | dict[str, str], ...]
+Mutation = tuple[Union[str, dict[str, str]], ...]
 
 
 class ContactDiff:
