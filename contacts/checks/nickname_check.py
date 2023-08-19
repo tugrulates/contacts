@@ -12,6 +12,8 @@ class NicknameCheck(Check):
 
     def check(self, contact: Contact) -> list[Problem]:
         """Check contact."""
-        if contact.nickname and len(contact.nickname.split()) == 1:
-            return [Problem(f"Nickname '{contact.nickname}' is not a full name.")]
-        return []
+        if contact.nickname is None:
+            return []
+        if len(contact.nickname.split()) > 1:
+            return []
+        return [Problem(f"Nickname '{contact.nickname}' is not a full name.")]

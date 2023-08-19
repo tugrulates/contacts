@@ -58,24 +58,24 @@ class MockAddressBook(AddressBook):
             raise RuntimeError(1, "get")
         return self._data[contact_id]
 
-    def update_field(self, contact_id: str, field: str, value: str) -> None:
+    def _update_field(self, contact_id: str, field: str, value: str) -> None:
         """Update a contact field with given value."""
         self.updates.append((contact_id, field, value))
 
-    def delete_field(self, contact_id: str, field: str) -> None:
+    def _delete_field(self, contact_id: str, field: str) -> None:
         """Delete a contact field."""
         self.deletes.append((contact_id, field))
 
-    def update_info(
+    def _update_info(
         self, contact_id: str, field: str, info_id: str, **values: str
     ) -> None:
         """Update a contact info with given label and value."""
         self.updates.append((contact_id, field, info_id, values))
 
-    def add_info(self, contact_id: str, field: str, **values: str) -> None:
+    def _add_info(self, contact_id: str, field: str, **values: str) -> None:
         """Add a contact info."""
         self.adds.append((contact_id, field, values))
 
-    def delete_info(self, contact_id: str, field: str, info_id: str) -> None:
+    def _delete_info(self, contact_id: str, field: str, info_id: str) -> None:
         """Delete a contact info."""
         self.deletes.append((contact_id, field, info_id))

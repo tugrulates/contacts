@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+from functools import partial
 from typing import Optional
 
 from email_validator import EmailNotValidError, validate_email
@@ -28,14 +29,14 @@ class EmailCheck(Check):
             if email.value == formatted:
                 return None
 
-            def fix(address_book: AddressBook) -> None:
-                address_book.update_info(
-                    contact.contact_id, "emails", email.info_id, value=formatted
-                )
-
             return Problem(
                 f"E-mail '{email.value}' should be '{formatted}'.",
-                fix=fix,
+                fix=partial(
+                    AddressBook.update_email,
+                    contact_id=contact.contact_id,
+                    info_id=email.info_id,
+                    value=formatted,
+                ),
             )
 
         problems = [check_value(email) for email in contact.emails]

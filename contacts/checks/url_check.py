@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import socket
+from functools import partial
 from itertools import chain
 from typing import Optional
 from urllib.parse import unwrap, urlparse
@@ -25,17 +26,14 @@ class UrlCheck(Check):
             if url.label != "_$!<Home>!$_":
                 return None
 
-            def fix(address_book: AddressBook) -> None:
-                address_book.update_info(
-                    contact.contact_id,
-                    "urls",
-                    url.info_id,
-                    label="_$!<HomePage>!$_",
-                )
-
             return Problem(
                 f"URL label for '{url.value}' should be <HomePage>.",
-                fix=fix,
+                fix=partial(
+                    AddressBook.update_url,
+                    contact_id=contact.contact_id,
+                    info_id=url.info_id,
+                    label="_$!<HomePage>!$_",
+                ),
             )
 
         def check_value(url: ContactInfo) -> Optional[Problem]:
@@ -53,14 +51,14 @@ class UrlCheck(Check):
             if url.value == formatted:
                 return None
 
-            def fix(address_book: AddressBook) -> None:
-                address_book.update_info(
-                    contact.contact_id, "urls", url.info_id, value=formatted
-                )
-
             return Problem(
                 f"URL '{url.value}' should be '{formatted}'.",
-                fix=fix,
+                fix=partial(
+                    AddressBook.update_url,
+                    contact_id=contact.contact_id,
+                    info_id=url.info_id,
+                    value=formatted,
+                ),
             )
 
         problems = chain(

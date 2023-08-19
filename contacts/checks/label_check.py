@@ -3,20 +3,20 @@
 
 from __future__ import annotations
 
-from itertools import chain
+from functools import partial
 from typing import Optional
 
-from contacts.address_book import AddressBook
 from contacts.category import Category
 from contacts.contact import Contact, ContactInfo
+from contacts.field import ContactFields, ContactInfoMetadata
 from contacts.problem import Check, Problem
 
-FIXABLE: dict[tuple[Optional[str], str], str] = {
-    ("phones", "mobile"): "_$!<Mobile>!$_",
-    ("phones", "mobil"): "_$!<Mobile>!$_",
-    ("phones", "cep telefonu"): "_$!<Mobile>!$_",
-    ("emails", "email"): "_$!<Home>!$_",
-    ("urls", "home"): "_$!<HomePage>!$_",
+FIXABLE: dict[tuple[Optional[ContactInfoMetadata], str], str] = {
+    (ContactFields.PHONE.value, "mobile"): "_$!<Mobile>!$_",
+    (ContactFields.PHONE.value, "mobil"): "_$!<Mobile>!$_",
+    (ContactFields.PHONE.value, "cep telefonu"): "_$!<Mobile>!$_",
+    (ContactFields.EMAIL.value, "email"): "_$!<Home>!$_",
+    (ContactFields.URL.value, "home"): "_$!<HomePage>!$_",
     (None, "home"): "_$!<Home>!$_",
     (None, "ev"): "_$!<Home>!$_",
     (None, "work"): "_$!<Work>!$_",
@@ -29,44 +29,36 @@ FIXABLE: dict[tuple[Optional[str], str], str] = {
 class LabelCheck(Check):
     """Checker for invalid labels."""
 
+    def __init__(self, field: ContactInfoMetadata):
+        """Initialize checker for an info field."""
+        self.field = field
+
     def check(self, contact: Contact) -> list[Problem]:
         """Check contact."""
 
-        def check_label(field: str, info: ContactInfo) -> Optional[Problem]:
-            metadata = Contact.metadata(field)
-            if not metadata:
-                return None
-
+        def check_label(info: ContactInfo) -> Optional[Problem]:
             if Category.from_label(info.label):
                 return None
 
             corrected = FIXABLE.get(
-                (field, info.label.lower()), FIXABLE.get((None, info.label.lower()))
+                (self.field, info.label.lower()),
+                FIXABLE.get((None, info.label.lower())),
             )
 
             if not corrected:
                 return Problem(
-                    f"{metadata.singular} label <{info.label}> is not valid."
+                    f"{self.field.singular} label <{info.label}> is not valid."
                 )
 
-            def fix(address_book: AddressBook) -> None:
-                if corrected:
-                    address_book.update_info(
-                        contact.contact_id,
-                        field,
-                        info.info_id,
-                        label=corrected,
-                    )
-
             return Problem(
-                f"{metadata.singular} label <{info.label}> should be <{corrected}>.",
-                fix=fix,
+                f"{self.field.singular} label <{info.label}> should be <{corrected}>.",
+                fix=partial(
+                    self.field.update,
+                    contact_id=contact.contact_id,
+                    info_id=info.info_id,
+                    label=corrected,
+                ),
             )
 
-        problems = chain(
-            (check_label("phones", x) for x in contact.phones),
-            (check_label("emails", x) for x in contact.emails),
-            (check_label("urls", x) for x in contact.urls),
-            (check_label("addresses", x) for x in contact.addresses),
-        )
+        problems = [check_label(info) for info in self.field.get(contact)]
         return [x for x in problems if x]
