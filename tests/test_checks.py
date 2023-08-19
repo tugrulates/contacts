@@ -110,7 +110,9 @@ def test_prefix_capitalization(
 ) -> None:
     """Test lowercase prefix."""
     contact = Contact(contact_id="ID", name="NAME", prefix="dr.")
-    assert problem_checker.problem(contact).category is Category.WARNING
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "Prefix 'dr.' should be 'Dr.'."
     assert sorted(mock_address_book.updates) == [("ID", "prefix", "Dr.")]
     assert sorted(mock_address_book.adds) == []
     assert sorted(mock_address_book.deletes) == []
@@ -121,7 +123,9 @@ def test_first_name_capitalization(
 ) -> None:
     """Test lowercase first name."""
     contact = Contact(contact_id="ID", name="NAME", first_name="bob")
-    assert problem_checker.problem(contact).category is Category.WARNING
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "First name 'bob' should be 'Bob'."
     assert sorted(mock_address_book.updates) == [("ID", "first_name", "Bob")]
     assert sorted(mock_address_book.adds) == []
     assert sorted(mock_address_book.deletes) == []
@@ -132,7 +136,9 @@ def test_middle_name_capitalization(
 ) -> None:
     """Test lowercase middle name."""
     contact = Contact(contact_id="ID", name="NAME", middle_name="babála")
-    assert problem_checker.problem(contact).category is Category.WARNING
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "Middle name 'babála' should be 'Babála'."
     assert sorted(mock_address_book.updates) == [("ID", "middle_name", "Babála")]
     assert sorted(mock_address_book.adds) == []
     assert sorted(mock_address_book.deletes) == []
@@ -143,7 +149,9 @@ def test_last_name_capitalization(
 ) -> None:
     """Test lowercase last name."""
     contact = Contact(contact_id="ID", name="NAME", last_name="balon")
-    assert problem_checker.problem(contact).category is Category.WARNING
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "Last name 'balon' should be 'Balon'."
     assert sorted(mock_address_book.updates) == [("ID", "last_name", "Balon")]
     assert sorted(mock_address_book.adds) == []
     assert sorted(mock_address_book.deletes) == []
@@ -153,9 +161,11 @@ def test_suffix_capitalization(
     problem_checker: ProblemChecker, mock_address_book: MockAddressBook
 ) -> None:
     """Test lowercase suffix."""
-    contact = Contact(contact_id="ID", name="NAME", last_name="jr.")
-    assert problem_checker.problem(contact).category is Category.WARNING
-    assert sorted(mock_address_book.updates) == [("ID", "last_name", "Jr.")]
+    contact = Contact(contact_id="ID", name="NAME", suffix="jr.")
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "Suffix 'jr.' should be 'Jr.'."
+    assert sorted(mock_address_book.updates) == [("ID", "suffix", "Jr.")]
     assert sorted(mock_address_book.adds) == []
     assert sorted(mock_address_book.deletes) == []
 
@@ -165,7 +175,9 @@ def test_job_title_capitalization(
 ) -> None:
     """Test lowercase job title."""
     contact = Contact(contact_id="ID", name="NAME", job_title="baker")
-    assert problem_checker.problem(contact).category is Category.WARNING
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "Job title 'baker' should be 'Baker'."
     assert sorted(mock_address_book.updates) == [("ID", "job_title", "Baker")]
     assert sorted(mock_address_book.adds) == []
     assert sorted(mock_address_book.deletes) == []
@@ -176,7 +188,9 @@ def test_department_capitalization(
 ) -> None:
     """Test lowercase department."""
     contact = Contact(contact_id="ID", name="NAME", department="bakery")
-    assert problem_checker.problem(contact).category is Category.WARNING
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "Department 'bakery' should be 'Bakery'."
     assert sorted(mock_address_book.updates) == [("ID", "department", "Bakery")]
     assert sorted(mock_address_book.adds) == []
     assert sorted(mock_address_book.deletes) == []
@@ -199,7 +213,9 @@ def test_organization_ignores_lowercase_organization() -> None:
 def test_nickname_single_word(problem_checker: ProblemChecker) -> None:
     """Test single name nickname."""
     contact = Contact(contact_id="ID", name="NAME", nickname="Bob")
-    assert problem_checker.problem(contact).category is Category.ERROR
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.ERROR
+    assert problem.message == "Nickname 'Bob' is not a full name."
 
 
 def test_fixable_phone_label(
@@ -213,7 +229,9 @@ def test_fixable_phone_label(
             ContactInfo(info_id="PID", label="mobile", value="+1111111111"),
         ],
     )
-    assert problem_checker.problem(contact).category is Category.WARNING
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "Phone label <mobile> should be <_$!<Mobile>!$_>."
     assert sorted(mock_address_book.updates) == [
         ("ID", "phones", "PID", {"label": "_$!<Mobile>!$_"})
     ]
@@ -230,7 +248,9 @@ def test_unfixable_phone_label(problem_checker: ProblemChecker) -> None:
             ContactInfo(info_id="PID", label="pager", value="+1111111111"),
         ],
     )
-    assert problem_checker.problem(contact).category is Category.ERROR
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.ERROR
+    assert problem.message == "Phone label <pager> is not valid."
 
 
 def test_fixable_email_label(
@@ -244,7 +264,9 @@ def test_fixable_email_label(
             ContactInfo(info_id="EID", label="email", value="test@h.com"),
         ],
     )
-    assert problem_checker.problem(contact).category is Category.WARNING
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "E-mail label <email> should be <_$!<Home>!$_>."
     assert sorted(mock_address_book.updates) == [
         ("ID", "emails", "EID", {"label": "_$!<Home>!$_"})
     ]
@@ -261,7 +283,9 @@ def test_unfixable_email_label(problem_checker: ProblemChecker) -> None:
             ContactInfo(info_id="EID", label="backup", value="test@h.com"),
         ],
     )
-    assert problem_checker.problem(contact).category is Category.ERROR
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.ERROR
+    assert problem.message == "E-mail label <backup> is not valid."
 
 
 def test_fixable_url_label(
@@ -275,7 +299,9 @@ def test_fixable_url_label(
             ContactInfo(info_id="UID", label="home", value="http://h.com"),
         ],
     )
-    assert problem_checker.problem(contact).category is Category.WARNING
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "URL label <home> should be <_$!<HomePage>!$_>."
     assert sorted(mock_address_book.updates) == [
         ("ID", "urls", "UID", {"label": "_$!<HomePage>!$_"})
     ]
@@ -294,7 +320,9 @@ def test_fixable_url_wrong_home_label(
             ContactInfo(info_id="UID", label="_$!<Home>!$_", value="http://h.com"),
         ],
     )
-    assert problem_checker.problem(contact).category is Category.WARNING
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "URL label for 'http://h.com' should be <HomePage>."
     assert sorted(mock_address_book.updates) == [
         ("ID", "urls", "UID", {"label": "_$!<HomePage>!$_"})
     ]
@@ -311,7 +339,9 @@ def test_unfixable_url_label(problem_checker: ProblemChecker) -> None:
             ContactInfo(info_id="UID", label="blog", value="http://h.com"),
         ],
     )
-    assert problem_checker.problem(contact).category is Category.ERROR
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.ERROR
+    assert problem.message == "URL label <blog> is not valid."
 
 
 def test_fixable_address_label(
@@ -325,7 +355,9 @@ def test_fixable_address_label(
             ContactAddress(info_id="AID", label="work", value="ADDRESS"),
         ],
     )
-    assert problem_checker.problem(contact).category is Category.WARNING
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "Address label <work> should be <_$!<Work>!$_>."
     assert sorted(mock_address_book.updates) == [
         ("ID", "addresses", "AID", {"label": "_$!<Work>!$_"})
     ]
@@ -342,7 +374,9 @@ def test_unfixable_address_label(problem_checker: ProblemChecker) -> None:
             ContactAddress(info_id="AID", label="mailbox", value="ADDRESS"),
         ],
     )
-    assert problem_checker.problem(contact).category is Category.ERROR
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.ERROR
+    assert problem.message == "Address label <mailbox> is not valid."
 
 
 def test_mixed_case_custom_date_label(
@@ -356,7 +390,9 @@ def test_mixed_case_custom_date_label(
             ContactInfo(info_id="DID", label="Favorite", value="DATE"),
         ],
     )
-    assert problem_checker.problem(contact).category is Category.WARNING
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "Custom date label <Favorite> should be <favorite>."
     assert sorted(mock_address_book.updates) == [
         ("ID", "custom_dates", "DID", {"label": "favorite"})
     ]
@@ -377,7 +413,12 @@ def test_fixable_phone_number(
             )
         ],
     )
-    assert problem_checker.problem(contact).category is Category.WARNING
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert (
+        problem.message
+        == "Phone number ' +1 (800) WEAREBAKERS' should be '+180093273225377'."
+    )
     assert sorted(mock_address_book.updates) == [
         ("ID", "phones", "PID", {"value": "+180093273225377"})
     ]
@@ -396,7 +437,9 @@ def test_unfixable_phone_number(problem_checker: ProblemChecker) -> None:
             )
         ],
     )
-    assert problem_checker.problem(contact).category is Category.ERROR
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.ERROR
+    assert problem.message == "Phone number '+1 (NO) WEARENOTBAKERS' is not valid."
 
 
 def test_fixable_email_address(
@@ -410,7 +453,9 @@ def test_fixable_email_address(
             ContactInfo(info_id="EID", label="_$!<Home>!$_", value=" test@H.COM"),
         ],
     )
-    assert problem_checker.problem(contact).category is Category.WARNING
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "E-mail ' test@H.COM' should be 'test@h.com'."
     assert sorted(mock_address_book.updates) == [
         ("ID", "emails", "EID", {"value": "test@h.com"})
     ]
@@ -427,7 +472,9 @@ def test_unfixable_email_address(problem_checker: ProblemChecker) -> None:
             ContactInfo(info_id="EID", label="_$!<Home>!$_", value="test@"),
         ],
     )
-    assert problem_checker.problem(contact).category is Category.ERROR
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.ERROR
+    assert problem.message == "E-mail 'test@' is not valid."
 
 
 def test_fixable_url(
@@ -441,7 +488,9 @@ def test_fixable_url(
             ContactInfo(info_id="UID", label="_$!<HomePage>!$_", value=" HTTP://h.com"),
         ],
     )
-    assert problem_checker.problem(contact).category is Category.WARNING
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "URL ' HTTP://h.com' should be 'http://h.com'."
     assert sorted(mock_address_book.updates) == [
         ("ID", "urls", "UID", {"value": "http://h.com"})
     ]
@@ -458,7 +507,9 @@ def test_unfixable_url(problem_checker: ProblemChecker) -> None:
             ContactInfo(info_id="UID", label="_$!<HomePage>!$_", value="1.1.1.1"),
         ],
     )
-    assert problem_checker.problem(contact).category is Category.ERROR
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.ERROR
+    assert problem.message == "URL '1.1.1.1' is not valid."
 
 
 def test_duplicate_phones(
@@ -474,7 +525,9 @@ def test_duplicate_phones(
             ContactInfo(info_id="PID3", label="_$!<Home>!$_", value="+1111111112"),
         ],
     )
-    assert problem_checker.problem(contact).category == Category.WARNING
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "Phone '+1111111111' has duplicate(s)."
     assert sorted(mock_address_book.updates) == []
     assert sorted(mock_address_book.adds) == []
     assert sorted(mock_address_book.deletes) == [("ID", "phones", "PID2")]
@@ -493,7 +546,9 @@ def test_duplicate_emails(
             ContactInfo(info_id="EID3", label="_$!<School>!$_", value="test@s.com"),
         ],
     )
-    assert problem_checker.problem(contact).category == Category.WARNING
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "E-mail 'test@h.com' has duplicate(s)."
     assert sorted(mock_address_book.updates) == []
     assert sorted(mock_address_book.adds) == []
     assert sorted(mock_address_book.deletes) == [("ID", "emails", "EID2")]
@@ -512,7 +567,9 @@ def test_duplicate_urls(
             ContactInfo(info_id="UID3", label="_$!<HomePage>!$_", value="http://h.net"),
         ],
     )
-    assert problem_checker.problem(contact).category == Category.WARNING
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "URL 'http://h.com' has duplicate(s)."
     assert sorted(mock_address_book.updates) == []
     assert sorted(mock_address_book.adds) == []
     assert sorted(mock_address_book.deletes) == [("ID", "urls", "UID2")]
@@ -531,7 +588,9 @@ def test_duplicate_addresses(
             ContactAddress(info_id="AID3", label="_$!<School>!$_", value="ANOTHER"),
         ],
     )
-    assert problem_checker.problem(contact).category == Category.WARNING
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "Address 'ADDRESS' has duplicate(s)."
     assert sorted(mock_address_book.updates) == []
     assert sorted(mock_address_book.adds) == []
     assert sorted(mock_address_book.deletes) == [("ID", "addresses", "AID2")]
@@ -551,7 +610,9 @@ def test_duplicate_social_profiles(
             ContactSocialProfile(info_id="SID4", label="LinkedIn", value="USER"),
         ],
     )
-    assert problem_checker.problem(contact).category == Category.WARNING
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "Social profile 'USER <LinkedIn>' has duplicate(s)."
     assert sorted(mock_address_book.updates) == []
     assert sorted(mock_address_book.adds) == []
     assert sorted(mock_address_book.deletes) == [("ID", "social_profiles", "SID4")]
@@ -570,7 +631,9 @@ def test_duplicate_instant_messages(
             ContactInfo(info_id="IID3", label="Signal", value="USER"),
         ],
     )
-    assert problem_checker.problem(contact).category == Category.WARNING
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "Instant message 'USER <Signal>' has duplicate(s)."
     assert sorted(mock_address_book.updates) == []
     assert sorted(mock_address_book.adds) == []
     assert sorted(mock_address_book.deletes) == [("ID", "instant_messages", "IID3")]
