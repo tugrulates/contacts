@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+from functools import partial
 from typing import Optional
 
 import phonenumbers
@@ -29,14 +30,14 @@ class PhoneCheck(Check):
             if phone.value == formatted:
                 return None
 
-            def fix(address_book: AddressBook) -> None:
-                address_book.update_info(
-                    contact.contact_id, "phones", phone.info_id, value=formatted
-                )
-
             return Problem(
                 f"Phone number '{phone.value}' should be '{formatted}'.",
-                fix=fix,
+                fix=partial(
+                    AddressBook.update_phone,
+                    contact_id=contact.contact_id,
+                    info_id=phone.info_id,
+                    value=formatted,
+                ),
             )
 
         problems = [check_value(phone) for phone in contact.phones]

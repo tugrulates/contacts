@@ -15,11 +15,11 @@
 │                        │    │ Spain <jardin>                                │
 │               Problems │ ⛔ │ Nickname 'Error' is not a full name.          │
 │                        │ ⛔ │ Phone label <call> is not valid.              │
-│                        │ ⛔ │ E-mail label <@@@> is not valid.              │
-│                        │ ⛔ │ URL label <blog> is not valid.                │
-│                        │ ⛔ │ Address label <jardin> is not valid.          │
 │                        │ ⛔ │ Phone number '+1 800 NOT A PHONE NUMBER' is   │
 │                        │    │ not valid.                                    │
+│                        │ ⛔ │ E-mail label <@@@> is not valid.              │
 │                        │ ⛔ │ E-mail 'NOT AN E-MAIL ADDRESS' is not valid.  │
+│                        │ ⛔ │ URL label <blog> is not valid.                │
 │                        │ ⛔ │ URL 'NOT A URL' is not valid.                 │
+│                        │ ⛔ │ Address label <jardin> is not valid.          │
 ╰────────────────────────┴────┴───────────────────────────────────────────────╯

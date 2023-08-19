@@ -17,13 +17,12 @@ class HomePageCheck(Check):
         def fix(address_book: AddressBook) -> None:
             """Replace home page with a URL."""
             if contact.home_page:
-                address_book.add_info(
+                address_book.add_url(
                     contact.contact_id,
-                    "urls",
                     label="_$!<HomePage>!$_",
                     value=contact.home_page,
                 )
-                address_book.delete_field(contact.contact_id, "home_page")
+                address_book.delete_home_page(contact.contact_id)
 
         if contact.home_page:
             return [

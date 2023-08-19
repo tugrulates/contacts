@@ -1,7 +1,6 @@
 """A CLI tool to manage contacts."""
 
 
-import dataclasses
 from typing import Annotated, Optional
 
 import typer
@@ -14,6 +13,7 @@ from contacts import contact, keyword
 from contacts.address_book import AddressBook
 from contacts.applescript_address_book import AppleScriptBasedAddressBook
 from contacts.category import Category
+from contacts.field import ContactFieldMetadata, ContactFields, ContactInfoMetadata
 
 app = typer.Typer(help=__doc__)
 
@@ -30,24 +30,24 @@ def table(person: contact.Contact, width: Optional[int]) -> Table:
     table.add_column(person.category.icon)
     table.add_column(person.name, ratio=2)
 
-    for field in dataclasses.fields(person):
-        metadata = contact.Contact.metadata(field.name)
-        value = getattr(person, field.name)
-        if not (metadata and value):
-            continue
-        if isinstance(value, list):
-            for index, info in enumerate(value):
+    for field in ContactFields:
+        value = field.value.get(person)
+        if isinstance(field.value, ContactFieldMetadata):
+            value = field.value.get(person)
+            if not value:
+                continue
+            table.add_row(field.value.singular, field.value.category.icon, value)
+        elif isinstance(field.value, ContactInfoMetadata):
+            for index, info in enumerate(field.value.get(person)):
                 if isinstance(info, contact.ContactInfo):
-                    category = Category.from_label(info.label, metadata.category)
+                    category = Category.from_label(info.label, field.value.category)
                     if category is None or category == Category.OTHER:
-                        category = metadata.category
+                        category = field.value.category
                     table.add_row(
-                        metadata.plural() if index == 0 else None,
+                        field.value.plural if index == 0 else None,
                         category.icon,
                         str(info),
                     )
-        else:
-            table.add_row(metadata.singular, metadata.category.icon, value)
 
     for index, problem in enumerate(person.problems):
         table.add_row(
