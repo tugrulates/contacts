@@ -24,7 +24,7 @@ class App(typer.Typer):
     def __call__(self, *args: Any, **kwargs: Any) -> Any:
         """Make the first arg 'main', unless it is a known command."""
         if sys.argv[1] not in ["config"]:
-            sys.argv = [sys.argv[0], "main", sys.argv[1]]
+            sys.argv = [sys.argv[0], "main", *sys.argv[1:]]
         return super().__call__(*args, **kwargs)
 
 
