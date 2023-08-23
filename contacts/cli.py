@@ -1,10 +1,11 @@
 """A CLI tool to manage contacts."""
 
 
-from typing import Annotated, Optional
+import sys
+from typing import Annotated, Any, Optional
 
 import typer
-from rich import box
+from rich import box, print_json
 from rich.console import Console
 from rich.progress import Progress
 from rich.table import Table
@@ -13,9 +14,32 @@ from contacts import contact, keyword
 from contacts.address_book import AddressBook
 from contacts.applescript_address_book import AppleScriptBasedAddressBook
 from contacts.category import Category
+from contacts.config import get_config
 from contacts.field import ContactFieldMetadata, ContactFields, ContactInfoMetadata
 
-app = typer.Typer(help=__doc__)
+
+class App(typer.Typer):
+    """Typer application with a default command."""
+
+    def __call__(self, *args: Any, **kwargs: Any) -> Any:
+        """Make the first arg 'main', unless it is a known command."""
+        if sys.argv[1] not in ["config"]:
+            sys.argv = [sys.argv[0], "main", sys.argv[1]]
+        return super().__call__(*args, **kwargs)
+
+
+app = App(help=__doc__)
+
+
+@app.command()
+def config(show: bool = False, romanize: Optional[str] = None) -> None:
+    """Manage configuration."""
+    config = get_config()
+    if romanize is not None:
+        config.romanize = romanize
+    config.dump()
+    if show:
+        print_json(config.json())
 
 
 def with_icon(person: contact.Contact) -> str:
@@ -65,26 +89,26 @@ def get_address_book(brief: bool, batch: int) -> AddressBook:
 
 
 @app.command()
-def find(
+def main(
+    ctx: typer.Context,
     keywords: Annotated[Optional[list[str]], typer.Argument()] = None,
     *,
-    extend: bool = True,
     detail: bool = False,
     json: bool = False,
     check: bool = False,
     fix: bool = False,
-    applescript: bool = True,
     batch: Optional[int] = None,
     width: Optional[int] = None,
     safe_box: bool = True,
 ) -> None:
-    """List contacts matching given keyword."""
+    """Manage contacts matching given keyword."""
+    if ctx.invoked_subcommand is not None:
+        return
+
     console = Console(width=width, safe_box=safe_box)
     with Progress(transient=True, console=console) as progress:
         task = progress.add_task("Counting contacts")
-        keywords = keywords or []
-        if applescript:
-            keywords = keyword.prepare_keywords(keywords, extend=extend)
+        keywords = keyword.prepare_keywords(keywords or [])
 
         address_book = get_address_book(
             brief=not (detail or json or check or fix),
