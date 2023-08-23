@@ -7,8 +7,8 @@ import json
 from pathlib import Path
 
 import typer
+from pydantic import RootModel
 from pydantic.dataclasses import dataclass
-from pydantic.json import pydantic_encoder
 
 CONFIG_PATH = Path(typer.get_app_dir("contacts")) / "config.json"
 
@@ -21,7 +21,7 @@ class Config:
 
     def json(self) -> str:
         """Return config as JSON string."""
-        return json.dumps(self, indent=4, default=pydantic_encoder)
+        return RootModel[Config](self).model_dump_json()
 
     def dump(self) -> None:
         """Write config to config file."""

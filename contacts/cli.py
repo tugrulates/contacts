@@ -39,7 +39,7 @@ def config(show: bool = False, romanize: Optional[str] = None) -> None:
         config.romanize = romanize
     config.dump()
     if show:
-        print_json(config.json())
+        print_json(config.json(), indent=4)
 
 
 def with_icon(person: contact.Contact) -> str:

@@ -1,6 +1,7 @@
 """Unittests for cli."""
 
 
+import importlib
 import json
 from pathlib import Path
 
@@ -18,7 +19,7 @@ runner = CliRunner(mix_stderr=True)
 
 
 @pytest.fixture(scope="session", autouse=True)
-def test_environment() -> None:
+def environment() -> None:
     """Initialize the test environment."""
     # disable DNS checks for e-mail address and URL checks
     email_validator.TEST_ENVIRONMENT = True
@@ -26,10 +27,12 @@ def test_environment() -> None:
 
 
 @pytest.fixture(autouse=True)
-def cfg(monkeypatch: pytest.MonkeyPatch) -> config.Config:
+def cfg(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> config.Config:
     """Initialize the test configuration."""
+    monkeypatch.setattr(config, "CONFIG_PATH", tmp_path / "config.json")
     cfg = config.Config()
-    monkeypatch.setattr(config, "get_config", lambda: cfg)
+    cfg.dump()
+    importlib.reload(cli)
     return cfg
 
 
@@ -61,6 +64,25 @@ def test_help() -> None:
     result = runner.invoke(cli.app, "main --help")
     assert result.exit_code == 0
     assert "Usage:" in result.stdout
+
+
+def test_config() -> None:
+    """Test setting config."""
+    result = runner.invoke(cli.app, "config --romanize öøÑ")
+    assert result.exit_code == 0
+    assert not result.stdout.strip()
+    assert config.get_config() == config.Config(romanize="öøÑ")
+
+
+def test_config_show() -> None:
+    """Test showing config."""
+    result = runner.invoke(cli.app, "config --show --romanize öøÑ")
+    assert result.exit_code == 0
+    assert result.stdout.strip().split("\n") == [
+        "{",
+        '    "romanize": "öøÑ"',
+        "}",
+    ]
 
 
 def test_applescript_error(mock_address_book: MockAddressBook) -> None:
