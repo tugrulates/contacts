@@ -19,7 +19,9 @@ class Config(BaseModel, extra="allow"):
     def dump(self) -> None:
         """Write config to config file."""
         CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
-        CONFIG_PATH.write_text(self.model_dump_json(), encoding="utf-8")
+        CONFIG_PATH.write_text(
+            self.model_dump_json(exclude_defaults=True), encoding="utf-8"
+        )
 
 
 def get_config() -> Config:
