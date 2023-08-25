@@ -33,8 +33,8 @@ class EmailCheck(Check):
                 f"E-mail '{email.value}' should be '{formatted}'.",
                 fix=partial(
                     AddressBook.update_email,
-                    contact_id=contact.contact_id,
-                    info_id=email.info_id,
+                    contact_id=contact.id,
+                    info_id=email.id,
                     value=formatted,
                 ),
             )

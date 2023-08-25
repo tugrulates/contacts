@@ -1,23 +1,23 @@
 {
-    "contact_id": "CCCCCCCC-1111-CCCC-1111-CCCCCCCCCCCC:ABPerson",
+    "id": "CCCCCCCC-1111-CCCC-1111-CCCCCCCCCCCC:ABPerson",
     "name": "Carnival Balloon Co.",
     "is_company": true,
     "has_image": true,
     "phones": [
         {
-            "info_id": "CCCCCCCC-2222-CCCC-2222-CCCCCCCCCCCC",
+            "id": "CCCCCCCC-2222-CCCC-2222-CCCCCCCCCCCC",
             "label": "_$!<Mobile>!$_",
             "value": "+33333333333"
         }
     ],
     "emails": [
         {
-            "info_id": "CCCCCCCC-3333-CCCC-3333-CCCCCCCCCCCC",
+            "id": "CCCCCCCC-3333-CCCC-3333-CCCCCCCCCCCC",
             "label": "_$!<Work>!$_",
             "value": "order@carnivalballoon.com"
         },
         {
-            "info_id": "CCCCCCCC-4444-CCCC-4444-CCCCCCCCCCCC",
+            "id": "CCCCCCCC-4444-CCCC-4444-CCCCCCCCCCCC",
             "label": "_$!<Work>!$_",
             "value": "help@carnivalballoon.com"
         }

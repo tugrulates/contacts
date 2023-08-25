@@ -3,10 +3,10 @@
 --   $ osascript brief.applescript [contact_id_1] [contact_id_2] ... [contact_id_N]
 --   stdout:
 --   [
---     { "contact_id": "[contact_id_1]", "name": "[name_1]", "is_company": [company_1] },
---     { "contact_id": "[contact_id_1]", "name": "[name_2]", "is_company": [company_2] },
+--     { "id": "[contact_id_1]", "name": "[name_1]", "is_company": [company_1] },
+--     { "id": "[contact_id_1]", "name": "[name_2]", "is_company": [company_2] },
 --     ...
---     { "contact_id": "[contact_id_N]", "name": "[name_N]", "is_company": [company_N] }
+--     { "id": "[contact_id_N]", "name": "[name_N]", "is_company": [company_N] }
 --   ]
 
 
@@ -50,7 +50,7 @@ on detailContact(theIds)
             set theContact to person id theId
             set theName to name of theContact
             set theCompany to company of theContact
-            set theEntry to " { \"contact_id\": \"" & theId & "\", \"name\": \"" & theName & "\", \"is_company\": " & theCompany & " }"
+            set theEntry to " { \"id\": \"" & theId & "\", \"name\": \"" & theName & "\", \"is_company\": " & theCompany & " }"
 
             copy theEntry to the end of theResults
         end repeat

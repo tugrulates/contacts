@@ -39,7 +39,7 @@ def config(show: bool = False, romanize: Optional[str] = None) -> None:
         config.romanize = romanize
     config.dump()
     if show:
-        print_json(config.json(), indent=4)
+        print_json(config.model_dump_json(), indent=4)
 
 
 def with_icon(person: contact.Contact) -> str:
@@ -123,7 +123,7 @@ def main(
                 for problem in person.problems:
                     progress.update(task, description=f"Fixing {with_icon(person)}")
                     problem.try_fix(address_book)
-                person = address_book.get(person.contact_id)
+                person = address_book.get(person.id)
 
             if detail:
                 console.print(table(person, width))
@@ -134,7 +134,7 @@ def main(
             progress.update(task, advance=1, description="Fetching contacts")
 
         if json:
-            console.print_json(people.dumps(), indent=4)
+            console.print_json(people.model_dump_json(exclude_defaults=True), indent=4)
 
 
 if __name__ == "__main__":

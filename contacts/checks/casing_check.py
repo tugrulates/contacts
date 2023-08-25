@@ -32,7 +32,7 @@ class CasingCheck(Check):
                 f"{self.field.singular} '{name}' should be '{name.capitalize()}'.",
                 fix=partial(
                     self.field.update,
-                    contact_id=contact.contact_id,
+                    contact_id=contact.id,
                     value=name.capitalize(),
                 ),
             )

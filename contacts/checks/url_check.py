@@ -30,8 +30,8 @@ class UrlCheck(Check):
                 f"URL label for '{url.value}' should be <HomePage>.",
                 fix=partial(
                     AddressBook.update_url,
-                    contact_id=contact.contact_id,
-                    info_id=url.info_id,
+                    contact_id=contact.id,
+                    info_id=url.id,
                     label="_$!<HomePage>!$_",
                 ),
             )
@@ -55,8 +55,8 @@ class UrlCheck(Check):
                 f"URL '{url.value}' should be '{formatted}'.",
                 fix=partial(
                     AddressBook.update_url,
-                    contact_id=contact.contact_id,
-                    info_id=url.info_id,
+                    contact_id=contact.id,
+                    info_id=url.id,
                     value=formatted,
                 ),
             )

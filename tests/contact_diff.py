@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-import dataclasses
 from typing import Any, Optional, Union
 
 from contacts.contact import Contact
@@ -19,9 +18,7 @@ class ContactDiff:
         self.updates: list[Mutation] = []
         self.adds: list[Mutation] = []
         self.deletes: list[Mutation] = []
-        self._diff(
-            dataclasses.asdict(before), dataclasses.asdict(after), (before.contact_id,)
-        )
+        self._diff(before.model_dump(), after.model_dump(), (before.id,))
 
     def _diff(
         self,
@@ -33,14 +30,14 @@ class ContactDiff:
             values: Optional[list[dict[str, Any]]]
         ) -> dict[str, dict[str, Any]]:
             return {
-                x["info_id"]: {
-                    k: str(v) for k, v in x.items() if k != "info_id" and v is not None
+                x["id"]: {
+                    k: str(v) for k, v in x.items() if k != "id" and v is not None
                 }
                 for x in values or []
             }
 
         for key in before.keys() | after.keys():
-            if key in ["contact_id", "name", "is_company", "info_id"]:
+            if key in ["id", "name", "is_company", "id"]:
                 continue
             before_value = before.get(key)
             after_value = after.get(key)

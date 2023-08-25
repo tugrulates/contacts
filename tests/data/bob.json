@@ -1,5 +1,5 @@
 {
-    "contact_id": "BBBBBBBB-1111-BBBB-1111-BBBBBBBBBBBB:ABPerson",
+    "id": "BBBBBBBB-1111-BBBB-1111-BBBBBBBBBBBB:ABPerson",
     "name": "Bob Balloon",
     "first_name": "Bob",
     "middle_name": "Babála",
@@ -7,7 +7,7 @@
     "job_title": "Baker",
     "phones": [
         {
-            "info_id": "BBBBBBBB-2222-BBBB-2222-BBBBBBBBBBBB",
+            "id": "BBBBBBBB-2222-BBBB-2222-BBBBBBBBBBBB",
             "label": "_$!<Mobile>!$_",
             "value": "+12012000000"
         }

@@ -5,20 +5,20 @@
 --   {
 --     "data": [
 --       {
---         "contact_id": "[contact_id_1]",
+--         "id": "[contact_id_1]",
 --         "name": "[name_1]",
 --         ...
 --         "notes": "[notes_1]"
 --       },
 --       {
---         "contact_id": "[contact_id_2]",
+--         "id": "[contact_id_2]",
 --         "name": "[name_2]",
 --         ...
 --         "notes": "[notes_2]"
 --       },
 --       ...
 --       {
---         "contact_id": "[contact_id_N]",
+--         "id": "[contact_id_N]",
 --         "name": "[name_N]",
 --         ...
 --         "notes": "[notes_N]"
@@ -92,7 +92,7 @@ on logContactInfo(theName, theInfos, areDates)
                 set theEntries to {}
 
                 tell theInfo
-                    copy my logContactValue("info_id", id) to the end of theEntries
+                    copy my logContactValue("id", id) to the end of theEntries
                     copy my logContactValue("label", label) to the end of theEntries
                     if areDates
                         copy my logContactDate("value", value) to the end of theEntries
@@ -120,7 +120,7 @@ on logContactAddresses(theContact)
                     set theEntries to {}
 
                     tell theAddress
-                        copy my logContactValue("info_id", id) to the end of theEntries
+                        copy my logContactValue("id", id) to the end of theEntries
                         copy my logContactValue("label", label) to the end of theEntries
                         copy my logContactValue("value", formatted address) to the end of theEntries
                         copy my logContactValue("country_code", country code) to the end of theEntries
@@ -163,7 +163,7 @@ on logContactSocialProfiles(theContact)
                     set theEntries to {}
 
                     tell theSocialProfile
-                        copy my logContactValue("info_id", id) to the end of theEntries
+                        copy my logContactValue("id", id) to the end of theEntries
                         copy my logContactValue("label", service name) to the end of theEntries
                         copy my logContactValue("value", user name) to the end of theEntries
                         copy my logContactValue("user_identifier", user identifier) to the end of theEntries
@@ -191,7 +191,7 @@ on logInstantMessages(theContact)
 
                     tell theInstantMessage
                         --- value is missing
-                        copy my logContactValue("info_id", id) to the end of theEntries
+                        copy my logContactValue("id", id) to the end of theEntries
                         copy my logContactValue("label", service name) to the end of theEntries
                         copy my logContactValue("value", user name) to the end of theEntries
                     end tell
@@ -217,7 +217,7 @@ on detailContact(theIds)
             set theEntries to {}
 
             tell theContact
-                copy my logContactValue("contact_id", id) to the end of theEntries
+                copy my logContactValue("id", id) to the end of theEntries
 
                 copy my logContactValue("name", name) to the end of theEntries
                 copy my logContactValue("has_image", image exists) to the end of theEntries

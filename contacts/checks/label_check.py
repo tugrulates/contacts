@@ -54,8 +54,8 @@ class LabelCheck(Check):
                 f"{self.field.singular} label <{info.label}> should be <{corrected}>.",
                 fix=partial(
                     self.field.update,
-                    contact_id=contact.contact_id,
-                    info_id=info.info_id,
+                    contact_id=contact.id,
+                    info_id=info.id,
                     label=corrected,
                 ),
             )

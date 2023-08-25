@@ -1,40 +1,40 @@
 {
-    "contact_id": "WWWWWWWW-1111-WWWW-1111-WWWWWWWWWWWW:ABPerson",
+    "id": "WWWWWWWW-1111-WWWW-1111-WWWWWWWWWWWW:ABPerson",
     "name": "Dr. Warnen Bitte Sanft Jr.",
     "has_image": false,
     "first_name": "Warnen",
     "last_name": "Sanft",
     "phones": [
         {
-            "info_id": "WWWWWWWW-2222-WWWW-2222-WWWWWWWWWWWW",
+            "id": "WWWWWWWW-2222-WWWW-2222-WWWWWWWWWWWW",
             "label": "_$!<Mobile>!$_",
             "value": "+18172000003"
         }
     ],
     "emails": [
         {
-            "info_id": "WWWWWWWW-3333-WWWW-3333-WWWWWWWWWWWW",
+            "id": "WWWWWWWW-3333-WWWW-3333-WWWWWWWWWWWW",
             "label": "_$!<Home>!$_",
             "value": "warnensanft@warnen.com"
         }
     ],
     "urls": [
         {
-            "info_id": "WWWWWWWW-4444-WWWW-4444-WWWWWWWWWWWW",
+            "id": "WWWWWWWW-4444-WWWW-4444-WWWWWWWWWWWW",
             "label": "_$!<HomePage>!$_",
             "value": "http://warnen.blog"
         }
     ],
     "custom_dates": [
         {
-            "info_id": "AAAAAAAA-8888-AAAA-8888-AAAAAAAAAAAA",
+            "id": "AAAAAAAA-8888-AAAA-8888-AAAAAAAAAAAA",
             "label": "favorite",
             "value": "July 7"
         }
     ],
     "social_profiles": [
         {
-            "info_id": "AAAAAAAA-1010-AAAA-1010-AAAAAAAAAAAA",
+            "id": "AAAAAAAA-1010-AAAA-1010-AAAAAAAAAAAA",
             "label": "LinkedIn",
             "value": "warnensanft",
             "url": "http://www.linkedin.com/in/warnensanft"

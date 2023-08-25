@@ -1,5 +1,5 @@
 {
-    "contact_id": "EEEEEEEE-1111-EEEE-1111-EEEEEEEEEEEEE:ABPerson",
+    "id": "EEEEEEEE-1111-EEEE-1111-EEEEEEEEEEEEE:ABPerson",
     "name": "Errona Tragedia",
     "is_company": false,
     "has_image": false,
@@ -8,43 +8,43 @@
     "nickname": "Error",
     "phones": [
         {
-            "info_id": "EEEEEEEE-2222-EEEE-2222-EEEEEEEEEEEEE",
+            "id": "EEEEEEEE-2222-EEEE-2222-EEEEEEEEEEEEE",
             "label": "_$!<Mobile>!$_",
             "value": "+1 800 NOT A PHONE NUMBER"
         },
         {
-            "info_id": "EEEEEEEE-2222-EEEE-2223-EEEEEEEEEEEEE",
+            "id": "EEEEEEEE-2222-EEEE-2223-EEEEEEEEEEEEE",
             "label": "call",
             "value": "+12222222222"
         }
     ],
     "emails": [
         {
-            "info_id": "EEEEEEEE-3333-EEEE-3333-EEEEEEEEEEEEE",
+            "id": "EEEEEEEE-3333-EEEE-3333-EEEEEEEEEEEEE",
             "label": "_$!<Home>!$_",
             "value": "NOT AN E-MAIL ADDRESS"
         },
         {
-            "info_id": "EEEEEEEE-3333-EEEE-3333-EEEEEEEEEEEEE",
+            "id": "EEEEEEEE-3333-EEEE-3333-EEEEEEEEEEEEE",
             "label": "@@@",
             "value": "errona@tragedia.net"
         }
     ],
     "urls": [
         {
-            "info_id": "EEEEEEEE-4444-EEEE-4444-EEEEEEEEEEEEE",
+            "id": "EEEEEEEE-4444-EEEE-4444-EEEEEEEEEEEEE",
             "label": "_$!<Work>!$_",
             "value": "NOT A URL"
         },
         {
-            "info_id": "EEEEEEEE-4444-EEEE-4445-EEEEEEEEEEEEE",
+            "id": "EEEEEEEE-4444-EEEE-4445-EEEEEEEEEEEEE",
             "label": "blog",
             "value": "https://www.tragedia.net"
         }
     ],
     "addresses": [
         {
-            "info_id": "EEEEEEEE-7777-EEEE-7777-EEEEEEEEEEEEE",
+            "id": "EEEEEEEE-7777-EEEE-7777-EEEEEEEEEEEEE",
             "label": "jardin",
             "value": "Carrer Espronceda 106\n03204 Elche\nSpain",
             "country_code": "es",
