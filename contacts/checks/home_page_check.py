@@ -18,11 +18,11 @@ class HomePageCheck(Check):
             """Replace home page with a URL."""
             if contact.home_page:
                 address_book.add_url(
-                    contact.contact_id,
+                    contact.id,
                     label="_$!<HomePage>!$_",
                     value=contact.home_page,
                 )
-                address_book.delete_home_page(contact.contact_id)
+                address_book.delete_home_page(contact.id)
 
         if contact.home_page:
             return [

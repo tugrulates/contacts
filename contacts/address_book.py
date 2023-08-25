@@ -26,7 +26,7 @@ class AddressBook(ABC):
         """Fetch a contact with its id."""
 
     @abstractmethod
-    def _update_field(self, ontact_id: str, field: str, value: str) -> None:
+    def _update_field(self, contact_id: str, field: str, value: str) -> None:
         """Add or update a contact field with given value."""
 
     @abstractmethod

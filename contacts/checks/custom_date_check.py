@@ -30,8 +30,8 @@ class CustomDateCheck(Check):
                 f"Custom date label <{custom_date.label}> should be <{formatted}>.",
                 fix=partial(
                     AddressBook.update_custom_date,
-                    contact_id=contact.contact_id,
-                    info_id=custom_date.info_id,
+                    contact_id=contact.id,
+                    info_id=custom_date.id,
                     label=formatted,
                 ),
             )

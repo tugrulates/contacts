@@ -35,9 +35,7 @@ class DupeCheck(Check):
 
             def fix(address_book: AddressBook) -> None:
                 for duplicate in duplicates[1:]:
-                    self.field.delete(
-                        address_book, contact.contact_id, duplicate.info_id
-                    )
+                    self.field.delete(address_book, contact.id, duplicate.id)
 
             return Problem(
                 f"{self.field.singular} '{duplicates[0]}' has duplicate(s).",

@@ -73,7 +73,7 @@ class AppleScriptBasedAddressBook(AddressBook):
         """Fetch a contact with its id."""
         result = list(self._by_id([contact_id]))
         if not result:
-            raise RuntimeError("Contact not found {contact.contact_id}")
+            raise RuntimeError("Contact not found {contact.id}")
         return result[0]
 
     def _by_id(

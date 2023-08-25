@@ -38,7 +38,7 @@ class MockAddressBook(AddressBook):
             )
             for x in find_data
         ]
-        self._data = {x.contact_id: x for x in contacts}
+        self._data = {x.id: x for x in contacts}
 
     def count(self, _: list[str]) -> int:
         """Return number of contacts matching given keywords."""

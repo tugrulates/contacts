@@ -1,5 +1,5 @@
 {
-    "contact_id": "AAAAAAAA-1111-AAAA-1111-AAAAAAAAAAAA:ABPerson",
+    "id": "AAAAAAAA-1111-AAAA-1111-AAAAAAAAAAAA:ABPerson",
     "name": "Ms. Amelia Avery Arch.",
     "has_image": true,
     "prefix": "Ms.",
@@ -17,33 +17,33 @@
     "organization": "Avery & Avery",
     "phones": [
         {
-            "info_id": "AAAAAAAA-2222-AAAA-2222-AAAAAAAAAAAA",
+            "id": "AAAAAAAA-2222-AAAA-2222-AAAAAAAAAAAA",
             "label": "_$!<Mobile>!$_",
             "value": "+18172000000"
         },
         {
-            "info_id": "AAAAAAAA-2222-AAAA-2223-AAAAAAAAAAAA",
+            "id": "AAAAAAAA-2222-AAAA-2223-AAAAAAAAAAAA",
             "label": "_$!<Work>!$_",
             "value": "+18172000001"
         }
     ],
     "emails": [
         {
-            "info_id": "AAAAAAAA-3333-AAAA-3333-AAAAAAAAAAAA",
+            "id": "AAAAAAAA-3333-AAAA-3333-AAAAAAAAAAAA",
             "label": "_$!<Home>!$_",
             "value": "amelia@avery.com"
         }
     ],
     "urls": [
         {
-            "info_id": "AAAAAAAA-4444-AAAA-4444-AAAAAAAAAAAA",
+            "id": "AAAAAAAA-4444-AAAA-4444-AAAAAAAAAAAA",
             "label": "_$!<HomePage>!$_",
             "value": "https://www.avery.com"
         }
     ],
     "addresses": [
         {
-            "info_id": "AAAAAAAA-7777-AAAA-7777-AAAAAAAAAAAA",
+            "id": "AAAAAAAA-7777-AAAA-7777-AAAAAAAAAAAA",
             "label": "_$!<Home>!$_",
             "value": "111 Arlington Blvd\nArlington, TX 76010\nUnited States",
             "country_code": "us",
@@ -53,7 +53,7 @@
             "country": "United States"
         },
         {
-            "info_id": "AAAAAAAA-7777-AAAA-7778-AAAAAAAAAAAA",
+            "id": "AAAAAAAA-7777-AAAA-7778-AAAAAAAAAAAA",
             "label": "_$!<Other>!$_",
             "value": "1 Arlington Blvd\nP.O. Box 11\nArlington, TX 76010\nUnited States",
             "country_code": "us",
@@ -66,26 +66,26 @@
     "birth_date": "January 1, 2001",
     "custom_dates": [
         {
-            "info_id": "AAAAAAAA-8888-AAAA-8888-AAAAAAAAAAAA",
+            "id": "AAAAAAAA-8888-AAAA-8888-AAAAAAAAAAAA",
             "label": "_$!<Anniversary>!$_",
             "value": "November 11"
         }
     ],
     "related_names": [
         {
-            "info_id": "AAAAAAAA-9999-AAAA-9999-AAAAAAAAAAAA",
+            "id": "AAAAAAAA-9999-AAAA-9999-AAAAAAAAAAAA",
             "label": "_$!<Brother>!$_",
             "value": "Bob Balloon"
         }
     ],
     "social_profiles": [
         {
-            "info_id": "AAAAAAAA-1010-AAAA-1010-AAAAAAAAAAAA",
+            "id": "AAAAAAAA-1010-AAAA-1010-AAAAAAAAAAAA",
             "label": "Duolingo",
             "value": "amelie"
         },
         {
-            "info_id": "AAAAAAAA-1010-AAAA-1011-AAAAAAAAAAAA",
+            "id": "AAAAAAAA-1010-AAAA-1011-AAAAAAAAAAAA",
             "label": "LinkedIn",
             "value": "AmeliaAvery",
             "url": "http://www.linkedin.com/in/AmeliaAvery"
@@ -93,12 +93,12 @@
     ],
     "instant_messages": [
         {
-            "info_id": "AAAAAAAA-1020-AAAA-1021-AAAAAAAAAAAA",
+            "id": "AAAAAAAA-1020-AAAA-1021-AAAAAAAAAAAA",
             "label": "WhatsApp",
             "value": "+11111111111"
         },
         {
-            "info_id": "AAAAAAAA-1020-AAAA-1021-AAAAAAAAAAAA",
+            "id": "AAAAAAAA-1020-AAAA-1021-AAAAAAAAAAAA",
             "label": "ICQ",
             "value": "1111111"
         }

@@ -34,8 +34,8 @@ class PhoneCheck(Check):
                 f"Phone number '{phone.value}' should be '{formatted}'.",
                 fix=partial(
                     AddressBook.update_phone,
-                    contact_id=contact.contact_id,
-                    info_id=phone.info_id,
+                    contact_id=contact.id,
+                    info_id=phone.id,
                     value=formatted,
                 ),
             )

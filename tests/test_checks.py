@@ -56,7 +56,7 @@ def problem_checker(mock_address_book: MockAddressBook) -> ProblemChecker:
 def test_correct_contact() -> None:
     """Test contact that has no problems."""
     contact = Contact(
-        contact_id="ID",
+        id="ID",
         name="NAME",
         prefix="Dr.",
         first_name="Bob",
@@ -68,37 +68,37 @@ def test_correct_contact() -> None:
         department="Bakery",
         organization="Bakers LLC.",
         phones=[
-            ContactInfo(info_id="PID1", label="_$!<Mobile>!$_", value="+1111111111"),
-            ContactInfo(info_id="PID2", label="_$!<Home>!$_", value="+1111111112"),
-            ContactInfo(info_id="PID3", label="_$!<Work>!$_", value="+1111111113"),
-            ContactInfo(info_id="PID4", label="_$!<School>!$_", value="+1111111114"),
+            ContactInfo(id="PID1", label="_$!<Mobile>!$_", value="+1111111111"),
+            ContactInfo(id="PID2", label="_$!<Home>!$_", value="+1111111112"),
+            ContactInfo(id="PID3", label="_$!<Work>!$_", value="+1111111113"),
+            ContactInfo(id="PID4", label="_$!<School>!$_", value="+1111111114"),
         ],
         emails=[
-            ContactInfo(info_id="EID1", label="_$!<Home>!$_", value="test@h.com"),
-            ContactInfo(info_id="EID2", label="_$!<Work>!$_", value="test@w.com"),
-            ContactInfo(info_id="EID3", label="_$!<School>!$_", value="test@s.com"),
+            ContactInfo(id="EID1", label="_$!<Home>!$_", value="test@h.com"),
+            ContactInfo(id="EID2", label="_$!<Work>!$_", value="test@w.com"),
+            ContactInfo(id="EID3", label="_$!<School>!$_", value="test@s.com"),
         ],
         urls=[
-            ContactInfo(info_id="UID1", label="_$!<HomePage>!$_", value="http://h.com"),
-            ContactInfo(info_id="UID2", label="_$!<Work>!$_", value="http://w.com"),
-            ContactInfo(info_id="UID3", label="_$!<School>!$_", value="http://s.com"),
+            ContactInfo(id="UID1", label="_$!<HomePage>!$_", value="http://h.com"),
+            ContactInfo(id="UID2", label="_$!<Work>!$_", value="http://w.com"),
+            ContactInfo(id="UID3", label="_$!<School>!$_", value="http://s.com"),
         ],
         addresses=[
-            ContactAddress(info_id="AID1", label="_$!<Home>!$_", value="ADDRESS_1"),
-            ContactAddress(info_id="AID2", label="_$!<Work>!$_", value="ADDRESS_2"),
-            ContactAddress(info_id="AID3", label="_$!<School>!$_", value="ADDRESS_3"),
+            ContactAddress(id="AID1", label="_$!<Home>!$_", value="ADDRESS_1"),
+            ContactAddress(id="AID2", label="_$!<Work>!$_", value="ADDRESS_2"),
+            ContactAddress(id="AID3", label="_$!<School>!$_", value="ADDRESS_3"),
         ],
         birth_date="February 2, 1922",
         custom_dates=[
-            ContactInfo(info_id="DID1", label="favorite", value="DATE"),
+            ContactInfo(id="DID1", label="favorite", value="DATE"),
         ],
         social_profiles=[
-            ContactSocialProfile(info_id="SID1", label="GitHub", value="USER"),
-            ContactSocialProfile(info_id="SID2", label="LinkedIn", value="USER"),
+            ContactSocialProfile(id="SID1", label="GitHub", value="USER"),
+            ContactSocialProfile(id="SID2", label="LinkedIn", value="USER"),
         ],
         instant_messages=[
-            ContactInfo(info_id="IID1", label="WhatsApp", value="USER"),
-            ContactInfo(info_id="IID2", label="Signal", value="USER"),
+            ContactInfo(id="IID1", label="WhatsApp", value="USER"),
+            ContactInfo(id="IID2", label="Signal", value="USER"),
         ],
         note="NOTE",
     )
@@ -109,7 +109,7 @@ def test_prefix_capitalization(
     problem_checker: ProblemChecker, mock_address_book: MockAddressBook
 ) -> None:
     """Test lowercase prefix."""
-    contact = Contact(contact_id="ID", name="NAME", prefix="dr.")
+    contact = Contact(id="ID", name="NAME", prefix="dr.")
     problem = problem_checker.problem(contact)
     assert problem.category == Category.WARNING
     assert problem.message == "Prefix 'dr.' should be 'Dr.'."
@@ -122,7 +122,7 @@ def test_first_name_capitalization(
     problem_checker: ProblemChecker, mock_address_book: MockAddressBook
 ) -> None:
     """Test lowercase first name."""
-    contact = Contact(contact_id="ID", name="NAME", first_name="bob")
+    contact = Contact(id="ID", name="NAME", first_name="bob")
     problem = problem_checker.problem(contact)
     assert problem.category == Category.WARNING
     assert problem.message == "First name 'bob' should be 'Bob'."
@@ -135,7 +135,7 @@ def test_middle_name_capitalization(
     problem_checker: ProblemChecker, mock_address_book: MockAddressBook
 ) -> None:
     """Test lowercase middle name."""
-    contact = Contact(contact_id="ID", name="NAME", middle_name="babála")
+    contact = Contact(id="ID", name="NAME", middle_name="babála")
     problem = problem_checker.problem(contact)
     assert problem.category == Category.WARNING
     assert problem.message == "Middle name 'babála' should be 'Babála'."
@@ -148,7 +148,7 @@ def test_last_name_capitalization(
     problem_checker: ProblemChecker, mock_address_book: MockAddressBook
 ) -> None:
     """Test lowercase last name."""
-    contact = Contact(contact_id="ID", name="NAME", last_name="balon")
+    contact = Contact(id="ID", name="NAME", last_name="balon")
     problem = problem_checker.problem(contact)
     assert problem.category == Category.WARNING
     assert problem.message == "Last name 'balon' should be 'Balon'."
@@ -161,7 +161,7 @@ def test_suffix_capitalization(
     problem_checker: ProblemChecker, mock_address_book: MockAddressBook
 ) -> None:
     """Test lowercase suffix."""
-    contact = Contact(contact_id="ID", name="NAME", suffix="jr.")
+    contact = Contact(id="ID", name="NAME", suffix="jr.")
     problem = problem_checker.problem(contact)
     assert problem.category == Category.WARNING
     assert problem.message == "Suffix 'jr.' should be 'Jr.'."
@@ -174,7 +174,7 @@ def test_job_title_capitalization(
     problem_checker: ProblemChecker, mock_address_book: MockAddressBook
 ) -> None:
     """Test lowercase job title."""
-    contact = Contact(contact_id="ID", name="NAME", job_title="baker")
+    contact = Contact(id="ID", name="NAME", job_title="baker")
     problem = problem_checker.problem(contact)
     assert problem.category == Category.WARNING
     assert problem.message == "Job title 'baker' should be 'Baker'."
@@ -187,7 +187,7 @@ def test_department_capitalization(
     problem_checker: ProblemChecker, mock_address_book: MockAddressBook
 ) -> None:
     """Test lowercase department."""
-    contact = Contact(contact_id="ID", name="NAME", department="bakery")
+    contact = Contact(id="ID", name="NAME", department="bakery")
     problem = problem_checker.problem(contact)
     assert problem.category == Category.WARNING
     assert problem.message == "Department 'bakery' should be 'Bakery'."
@@ -198,21 +198,19 @@ def test_department_capitalization(
 
 def test_capitalization_ignores_mixed_case() -> None:
     """Test mixed case name."""
-    contact = Contact(
-        contact_id="ID", name="NAME", first_name="bobMac", last_name="o'Hare."
-    )
+    contact = Contact(id="ID", name="NAME", first_name="bobMac", last_name="o'Hare.")
     assert contact.problems == []
 
 
 def test_organization_ignores_lowercase_organization() -> None:
     """Test lowercase organization."""
-    contact = Contact(contact_id="ID", name="NAME", organization="bakers co.")
+    contact = Contact(id="ID", name="NAME", organization="bakers co.")
     assert contact.problems == []
 
 
 def test_nickname_single_word(problem_checker: ProblemChecker) -> None:
     """Test single name nickname."""
-    contact = Contact(contact_id="ID", name="NAME", nickname="Bob")
+    contact = Contact(id="ID", name="NAME", nickname="Bob")
     problem = problem_checker.problem(contact)
     assert problem.category == Category.ERROR
     assert problem.message == "Nickname 'Bob' is not a full name."
@@ -223,10 +221,10 @@ def test_fixable_phone_label(
 ) -> None:
     """Test phone with fixable label."""
     contact = Contact(
-        contact_id="ID",
+        id="ID",
         name="NAME",
         phones=[
-            ContactInfo(info_id="PID", label="mobile", value="+1111111111"),
+            ContactInfo(id="PID", label="mobile", value="+1111111111"),
         ],
     )
     problem = problem_checker.problem(contact)
@@ -242,10 +240,10 @@ def test_fixable_phone_label(
 def test_unfixable_phone_label(problem_checker: ProblemChecker) -> None:
     """Test phone with invalid label."""
     contact = Contact(
-        contact_id="ID",
+        id="ID",
         name="NAME",
         phones=[
-            ContactInfo(info_id="PID", label="pager", value="+1111111111"),
+            ContactInfo(id="PID", label="pager", value="+1111111111"),
         ],
     )
     problem = problem_checker.problem(contact)
@@ -258,10 +256,10 @@ def test_fixable_email_label(
 ) -> None:
     """Test e-mail with fixable label."""
     contact = Contact(
-        contact_id="ID",
+        id="ID",
         name="NAME",
         emails=[
-            ContactInfo(info_id="EID", label="email", value="test@h.com"),
+            ContactInfo(id="EID", label="email", value="test@h.com"),
         ],
     )
     problem = problem_checker.problem(contact)
@@ -277,10 +275,10 @@ def test_fixable_email_label(
 def test_unfixable_email_label(problem_checker: ProblemChecker) -> None:
     """Test e-mail with invalid label."""
     contact = Contact(
-        contact_id="ID",
+        id="ID",
         name="NAME",
         emails=[
-            ContactInfo(info_id="EID", label="backup", value="test@h.com"),
+            ContactInfo(id="EID", label="backup", value="test@h.com"),
         ],
     )
     problem = problem_checker.problem(contact)
@@ -293,10 +291,10 @@ def test_fixable_url_label(
 ) -> None:
     """Test URL with fixable label."""
     contact = Contact(
-        contact_id="ID",
+        id="ID",
         name="NAME",
         urls=[
-            ContactInfo(info_id="UID", label="home", value="http://h.com"),
+            ContactInfo(id="UID", label="home", value="http://h.com"),
         ],
     )
     problem = problem_checker.problem(contact)
@@ -314,10 +312,10 @@ def test_fixable_url_wrong_home_label(
 ) -> None:
     """Test URL with the wrong home page label."""
     contact = Contact(
-        contact_id="ID",
+        id="ID",
         name="NAME",
         urls=[
-            ContactInfo(info_id="UID", label="_$!<Home>!$_", value="http://h.com"),
+            ContactInfo(id="UID", label="_$!<Home>!$_", value="http://h.com"),
         ],
     )
     problem = problem_checker.problem(contact)
@@ -333,10 +331,10 @@ def test_fixable_url_wrong_home_label(
 def test_unfixable_url_label(problem_checker: ProblemChecker) -> None:
     """Test URL with invalid label."""
     contact = Contact(
-        contact_id="ID",
+        id="ID",
         name="NAME",
         urls=[
-            ContactInfo(info_id="UID", label="blog", value="http://h.com"),
+            ContactInfo(id="UID", label="blog", value="http://h.com"),
         ],
     )
     problem = problem_checker.problem(contact)
@@ -349,10 +347,10 @@ def test_fixable_address_label(
 ) -> None:
     """Test address with fixable label."""
     contact = Contact(
-        contact_id="ID",
+        id="ID",
         name="NAME",
         addresses=[
-            ContactAddress(info_id="AID", label="work", value="ADDRESS"),
+            ContactAddress(id="AID", label="work", value="ADDRESS"),
         ],
     )
     problem = problem_checker.problem(contact)
@@ -368,10 +366,10 @@ def test_fixable_address_label(
 def test_unfixable_address_label(problem_checker: ProblemChecker) -> None:
     """Test address with invalid label."""
     contact = Contact(
-        contact_id="ID",
+        id="ID",
         name="NAME",
         addresses=[
-            ContactAddress(info_id="AID", label="mailbox", value="ADDRESS"),
+            ContactAddress(id="AID", label="mailbox", value="ADDRESS"),
         ],
     )
     problem = problem_checker.problem(contact)
@@ -384,10 +382,10 @@ def test_mixed_case_custom_date_label(
 ) -> None:
     """Test custom date with fixable mixed case label."""
     contact = Contact(
-        contact_id="ID",
+        id="ID",
         name="NAME",
         custom_dates=[
-            ContactInfo(info_id="DID", label="Favorite", value="DATE"),
+            ContactInfo(id="DID", label="Favorite", value="DATE"),
         ],
     )
     problem = problem_checker.problem(contact)
@@ -405,12 +403,10 @@ def test_fixable_phone_number(
 ) -> None:
     """Test phone number with wrong formatting."""
     contact = Contact(
-        contact_id="ID",
+        id="ID",
         name="NAME",
         phones=[
-            ContactInfo(
-                info_id="PID", label="_$!<Work>!$_", value=" +1 (800) WEAREBAKERS"
-            )
+            ContactInfo(id="PID", label="_$!<Work>!$_", value=" +1 (800) WEAREBAKERS")
         ],
     )
     problem = problem_checker.problem(contact)
@@ -429,12 +425,10 @@ def test_fixable_phone_number(
 def test_unfixable_phone_number(problem_checker: ProblemChecker) -> None:
     """Test invalid phone number."""
     contact = Contact(
-        contact_id="ID",
+        id="ID",
         name="NAME",
         phones=[
-            ContactInfo(
-                info_id="PID", label="_$!<Work>!$_", value="+1 (NO) WEARENOTBAKERS"
-            )
+            ContactInfo(id="PID", label="_$!<Work>!$_", value="+1 (NO) WEARENOTBAKERS")
         ],
     )
     problem = problem_checker.problem(contact)
@@ -447,10 +441,10 @@ def test_fixable_email_address(
 ) -> None:
     """Test e-mail address with wrong formatting."""
     contact = Contact(
-        contact_id="ID",
+        id="ID",
         name="NAME",
         emails=[
-            ContactInfo(info_id="EID", label="_$!<Home>!$_", value=" test@H.COM"),
+            ContactInfo(id="EID", label="_$!<Home>!$_", value=" test@H.COM"),
         ],
     )
     problem = problem_checker.problem(contact)
@@ -466,10 +460,10 @@ def test_fixable_email_address(
 def test_unfixable_email_address(problem_checker: ProblemChecker) -> None:
     """Test invalid e-mail address."""
     contact = Contact(
-        contact_id="ID",
+        id="ID",
         name="NAME",
         emails=[
-            ContactInfo(info_id="EID", label="_$!<Home>!$_", value="test@"),
+            ContactInfo(id="EID", label="_$!<Home>!$_", value="test@"),
         ],
     )
     problem = problem_checker.problem(contact)
@@ -482,10 +476,10 @@ def test_fixable_url(
 ) -> None:
     """Test URL with wrong formatting."""
     contact = Contact(
-        contact_id="ID",
+        id="ID",
         name="NAME",
         urls=[
-            ContactInfo(info_id="UID", label="_$!<HomePage>!$_", value=" HTTP://h.com"),
+            ContactInfo(id="UID", label="_$!<HomePage>!$_", value=" HTTP://h.com"),
         ],
     )
     problem = problem_checker.problem(contact)
@@ -501,10 +495,10 @@ def test_fixable_url(
 def test_unfixable_url(problem_checker: ProblemChecker) -> None:
     """Test invalid URL."""
     contact = Contact(
-        contact_id="ID",
+        id="ID",
         name="NAME",
         urls=[
-            ContactInfo(info_id="UID", label="_$!<HomePage>!$_", value="1.1.1.1"),
+            ContactInfo(id="UID", label="_$!<HomePage>!$_", value="1.1.1.1"),
         ],
     )
     problem = problem_checker.problem(contact)
@@ -517,12 +511,12 @@ def test_duplicate_phones(
 ) -> None:
     """Test duplicate phone deletion."""
     contact = Contact(
-        contact_id="ID",
+        id="ID",
         name="NAME",
         phones=[
-            ContactInfo(info_id="PID1", label="_$!<Mobile>!$_", value="+1111111111"),
-            ContactInfo(info_id="PID2", label="_$!<Home>!$_", value="+1111111111"),
-            ContactInfo(info_id="PID3", label="_$!<Home>!$_", value="+1111111112"),
+            ContactInfo(id="PID1", label="_$!<Mobile>!$_", value="+1111111111"),
+            ContactInfo(id="PID2", label="_$!<Home>!$_", value="+1111111111"),
+            ContactInfo(id="PID3", label="_$!<Home>!$_", value="+1111111112"),
         ],
     )
     problem = problem_checker.problem(contact)
@@ -538,12 +532,12 @@ def test_duplicate_emails(
 ) -> None:
     """Test duplicate e-mail deletion."""
     contact = Contact(
-        contact_id="ID",
+        id="ID",
         name="NAME",
         emails=[
-            ContactInfo(info_id="EID1", label="_$!<Home>!$_", value="test@h.com"),
-            ContactInfo(info_id="EID2", label="_$!<Work>!$_", value="test@h.com"),
-            ContactInfo(info_id="EID3", label="_$!<School>!$_", value="test@s.com"),
+            ContactInfo(id="EID1", label="_$!<Home>!$_", value="test@h.com"),
+            ContactInfo(id="EID2", label="_$!<Work>!$_", value="test@h.com"),
+            ContactInfo(id="EID3", label="_$!<School>!$_", value="test@s.com"),
         ],
     )
     problem = problem_checker.problem(contact)
@@ -559,12 +553,12 @@ def test_duplicate_urls(
 ) -> None:
     """Test duplicate URL deletion."""
     contact = Contact(
-        contact_id="ID",
+        id="ID",
         name="NAME",
         urls=[
-            ContactInfo(info_id="UID1", label="_$!<HomePage>!$_", value="http://h.com"),
-            ContactInfo(info_id="UID2", label="_$!<HomePage>!$_", value="http://h.com"),
-            ContactInfo(info_id="UID3", label="_$!<HomePage>!$_", value="http://h.net"),
+            ContactInfo(id="UID1", label="_$!<HomePage>!$_", value="http://h.com"),
+            ContactInfo(id="UID2", label="_$!<HomePage>!$_", value="http://h.com"),
+            ContactInfo(id="UID3", label="_$!<HomePage>!$_", value="http://h.net"),
         ],
     )
     problem = problem_checker.problem(contact)
@@ -580,12 +574,12 @@ def test_duplicate_addresses(
 ) -> None:
     """Test duplicate address deletion."""
     contact = Contact(
-        contact_id="ID",
+        id="ID",
         name="NAME",
         addresses=[
-            ContactAddress(info_id="AID1", label="_$!<Home>!$_", value="ADDRESS"),
-            ContactAddress(info_id="AID2", label="_$!<Work>!$_", value="ADDRESS"),
-            ContactAddress(info_id="AID3", label="_$!<School>!$_", value="ANOTHER"),
+            ContactAddress(id="AID1", label="_$!<Home>!$_", value="ADDRESS"),
+            ContactAddress(id="AID2", label="_$!<Work>!$_", value="ADDRESS"),
+            ContactAddress(id="AID3", label="_$!<School>!$_", value="ANOTHER"),
         ],
     )
     problem = problem_checker.problem(contact)
@@ -601,13 +595,13 @@ def test_duplicate_social_profiles(
 ) -> None:
     """Test duplicate social profile deletion."""
     contact = Contact(
-        contact_id="ID",
+        id="ID",
         name="NAME",
         social_profiles=[
-            ContactSocialProfile(info_id="SID1", label="GitHub", value="USER"),
-            ContactSocialProfile(info_id="SID2", label="GitHub", value="ANOTHER"),
-            ContactSocialProfile(info_id="SID3", label="LinkedIn", value="USER"),
-            ContactSocialProfile(info_id="SID4", label="LinkedIn", value="USER"),
+            ContactSocialProfile(id="SID1", label="GitHub", value="USER"),
+            ContactSocialProfile(id="SID2", label="GitHub", value="ANOTHER"),
+            ContactSocialProfile(id="SID3", label="LinkedIn", value="USER"),
+            ContactSocialProfile(id="SID4", label="LinkedIn", value="USER"),
         ],
     )
     problem = problem_checker.problem(contact)
@@ -623,12 +617,12 @@ def test_duplicate_instant_messages(
 ) -> None:
     """Test duplicate instant message profile deletion."""
     contact = Contact(
-        contact_id="ID",
+        id="ID",
         name="NAME",
         instant_messages=[
-            ContactInfo(info_id="IID1", label="WhatsApp", value="USER"),
-            ContactInfo(info_id="IID2", label="Signal", value="USER"),
-            ContactInfo(info_id="IID3", label="Signal", value="USER"),
+            ContactInfo(id="IID1", label="WhatsApp", value="USER"),
+            ContactInfo(id="IID2", label="Signal", value="USER"),
+            ContactInfo(id="IID3", label="Signal", value="USER"),
         ],
     )
     problem = problem_checker.problem(contact)
