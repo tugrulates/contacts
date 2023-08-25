@@ -59,5 +59,5 @@ class LabelCheck(Check):
                 ),
             )
 
-        problems = [check_label(info) for info in self.field.get(contact)]
+        problems = (check_label(info) for info in self.field.get(contact))
         return [x for x in problems if x]

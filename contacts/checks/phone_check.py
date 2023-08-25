@@ -39,5 +39,5 @@ class PhoneCheck(Check):
                 ),
             )
 
-        problems = [check_value(phone) for phone in contact.phones]
+        problems = (check_value(phone) for phone in contact.phones)
         return [x for x in problems if x]

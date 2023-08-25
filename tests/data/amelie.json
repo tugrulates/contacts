@@ -46,21 +46,23 @@
             "id": "AAAAAAAA-7777-AAAA-7777-AAAAAAAAAAAA",
             "label": "_$!<Home>!$_",
             "value": "111 Arlington Blvd\nArlington, TX 76010\nUnited States",
-            "country_code": "us",
             "street": "111 Arlington Blvd",
             "city": "Arlington",
             "state": "TX",
-            "country": "United States"
+            "zip_code": "76010",
+            "country": "United States",
+            "country_code": "us"
         },
         {
             "id": "AAAAAAAA-7777-AAAA-7778-AAAAAAAAAAAA",
             "label": "_$!<Other>!$_",
             "value": "1 Arlington Blvd\nP.O. Box 11\nArlington, TX 76010\nUnited States",
-            "country_code": "us",
             "street": "1 Arlington Blvd\nP.O. Box 11",
             "city": "Arlington",
             "state": "TX",
-            "country": "United States"
+            "zip_code": "76010",
+            "country": "United States",
+            "country_code": "us"
         }
     ],
     "birth_date": "January 1, 2001",

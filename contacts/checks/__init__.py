@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from enum import Enum
 
+from contacts.checks.address_check import AddressCheck
 from contacts.checks.casing_check import CasingCheck
 from contacts.checks.custom_date_check import CustomDateCheck
 from contacts.checks.dupe_check import DupeCheck
@@ -39,6 +40,7 @@ class Checks(Enum):
     URL_DUPE_CHECK = DupeCheck(ContactFields.URL.value, False)
     URL_CHECK = UrlCheck()
     ADDRESS_LABEL_CHECK = LabelCheck(ContactFields.ADDRESS.value)
+    ADDRESS_CHECK = AddressCheck()
     ADDRESS_DUPE_CHECK = DupeCheck(ContactFields.ADDRESS.value, False)
     CUSTOM_DATE_CHECK = CustomDateCheck()
     CUSTOM_DATE_DUPE_CHECK = DupeCheck(ContactFields.CUSTOM_DATE.value, True)

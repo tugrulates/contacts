@@ -5,15 +5,17 @@ from itertools import chain, combinations
 
 from unidecode import unidecode
 
-from contacts.config import get_config
+from contacts import config
 
 
 @cache
 def romanization() -> dict[str, list[str]]:
     """Generate romanizations from app config."""
-    config = get_config()
+    cfg = config.get_config()
+    if not cfg.romanize:
+        return {}
     trans: dict[str, list[str]] = {}
-    for c in config.romanize:
+    for c in cfg.romanize:
         trans.setdefault(unidecode(c.lower()), []).append(c.lower())
     return trans
 

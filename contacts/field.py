@@ -9,7 +9,7 @@ from contacts.contact import Contact, ContactInfo
 
 
 class ContactFieldMetadata(NamedTuple):
-    """Types for simple field metadata."""
+    """Metadata for a simple top-level field."""
 
     singular: str
     category: Category
@@ -19,7 +19,7 @@ class ContactFieldMetadata(NamedTuple):
 
 
 class ContactInfoMetadata(NamedTuple):
-    """Types for simple field metadata."""
+    """Metadata for a contact info."""
 
     singular: str
     plural: str
@@ -29,8 +29,16 @@ class ContactInfoMetadata(NamedTuple):
     delete: AddressBook.DeleteInfoFunction
 
 
+class ContactInfoFieldMetadata(NamedTuple):
+    """Metadata for a contact info field."""
+
+    singular: str
+    get: Callable[[Contact], dict[str, str]]
+    update: AddressBook.UpdateInfoValueFunction
+
+
 class ContactFields(Enum):
-    """Field metadatas."""
+    """Top-level field metadatas."""
 
     PREFIX = ContactFieldMetadata(
         "Prefix",

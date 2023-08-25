@@ -3,7 +3,7 @@
 --   $ osascript brief.applescript [contact_id_1] [contact_id_2] ... [contact_id_N]
 --   stdout:
 --   {
---     "data": [
+--     "contacts": [
 --       {
 --         "id": "[contact_id_1]",
 --         "name": "[name_1]",
@@ -123,12 +123,12 @@ on logContactAddresses(theContact)
                         copy my logContactValue("id", id) to the end of theEntries
                         copy my logContactValue("label", label) to the end of theEntries
                         copy my logContactValue("value", formatted address) to the end of theEntries
-                        copy my logContactValue("country_code", country code) to the end of theEntries
                         copy my logContactValue("street", street) to the end of theEntries
                         copy my logContactValue("city", city) to the end of theEntries
                         copy my logContactValue("state", state) to the end of theEntries
                         copy my logContactValue("zip_code", zip) to the end of theEntries
                         copy my logContactValue("country", country) to the end of theEntries
+                        copy my logContactValue("country_code", country code) to the end of theEntries
                     end tell
 
                     copy my encloseList("      {", "          ", theEntries, "        }") to the end of theResults
@@ -259,7 +259,7 @@ on detailContact(theIds)
             copy my encloseList(" {", "      ", theEntries, "    }") to the end of theResults
         end repeat
 
-        return my encloseList("{\n  \"data\": [", "   ", theResults, "  ]\n}")
+        return my encloseList("{\n  \"contacts\": [", "   ", theResults, "  ]\n}")
     end tell
 end
 

@@ -38,5 +38,5 @@ class EmailCheck(Check):
                 ),
             )
 
-        problems = [check_value(email) for email in contact.emails]
+        problems = (check_value(email) for email in contact.emails)
         return [x for x in problems if x]

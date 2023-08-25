@@ -32,12 +32,12 @@ class ContactInfo(BaseModel):
 class ContactAddress(ContactInfo):
     """A single address."""
 
-    country_code: Optional[str] = None
     street: Optional[str] = None
     city: Optional[str] = None
     state: Optional[str] = None
     zip_code: Optional[str] = None
     country: Optional[str] = None
+    country_code: Optional[str] = None
 
 
 class ContactSocialProfile(ContactInfo):

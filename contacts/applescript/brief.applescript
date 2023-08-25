@@ -2,12 +2,14 @@
 --
 --   $ osascript brief.applescript [contact_id_1] [contact_id_2] ... [contact_id_N]
 --   stdout:
---   [
---     { "id": "[contact_id_1]", "name": "[name_1]", "is_company": [company_1] },
---     { "id": "[contact_id_1]", "name": "[name_2]", "is_company": [company_2] },
---     ...
---     { "id": "[contact_id_N]", "name": "[name_N]", "is_company": [company_N] }
---   ]
+--   {
+--     "contacts": [
+--       { "id": "[contact_id_1]", "name": "[name_1]", "is_company": [company_1] },
+--       { "id": "[contact_id_1]", "name": "[name_2]", "is_company": [company_2] },
+--       ...
+--       { "id": "[contact_id_N]", "name": "[name_N]", "is_company": [company_N] }
+--     ]
+--   }
 
 
 on encloseList(theOpening, theIndent, theList, theClosing)
@@ -55,7 +57,7 @@ on detailContact(theIds)
             copy theEntry to the end of theResults
         end repeat
 
-        return my encloseList("{\n  \"data\": [", "   ", theResults, "  ]\n}")
+        return my encloseList("{\n  \"contacts\": [", "   ", theResults, "  ]\n}")
     end tell
 end
 

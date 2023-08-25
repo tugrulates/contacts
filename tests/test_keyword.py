@@ -1,22 +1,10 @@
-"""Unittests for keyword."""
+"""Unit tests for keyword."""
 
-import importlib
-
-import pytest
 from typer.testing import CliRunner
 
 from contacts import config, keyword
 
 runner = CliRunner(mix_stderr=True)
-
-
-@pytest.fixture(autouse=True)
-def cfg(monkeypatch: pytest.MonkeyPatch) -> config.Config:
-    """Initialize the test configuration."""
-    cfg = config.Config()
-    monkeypatch.setattr(config, "get_config", lambda: cfg)
-    importlib.reload(keyword)
-    return cfg
 
 
 def test_prepare() -> None:
@@ -26,9 +14,10 @@ def test_prepare() -> None:
     assert keyword.prepare_keywords(["carnival balloon"]) == ["Carnival Balloon"]
 
 
-def test_prepare_romanize(cfg: config.Config) -> None:
+def test_prepare_romanize(mock_config: config.Config) -> None:
     """Test non-extended prepare."""
-    cfg.romanize = "öøÑ"
+    mock_config.romanize = "öøÑ"
+    keyword.romanization.cache_clear()
     assert keyword.romanization() == {"n": ["ñ"], "o": ["ö", "ø"]}
     assert set(keyword.prepare_keywords(["BOB"])) == {"Bob", "Böb", "Bøb"}
     assert set(keyword.prepare_keywords(["BoB"])) == {"Bob", "Böb", "Bøb"}

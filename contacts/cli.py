@@ -9,11 +9,9 @@ from rich.console import Console
 from rich.progress import Progress
 from rich.table import Table
 
-from contacts import contact, keyword
-from contacts.address_book import AddressBook
-from contacts.applescript_address_book import AppleScriptBasedAddressBook
+from contacts import address_book, config, contact, keyword
+from contacts.address import AddressFormat, SemanticAddressField
 from contacts.category import Category
-from contacts.config import get_config
 from contacts.field import ContactFieldMetadata, ContactFields, ContactInfoMetadata
 
 
@@ -22,7 +20,11 @@ class App(typer.Typer):
 
     def __call__(self, *args: Any, **kwargs: Any) -> Any:
         """Make the first arg 'main', unless it is a known command."""
-        if sys.argv[1] not in ["config"]:
+        if len(sys.argv) > 1 and sys.argv[1] not in [
+            "config",
+            "--install-completion",
+            "--show-completion",
+        ]:
             sys.argv = [sys.argv[0], "main", *sys.argv[1:]]
         return super().__call__(*args, **kwargs)
 
@@ -30,15 +32,33 @@ class App(typer.Typer):
 app = App(help=__doc__)
 
 
-@app.command()
-def config(show: bool = False, romanize: Optional[str] = None) -> None:
+@app.command(name="config")
+def configure(
+    show: bool = False,
+    romanize: Optional[str] = None,
+    address_format_country_code: Optional[str] = None,
+    address_format_street: Optional[SemanticAddressField] = None,
+    address_format_city: Optional[SemanticAddressField] = None,
+    address_format_state: Optional[SemanticAddressField] = None,
+    address_format_zip_code: Optional[SemanticAddressField] = None,
+    mapquest_api_key: Optional[str] = None,
+) -> None:
     """Manage configuration."""
-    config = get_config()
+    cfg = config.get_config()
     if romanize is not None:
-        config.romanize = romanize
-    config.dump()
+        cfg.romanize = romanize
+    if mapquest_api_key is not None:
+        cfg.mapquest_api_key = mapquest_api_key
+    if address_format_country_code is not None:
+        cfg.address_formats[address_format_country_code] = AddressFormat(
+            street=address_format_street,
+            city=address_format_city,
+            state=address_format_state,
+            zip_code=address_format_zip_code,
+        )
+    cfg.dump()
     if show:
-        print_json(config.model_dump_json(), indent=4)
+        print_json(cfg.model_dump_json(), indent=4)
 
 
 def with_icon(person: contact.Contact) -> str:
@@ -82,11 +102,6 @@ def table(person: contact.Contact, width: Optional[int]) -> Table:
     return table
 
 
-def get_address_book(brief: bool, batch: int) -> AddressBook:
-    """Return an address book implementation given the configuration."""
-    return AppleScriptBasedAddressBook(brief=brief, batch=batch)
-
-
 @app.command()
 def main(
     ctx: typer.Context,
@@ -109,20 +124,20 @@ def main(
         task = progress.add_task("Counting contacts")
         keywords = keyword.prepare_keywords(keywords or [])
 
-        address_book = get_address_book(
+        addr_book = address_book.get_address_book(
             brief=not (detail or json or check or fix),
             batch=batch or (1 if keywords else 10),
         )
-        count = address_book.count(keywords)
+        count = addr_book.count(keywords)
         progress.update(task, total=count, description="Fetching contacts")
 
         people = contact.Contacts()
-        for person in address_book.find(keywords):
+        for person in addr_book.find(keywords):
             if fix:
                 for problem in person.problems:
                     progress.update(task, description=f"Fixing {with_icon(person)}")
-                    problem.try_fix(address_book)
-                person = address_book.get(person.id)
+                    problem.try_fix(addr_book)
+                person = addr_book.get(person.id)
 
             if detail:
                 console.print(table(person, width))

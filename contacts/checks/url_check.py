@@ -61,7 +61,7 @@ class UrlCheck(Check):
             )
 
         problems = chain(
-            [check_label(url) for url in contact.urls],
-            [check_value(url) for url in contact.urls],
+            (check_label(url) for url in contact.urls),
+            (check_value(url) for url in contact.urls),
         )
         return [x for x in problems if x]

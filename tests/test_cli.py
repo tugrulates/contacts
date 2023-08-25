@@ -1,54 +1,16 @@
-"""Unittests for cli."""
+"""Unit tests for cli."""
 
-import importlib
 import json
 from pathlib import Path
 
-import email_validator
-import pytest
 from typer.testing import CliRunner
 
 from contacts import cli, config
-from contacts.checks import url_check
 from contacts.contact import Contact
 from tests.contact_diff import ContactDiff
-from tests.mock_address_book import MockAddressBook
+from tests.mocks import MockAddressBook
 
 runner = CliRunner(mix_stderr=True)
-
-
-@pytest.fixture(scope="session", autouse=True)
-def environment() -> None:
-    """Initialize the test environment."""
-    # disable DNS checks for e-mail address and URL checks
-    email_validator.TEST_ENVIRONMENT = True
-    url_check.TEST_ENVIRONMENT = True
-
-
-@pytest.fixture(autouse=True)
-def cfg(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> config.Config:
-    """Initialize the test configuration."""
-    monkeypatch.setattr(config, "CONFIG_PATH", tmp_path / "config.json")
-    cfg = config.Config()
-    cfg.dump()
-    importlib.reload(cli)
-    return cfg
-
-
-@pytest.fixture(autouse=True)
-def data_path(request: pytest.FixtureRequest) -> Path:
-    """Fixture for the test data directory."""
-    return request.path.parent / "data"
-
-
-@pytest.fixture(autouse=True)
-def mock_address_book(
-    data_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> MockAddressBook:
-    """Fixture for mock address book."""
-    mock = MockAddressBook(data_path)
-    monkeypatch.setattr(cli, "get_address_book", lambda *args, **kwargs: mock)
-    return mock
 
 
 def test_bare() -> None:
@@ -77,11 +39,14 @@ def test_config_show() -> None:
     """Test showing config."""
     result = runner.invoke(cli.app, "config --show --romanize öøÑ")
     assert result.exit_code == 0
-    assert result.stdout.strip().split("\n") == [
-        "{",
-        '    "romanize": "öøÑ"',
-        "}",
-    ]
+    expected = """
+        {
+            "romanize": "öøÑ",
+            "address_formats": {},
+            "mapquest_api_key": null
+        }
+    """
+    assert result.stdout.strip().split("\n") == expected.strip().split("\n        ")
 
 
 def test_applescript_error(mock_address_book: MockAddressBook) -> None:

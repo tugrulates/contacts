@@ -35,5 +35,5 @@ class CustomDateCheck(Check):
                 ),
             )
 
-        problems = [check_label(custom_date) for custom_date in contact.custom_dates]
+        problems = (check_label(custom_date) for custom_date in contact.custom_dates)
         return [x for x in problems if x]

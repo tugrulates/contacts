@@ -2,15 +2,16 @@
 
 import json
 from pathlib import Path
-from typing import Iterator
+from typing import Iterator, Optional
 
+from contacts.address import Geocode, Geocoder
 from contacts.address_book import AddressBook
-from contacts.contact import Contact
+from contacts.contact import Contact, ContactAddress
 from tests.contact_diff import Mutation
 
 
 class MockAddressBook(AddressBook):
-    """Mock object for manipulation contacts."""
+    """Mock service for manipulation contacts."""
 
     def __init__(self, test_data_path: Path):
         """Initialize the mock."""
@@ -78,3 +79,33 @@ class MockAddressBook(AddressBook):
     def _delete_info(self, contact_id: str, field: str, info_id: str) -> None:
         """Delete a contact info."""
         self.deletes.append((contact_id, field, info_id))
+
+
+class MockGeocoder(Geocoder):
+    """Mock service for geocoding."""
+
+    def __init__(self) -> None:
+        """Initialize the mock."""
+        self._geocode = None
+        self._error = False
+
+    def provide(self, geocode: Geocode) -> None:
+        """Specify which geocode to return."""
+        self._geocode = geocode
+
+    def error(self) -> None:
+        """Prevent geocoding."""
+        self._error = True
+
+    def geocode(self, address: ContactAddress) -> Optional[Geocode]:
+        """Geocode address."""
+        if self._error:
+            return None
+        if self._geocode:
+            return self._geocode
+        return Geocode(
+            street=address.street.split("\n")[0] if address.street else None,
+            city=address.city,
+            state=address.state,
+            zip_code=address.zip_code,
+        )

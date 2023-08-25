@@ -47,12 +47,12 @@
             "id": "EEEEEEEE-7777-EEEE-7777-EEEEEEEEEEEEE",
             "label": "jardin",
             "value": "Carrer Espronceda 106\n03204 Elche\nSpain",
-            "country_code": "es",
             "street": "Carrer Espronceda 106",
             "city": "Elche",
             "state": "Alicante",
-            "zip": "n03204",
-            "country": "Spain"
+            "zip_code": "03204",
+            "country": "Spain",
+            "country_code": "es"
         }
     ]
 }

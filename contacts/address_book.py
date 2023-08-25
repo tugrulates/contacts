@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import subprocess
 from abc import ABC, abstractmethod
+from itertools import chain, zip_longest
+from pathlib import Path
 from typing import TYPE_CHECKING, Iterator, Optional, Protocol
 
 if TYPE_CHECKING:
@@ -10,7 +13,7 @@ if TYPE_CHECKING:
 
 
 class AddressBook(ABC):
-    """An address book that fetches and updates contacts."""
+    """An address book service to fetch and update contacts."""
 
     @abstractmethod
     def count(self, keywords: list[str]) -> int:
@@ -241,12 +244,12 @@ class AddressBook(ABC):
         info_id: str,
         *,
         label: Optional[str] = None,
-        country_code: Optional[str] = None,
         street: Optional[str] = None,
         city: Optional[str] = None,
         state: Optional[str] = None,
         zip_code: Optional[str] = None,
         country: Optional[str] = None,
+        country_code: Optional[str] = None,
     ) -> None:
         """Update a contact address."""
         self._update_info(
@@ -255,13 +258,71 @@ class AddressBook(ABC):
             info_id,
             **self.__optional_values(
                 label=label,
-                country_code=country_code,
                 street=street,
                 city=city,
                 state=state,
                 zip_code=zip_code,
                 country=country,
+                country_code=country_code,
             ),
+        )
+
+    def update_address_street(self, contact_id: str, info_id: str, value: str) -> None:
+        """Update a contact address street."""
+        self._update_info(
+            contact_id,
+            "addresses",
+            info_id,
+            **self.__optional_values(street=value),
+        )
+
+    def update_address_city(self, contact_id: str, info_id: str, value: str) -> None:
+        """Update a contact address city."""
+        self._update_info(
+            contact_id,
+            "addresses",
+            info_id,
+            **self.__optional_values(city=value),
+        )
+
+    def update_address_state(self, contact_id: str, info_id: str, value: str) -> None:
+        """Update a contact address state."""
+        self._update_info(
+            contact_id,
+            "addresses",
+            info_id,
+            **self.__optional_values(state=value),
+        )
+
+    def update_address_zip_code(
+        self, contact_id: str, info_id: str, value: str
+    ) -> None:
+        """Update a contact address zip code."""
+        self._update_info(
+            contact_id,
+            "addresses",
+            info_id,
+            **self.__optional_values(zip_code=value),
+        )
+
+    def update_address_country(self, contact_id: str, info_id: str, value: str) -> None:
+        """Update a contact address country."""
+        self._update_info(
+            contact_id,
+            "addresses",
+            info_id,
+            **self.__optional_values(country=value),
+        )
+
+    def update_address_country_code(
+        self, contact_id: str, info_id: str, value: str
+    ) -> None:
+        """Update a contact address country code."""
+        self._update_info(
+            contact_id,
+            "addresses",
+            info_id,
+            **self.__optional_values(country_code=value),
         )
 
     def add_address(
@@ -269,12 +330,12 @@ class AddressBook(ABC):
         contact_id: str,
         label: str,
         *,
-        country_code: Optional[str] = None,
         street: Optional[str] = None,
         city: Optional[str] = None,
         state: Optional[str] = None,
         zip_code: Optional[str] = None,
         country: Optional[str] = None,
+        country_code: Optional[str] = None,
     ) -> None:
         """Add a contact address."""
         self._add_info(
@@ -282,12 +343,12 @@ class AddressBook(ABC):
             "addresses",
             label=label,
             **self.__optional_values(
-                country_code=country_code,
                 street=street,
                 city=city,
                 state=state,
                 zip_code=zip_code,
                 country=country,
+                country_code=country_code,
             ),
         )
 
@@ -441,7 +502,8 @@ class AddressBook(ABC):
             __address_book: AddressBook,
             contact_id: str,
             value: str,
-        ) -> None: ...
+        ) -> None:
+            ...
 
     class DeleteFieldFunction(Protocol):
         """Type hint for delete field calls."""
@@ -450,7 +512,8 @@ class AddressBook(ABC):
             self,
             __address_book: AddressBook,
             contact_id: str,
-        ) -> None: ...
+        ) -> None:
+            ...
 
     class UpdateInfoLabelFunction(Protocol):
         """Type hint for update info calls for labels."""
@@ -462,7 +525,20 @@ class AddressBook(ABC):
             info_id: str,
             *,
             label: Optional[str],
-        ) -> None: ...
+        ) -> None:
+            ...
+
+    class UpdateInfoValueFunction(Protocol):
+        """Type hint for update info value calls for fields."""
+
+        def __call__(  # noqa: D102
+            self,
+            __address_book: AddressBook,
+            contact_id: str,
+            info_id: str,
+            value: str,
+        ) -> None:
+            ...
 
     class DeleteInfoFunction(Protocol):
         """Type hint for delete info calls."""
@@ -472,4 +548,110 @@ class AddressBook(ABC):
             __address_book: AddressBook,
             contact_id: str,
             info_id: str,
-        ) -> None: ...
+        ) -> None:
+            ...
+
+
+class AppleScriptBasedAddressBook(AddressBook):
+    """Address book service using AppleScript."""
+
+    def __init__(self, brief: bool, batch: int):
+        """Initialize with configuration."""
+        self.brief = brief
+        self.batch = batch
+
+    def _run_and_read_output(self, script: str, *args: str) -> str:
+        """Run a named script with arguments and return the stdout."""
+        script_path = (
+            Path(__file__).parent / "applescript" / "{}.applescript".format(script)
+        )
+        result = None
+        try:
+            result = subprocess.run(
+                ["/usr/bin/osascript", script_path, *args],
+                encoding="utf-8",
+                check=True,
+                capture_output=True,
+            )  # nosec B603
+            return result.stdout
+        except subprocess.CalledProcessError as e:
+            print(e.stderr)
+            raise e
+
+    def _run_and_read_log(self, script: str, *args: str) -> Iterator[str]:
+        """Run a named script with arguments and return the stdout."""
+        script_path = (
+            Path(__file__).parent / "applescript" / "{}.applescript".format(script)
+        )
+        try:
+            with subprocess.Popen(
+                ["/usr/bin/osascript", script_path, *args],
+                encoding="utf-8",
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                universal_newlines=True,
+            ) as process:  # nosec B603
+                if process.stderr:
+                    yield from (x.strip() for x in process.stderr)
+        except subprocess.CalledProcessError as e:
+            print(e.stderr)
+            raise e
+
+    def count(self, keywords: list[str]) -> int:
+        """Return number of contacts matching given keywords."""
+        return int(self._run_and_read_output("find", "?", *keywords))
+
+    def find(self, keywords: list[str]) -> Iterator[Contact]:
+        """Return list of contact ids matching given keywords."""
+        contact_ids = self._run_and_read_log("find", *keywords)
+        chunks = zip_longest(*([iter(contact_ids)] * self.batch))
+        for chunk in list(chunks):
+            yield from self._by_id([x for x in chunk if x], brief=self.brief)
+
+    def get(self, contact_id: str) -> Contact:
+        """Fetch a contact with its id."""
+        result = list(self._by_id([contact_id]))
+        if not result:
+            raise RuntimeError("Contact not found {contact.id}")
+        return result[0]
+
+    def _by_id(
+        self, contact_ids: list[str], *, brief: bool = False
+    ) -> Iterator[Contact]:
+        """Return contacts with given ids.
+
+        :param brief: omit most contact details in favor of performance
+        """
+        from contacts.contact import Contacts
+
+        output = self._run_and_read_output("brief" if brief else "detail", *contact_ids)
+        yield from Contacts.model_validate_json(output).contacts
+
+    def _update_field(self, contact_id: str, field: str, value: str) -> None:
+        """Add or update contact field with given value."""
+        self._run_and_read_output("update", contact_id, field, value)
+
+    def _delete_field(self, contact_id: str, field: str) -> None:
+        """Delete a contact field."""
+        self._run_and_read_output("delete", contact_id, field)
+
+    def _update_info(
+        self, contact_id: str, field: str, info_id: str, **values: str
+    ) -> None:
+        """Update contact info with given label and value."""
+        self._run_and_read_output(
+            "update", contact_id, field, info_id, *chain(*values.items())
+        )
+
+    def _add_info(self, contact_id: str, field: str, **values: str) -> None:
+        """Add a contact info."""
+        self._run_and_read_output("add", contact_id, field, *chain(*values.items()))
+
+    def _delete_info(self, contact_id: str, field: str, info_id: str) -> None:
+        """Delete a contact info."""
+        self._run_and_read_output("delete", contact_id, field, info_id)
+
+
+def get_address_book(brief: bool, batch: int) -> AddressBook:
+    """Return an address book implementation using AppleScript code."""
+    return AppleScriptBasedAddressBook(brief=brief, batch=batch)

@@ -23,6 +23,8 @@ classifiers = [
 ]
 dependencies = [
   "email_validator==2.1.0.post1",
+  "geopy==2.4.1",
+  "isocodes==2023.11.26",
   "phonenumberslite==8.13.29",
   "pydantic==2.6.0",
   "rich==13.7.0",

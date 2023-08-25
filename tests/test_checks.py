@@ -1,19 +1,17 @@
-"""Unittests for contact_diff."""
+"""Unit tests for contact checks."""
 
-from pathlib import Path
-
-import email_validator
 import pytest
 
+from contacts.address import AddressFormat, Geocode, SemanticAddressField
 from contacts.category import Category
-from contacts.checks import url_check
+from contacts.config import Config
 from contacts.contact import Contact, ContactAddress, ContactInfo, ContactSocialProfile
 from contacts.problem import Problem
-from tests.mock_address_book import MockAddressBook
+from tests.mocks import MockAddressBook, MockGeocoder
 
 
 class ProblemChecker:
-    """Checker that verifier problem details."""
+    """Checker that verifies problem details."""
 
     def __init__(self, mock_address_book: MockAddressBook):
         """Initialize checker with mock address book."""
@@ -32,20 +30,6 @@ class ProblemChecker:
         return problem
 
 
-@pytest.fixture(scope="session", autouse=True)
-def test_environment() -> None:
-    """Initialize the test environment."""
-    # disable DNS checks for e-mail address and URL checks
-    email_validator.TEST_ENVIRONMENT = True
-    url_check.TEST_ENVIRONMENT = True
-
-
-@pytest.fixture(autouse=True)
-def mock_address_book() -> MockAddressBook:
-    """Fixture for prefs."""
-    return MockAddressBook(Path("."))
-
-
 @pytest.fixture(autouse=True)
 def problem_checker(mock_address_book: MockAddressBook) -> ProblemChecker:
     """Fixture for prefs."""
@@ -53,7 +37,7 @@ def problem_checker(mock_address_book: MockAddressBook) -> ProblemChecker:
 
 
 def test_correct_contact() -> None:
-    """Test contact that has no problems."""
+    """Test contact with no problems."""
     contact = Contact(
         id="ID",
         name="NAME",
@@ -83,9 +67,39 @@ def test_correct_contact() -> None:
             ContactInfo(id="UID3", label="_$!<School>!$_", value="http://s.com"),
         ],
         addresses=[
-            ContactAddress(id="AID1", label="_$!<Home>!$_", value="ADDRESS_1"),
-            ContactAddress(id="AID2", label="_$!<Work>!$_", value="ADDRESS_2"),
-            ContactAddress(id="AID3", label="_$!<School>!$_", value="ADDRESS_3"),
+            ContactAddress(
+                id="AID1",
+                label="_$!<Home>!$_",
+                value="ADDRESS_1",
+                street="1 Street",
+                city="Eureka",
+                state="CA",
+                zip_code="95501",
+                country="United States",
+                country_code="us",
+            ),
+            ContactAddress(
+                id="AID2",
+                label="_$!<Work>!$_",
+                value="ADDRESS_2",
+                street="1 Street",
+                city="Eureka",
+                state="CA",
+                zip_code="95501",
+                country="United States",
+                country_code="us",
+            ),
+            ContactAddress(
+                id="AID3",
+                label="_$!<School>!$_",
+                value="ADDRESS_3",
+                street="1 Street",
+                city="Eureka",
+                state="CA",
+                zip_code="95501",
+                country="United States",
+                country_code="us",
+            ),
         ],
         birth_date="February 2, 1922",
         custom_dates=[
@@ -104,8 +118,8 @@ def test_correct_contact() -> None:
     assert contact.problems == []
 
 
-def test_prefix_capitalization(
-    problem_checker: ProblemChecker, mock_address_book: MockAddressBook
+def test_prefix_casing_fix(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
 ) -> None:
     """Test lowercase prefix."""
     contact = Contact(id="ID", name="NAME", prefix="dr.")
@@ -117,8 +131,8 @@ def test_prefix_capitalization(
     assert sorted(mock_address_book.deletes) == []
 
 
-def test_first_name_capitalization(
-    problem_checker: ProblemChecker, mock_address_book: MockAddressBook
+def test_first_name_casing_fix(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
 ) -> None:
     """Test lowercase first name."""
     contact = Contact(id="ID", name="NAME", first_name="bob")
@@ -130,8 +144,8 @@ def test_first_name_capitalization(
     assert sorted(mock_address_book.deletes) == []
 
 
-def test_middle_name_capitalization(
-    problem_checker: ProblemChecker, mock_address_book: MockAddressBook
+def test_middle_name_casing_fix(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
 ) -> None:
     """Test lowercase middle name."""
     contact = Contact(id="ID", name="NAME", middle_name="babála")
@@ -143,8 +157,8 @@ def test_middle_name_capitalization(
     assert sorted(mock_address_book.deletes) == []
 
 
-def test_last_name_capitalization(
-    problem_checker: ProblemChecker, mock_address_book: MockAddressBook
+def test_last_name_casing_fix(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
 ) -> None:
     """Test lowercase last name."""
     contact = Contact(id="ID", name="NAME", last_name="balon")
@@ -156,8 +170,8 @@ def test_last_name_capitalization(
     assert sorted(mock_address_book.deletes) == []
 
 
-def test_suffix_capitalization(
-    problem_checker: ProblemChecker, mock_address_book: MockAddressBook
+def test_suffix_casing_fix(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
 ) -> None:
     """Test lowercase suffix."""
     contact = Contact(id="ID", name="NAME", suffix="jr.")
@@ -169,8 +183,8 @@ def test_suffix_capitalization(
     assert sorted(mock_address_book.deletes) == []
 
 
-def test_job_title_capitalization(
-    problem_checker: ProblemChecker, mock_address_book: MockAddressBook
+def test_job_title_casing_fix(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
 ) -> None:
     """Test lowercase job title."""
     contact = Contact(id="ID", name="NAME", job_title="baker")
@@ -182,8 +196,8 @@ def test_job_title_capitalization(
     assert sorted(mock_address_book.deletes) == []
 
 
-def test_department_capitalization(
-    problem_checker: ProblemChecker, mock_address_book: MockAddressBook
+def test_department_casing_fix(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
 ) -> None:
     """Test lowercase department."""
     contact = Contact(id="ID", name="NAME", department="bakery")
@@ -195,30 +209,30 @@ def test_department_capitalization(
     assert sorted(mock_address_book.deletes) == []
 
 
-def test_capitalization_ignores_mixed_case() -> None:
+def test_names_ignore_mixed_case() -> None:
     """Test mixed case name."""
     contact = Contact(id="ID", name="NAME", first_name="bobMac", last_name="o'Hare.")
     assert contact.problems == []
 
 
-def test_organization_ignores_lowercase_organization() -> None:
+def test_organization_ignores_lowercase() -> None:
     """Test lowercase organization."""
     contact = Contact(id="ID", name="NAME", organization="bakers co.")
     assert contact.problems == []
 
 
-def test_nickname_single_word(problem_checker: ProblemChecker) -> None:
-    """Test single name nickname."""
+def test_nickname_invalid_single_word(problem_checker: ProblemChecker) -> None:
+    """Test single word nickname."""
     contact = Contact(id="ID", name="NAME", nickname="Bob")
     problem = problem_checker.problem(contact)
     assert problem.category == Category.ERROR
     assert problem.message == "Nickname 'Bob' is not a full name."
 
 
-def test_fixable_phone_label(
-    problem_checker: ProblemChecker, mock_address_book: MockAddressBook
+def test_phone_label_fix(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
 ) -> None:
-    """Test phone with fixable label."""
+    """Test mislabeled phone."""
     contact = Contact(
         id="ID",
         name="NAME",
@@ -236,7 +250,7 @@ def test_fixable_phone_label(
     assert sorted(mock_address_book.deletes) == []
 
 
-def test_unfixable_phone_label(problem_checker: ProblemChecker) -> None:
+def test_phone_invalid_label(problem_checker: ProblemChecker) -> None:
     """Test phone with invalid label."""
     contact = Contact(
         id="ID",
@@ -250,157 +264,10 @@ def test_unfixable_phone_label(problem_checker: ProblemChecker) -> None:
     assert problem.message == "Phone label <pager> is not valid."
 
 
-def test_fixable_email_label(
-    problem_checker: ProblemChecker, mock_address_book: MockAddressBook
+def test_phone_format_fix(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
 ) -> None:
-    """Test e-mail with fixable label."""
-    contact = Contact(
-        id="ID",
-        name="NAME",
-        emails=[
-            ContactInfo(id="EID", label="email", value="test@h.com"),
-        ],
-    )
-    problem = problem_checker.problem(contact)
-    assert problem.category == Category.WARNING
-    assert problem.message == "E-mail label <email> should be <_$!<Home>!$_>."
-    assert sorted(mock_address_book.updates) == [
-        ("ID", "emails", "EID", {"label": "_$!<Home>!$_"})
-    ]
-    assert sorted(mock_address_book.adds) == []
-    assert sorted(mock_address_book.deletes) == []
-
-
-def test_unfixable_email_label(problem_checker: ProblemChecker) -> None:
-    """Test e-mail with invalid label."""
-    contact = Contact(
-        id="ID",
-        name="NAME",
-        emails=[
-            ContactInfo(id="EID", label="backup", value="test@h.com"),
-        ],
-    )
-    problem = problem_checker.problem(contact)
-    assert problem.category == Category.ERROR
-    assert problem.message == "E-mail label <backup> is not valid."
-
-
-def test_fixable_url_label(
-    problem_checker: ProblemChecker, mock_address_book: MockAddressBook
-) -> None:
-    """Test URL with fixable label."""
-    contact = Contact(
-        id="ID",
-        name="NAME",
-        urls=[
-            ContactInfo(id="UID", label="home", value="http://h.com"),
-        ],
-    )
-    problem = problem_checker.problem(contact)
-    assert problem.category == Category.WARNING
-    assert problem.message == "URL label <home> should be <_$!<HomePage>!$_>."
-    assert sorted(mock_address_book.updates) == [
-        ("ID", "urls", "UID", {"label": "_$!<HomePage>!$_"})
-    ]
-    assert sorted(mock_address_book.adds) == []
-    assert sorted(mock_address_book.deletes) == []
-
-
-def test_fixable_url_wrong_home_label(
-    problem_checker: ProblemChecker, mock_address_book: MockAddressBook
-) -> None:
-    """Test URL with the wrong home page label."""
-    contact = Contact(
-        id="ID",
-        name="NAME",
-        urls=[
-            ContactInfo(id="UID", label="_$!<Home>!$_", value="http://h.com"),
-        ],
-    )
-    problem = problem_checker.problem(contact)
-    assert problem.category == Category.WARNING
-    assert problem.message == "URL label for 'http://h.com' should be <HomePage>."
-    assert sorted(mock_address_book.updates) == [
-        ("ID", "urls", "UID", {"label": "_$!<HomePage>!$_"})
-    ]
-    assert sorted(mock_address_book.adds) == []
-    assert sorted(mock_address_book.deletes) == []
-
-
-def test_unfixable_url_label(problem_checker: ProblemChecker) -> None:
-    """Test URL with invalid label."""
-    contact = Contact(
-        id="ID",
-        name="NAME",
-        urls=[
-            ContactInfo(id="UID", label="blog", value="http://h.com"),
-        ],
-    )
-    problem = problem_checker.problem(contact)
-    assert problem.category == Category.ERROR
-    assert problem.message == "URL label <blog> is not valid."
-
-
-def test_fixable_address_label(
-    problem_checker: ProblemChecker, mock_address_book: MockAddressBook
-) -> None:
-    """Test address with fixable label."""
-    contact = Contact(
-        id="ID",
-        name="NAME",
-        addresses=[
-            ContactAddress(id="AID", label="work", value="ADDRESS"),
-        ],
-    )
-    problem = problem_checker.problem(contact)
-    assert problem.category == Category.WARNING
-    assert problem.message == "Address label <work> should be <_$!<Work>!$_>."
-    assert sorted(mock_address_book.updates) == [
-        ("ID", "addresses", "AID", {"label": "_$!<Work>!$_"})
-    ]
-    assert sorted(mock_address_book.adds) == []
-    assert sorted(mock_address_book.deletes) == []
-
-
-def test_unfixable_address_label(problem_checker: ProblemChecker) -> None:
-    """Test address with invalid label."""
-    contact = Contact(
-        id="ID",
-        name="NAME",
-        addresses=[
-            ContactAddress(id="AID", label="mailbox", value="ADDRESS"),
-        ],
-    )
-    problem = problem_checker.problem(contact)
-    assert problem.category == Category.ERROR
-    assert problem.message == "Address label <mailbox> is not valid."
-
-
-def test_mixed_case_custom_date_label(
-    problem_checker: ProblemChecker, mock_address_book: MockAddressBook
-) -> None:
-    """Test custom date with fixable mixed case label."""
-    contact = Contact(
-        id="ID",
-        name="NAME",
-        custom_dates=[
-            ContactInfo(id="DID", label="Favorite", value="DATE"),
-        ],
-    )
-    problem = problem_checker.problem(contact)
-    assert problem.category == Category.WARNING
-    assert problem.message == "Custom date label <Favorite> should be <favorite>."
-    assert sorted(mock_address_book.updates) == [
-        ("ID", "custom_dates", "DID", {"label": "favorite"})
-    ]
-    assert sorted(mock_address_book.adds) == []
-    assert sorted(mock_address_book.deletes) == []
-
-
-def test_fixable_phone_number(
-    problem_checker: ProblemChecker, mock_address_book: MockAddressBook
-) -> None:
-    """Test phone number with wrong formatting."""
+    """Test phone number in wrong format."""
     contact = Contact(
         id="ID",
         name="NAME",
@@ -421,7 +288,7 @@ def test_fixable_phone_number(
     assert sorted(mock_address_book.deletes) == []
 
 
-def test_unfixable_phone_number(problem_checker: ProblemChecker) -> None:
+def test_phone_invalid_number(problem_checker: ProblemChecker) -> None:
     """Test invalid phone number."""
     contact = Contact(
         id="ID",
@@ -435,80 +302,10 @@ def test_unfixable_phone_number(problem_checker: ProblemChecker) -> None:
     assert problem.message == "Phone number '+1 (NO) WEARENOTBAKERS' is not valid."
 
 
-def test_fixable_email_address(
-    problem_checker: ProblemChecker, mock_address_book: MockAddressBook
+def test_phone_duplicate_numbers(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
 ) -> None:
-    """Test e-mail address with wrong formatting."""
-    contact = Contact(
-        id="ID",
-        name="NAME",
-        emails=[
-            ContactInfo(id="EID", label="_$!<Home>!$_", value=" test@H.COM"),
-        ],
-    )
-    problem = problem_checker.problem(contact)
-    assert problem.category == Category.WARNING
-    assert problem.message == "E-mail ' test@H.COM' should be 'test@h.com'."
-    assert sorted(mock_address_book.updates) == [
-        ("ID", "emails", "EID", {"value": "test@h.com"})
-    ]
-    assert sorted(mock_address_book.adds) == []
-    assert sorted(mock_address_book.deletes) == []
-
-
-def test_unfixable_email_address(problem_checker: ProblemChecker) -> None:
-    """Test invalid e-mail address."""
-    contact = Contact(
-        id="ID",
-        name="NAME",
-        emails=[
-            ContactInfo(id="EID", label="_$!<Home>!$_", value="test@"),
-        ],
-    )
-    problem = problem_checker.problem(contact)
-    assert problem.category == Category.ERROR
-    assert problem.message == "E-mail 'test@' is not valid."
-
-
-def test_fixable_url(
-    problem_checker: ProblemChecker, mock_address_book: MockAddressBook
-) -> None:
-    """Test URL with wrong formatting."""
-    contact = Contact(
-        id="ID",
-        name="NAME",
-        urls=[
-            ContactInfo(id="UID", label="_$!<HomePage>!$_", value=" HTTP://h.com"),
-        ],
-    )
-    problem = problem_checker.problem(contact)
-    assert problem.category == Category.WARNING
-    assert problem.message == "URL ' HTTP://h.com' should be 'http://h.com'."
-    assert sorted(mock_address_book.updates) == [
-        ("ID", "urls", "UID", {"value": "http://h.com"})
-    ]
-    assert sorted(mock_address_book.adds) == []
-    assert sorted(mock_address_book.deletes) == []
-
-
-def test_unfixable_url(problem_checker: ProblemChecker) -> None:
-    """Test invalid URL."""
-    contact = Contact(
-        id="ID",
-        name="NAME",
-        urls=[
-            ContactInfo(id="UID", label="_$!<HomePage>!$_", value="1.1.1.1"),
-        ],
-    )
-    problem = problem_checker.problem(contact)
-    assert problem.category == Category.ERROR
-    assert problem.message == "URL '1.1.1.1' is not valid."
-
-
-def test_duplicate_phones(
-    problem_checker: ProblemChecker, mock_address_book: MockAddressBook
-) -> None:
-    """Test duplicate phone deletion."""
+    """Test duplicate phone numbers."""
     contact = Contact(
         id="ID",
         name="NAME",
@@ -526,10 +323,80 @@ def test_duplicate_phones(
     assert sorted(mock_address_book.deletes) == [("ID", "phones", "PID2")]
 
 
-def test_duplicate_emails(
-    problem_checker: ProblemChecker, mock_address_book: MockAddressBook
+def test_email_label_fix(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
 ) -> None:
-    """Test duplicate e-mail deletion."""
+    """Test mislabeled e-mail."""
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        emails=[
+            ContactInfo(id="EID", label="email", value="test@h.com"),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "E-mail label <email> should be <_$!<Home>!$_>."
+    assert sorted(mock_address_book.updates) == [
+        ("ID", "emails", "EID", {"label": "_$!<Home>!$_"})
+    ]
+    assert sorted(mock_address_book.adds) == []
+    assert sorted(mock_address_book.deletes) == []
+
+
+def test_email_invalid_label(problem_checker: ProblemChecker) -> None:
+    """Test e-mail with invalid label."""
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        emails=[
+            ContactInfo(id="EID", label="backup", value="test@h.com"),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.ERROR
+    assert problem.message == "E-mail label <backup> is not valid."
+
+
+def test_email_format_fix(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
+) -> None:
+    """Test e-mail address in wrong format."""
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        emails=[
+            ContactInfo(id="EID", label="_$!<Home>!$_", value=" test@H.COM"),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "E-mail ' test@H.COM' should be 'test@h.com'."
+    assert sorted(mock_address_book.updates) == [
+        ("ID", "emails", "EID", {"value": "test@h.com"})
+    ]
+    assert sorted(mock_address_book.adds) == []
+    assert sorted(mock_address_book.deletes) == []
+
+
+def test_email_invalid_address(problem_checker: ProblemChecker) -> None:
+    """Test invalid e-mail address."""
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        emails=[
+            ContactInfo(id="EID", label="_$!<Home>!$_", value="test@"),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.ERROR
+    assert problem.message == "E-mail 'test@' is not valid."
+
+
+def test_email_duplicate_addresses(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
+) -> None:
+    """Test duplicate e-mail addresses."""
     contact = Contact(
         id="ID",
         name="NAME",
@@ -547,10 +414,101 @@ def test_duplicate_emails(
     assert sorted(mock_address_book.deletes) == [("ID", "emails", "EID2")]
 
 
-def test_duplicate_urls(
-    problem_checker: ProblemChecker, mock_address_book: MockAddressBook
+def test_url_label_fix(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
 ) -> None:
-    """Test duplicate URL deletion."""
+    """Test mislabeled URL."""
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        urls=[
+            ContactInfo(id="UID", label="home", value="http://h.com"),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "URL label <home> should be <_$!<HomePage>!$_>."
+    assert sorted(mock_address_book.updates) == [
+        ("ID", "urls", "UID", {"label": "_$!<HomePage>!$_"})
+    ]
+    assert sorted(mock_address_book.adds) == []
+    assert sorted(mock_address_book.deletes) == []
+
+
+def test_url_wrong_home_label_fix(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
+) -> None:
+    """Test URL with the wrong home page label."""
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        urls=[
+            ContactInfo(id="UID", label="_$!<Home>!$_", value="http://h.com"),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "URL label for 'http://h.com' should be <HomePage>."
+    assert sorted(mock_address_book.updates) == [
+        ("ID", "urls", "UID", {"label": "_$!<HomePage>!$_"})
+    ]
+    assert sorted(mock_address_book.adds) == []
+    assert sorted(mock_address_book.deletes) == []
+
+
+def test_url_invalid_label(problem_checker: ProblemChecker) -> None:
+    """Test URL with invalid label."""
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        urls=[
+            ContactInfo(id="UID", label="blog", value="http://h.com"),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.ERROR
+    assert problem.message == "URL label <blog> is not valid."
+
+
+def test_url_format_fix(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
+) -> None:
+    """Test URL in wrong format."""
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        urls=[
+            ContactInfo(id="UID", label="_$!<HomePage>!$_", value=" HTTP://h.com"),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "URL ' HTTP://h.com' should be 'http://h.com'."
+    assert sorted(mock_address_book.updates) == [
+        ("ID", "urls", "UID", {"value": "http://h.com"})
+    ]
+    assert sorted(mock_address_book.adds) == []
+    assert sorted(mock_address_book.deletes) == []
+
+
+def test_url_invalid_value(problem_checker: ProblemChecker) -> None:
+    """Test invalid URL."""
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        urls=[
+            ContactInfo(id="UID", label="_$!<HomePage>!$_", value="1.1.1.1"),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.ERROR
+    assert problem.message == "URL '1.1.1.1' is not valid."
+
+
+def test_url_duplicate_values(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
+) -> None:
+    """Test duplicate URLs."""
     contact = Contact(
         id="ID",
         name="NAME",
@@ -568,17 +526,793 @@ def test_duplicate_urls(
     assert sorted(mock_address_book.deletes) == [("ID", "urls", "UID2")]
 
 
-def test_duplicate_addresses(
-    problem_checker: ProblemChecker, mock_address_book: MockAddressBook
+def test_address_label_fix(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
 ) -> None:
-    """Test duplicate address deletion."""
+    """Test mislabeled address."""
     contact = Contact(
         id="ID",
         name="NAME",
         addresses=[
-            ContactAddress(id="AID1", label="_$!<Home>!$_", value="ADDRESS"),
-            ContactAddress(id="AID2", label="_$!<Work>!$_", value="ADDRESS"),
-            ContactAddress(id="AID3", label="_$!<School>!$_", value="ANOTHER"),
+            ContactAddress(
+                id="AID",
+                label="work",
+                value="ADDRESS",
+                street="1 Street",
+                city="Eureka",
+                state="CA",
+                zip_code="95501",
+                country="United States",
+                country_code="us",
+            ),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "Address label <work> should be <_$!<Work>!$_>."
+    assert sorted(mock_address_book.updates) == [
+        ("ID", "addresses", "AID", {"label": "_$!<Work>!$_"})
+    ]
+    assert sorted(mock_address_book.adds) == []
+    assert sorted(mock_address_book.deletes) == []
+
+
+def test_address_invalid_label(problem_checker: ProblemChecker) -> None:
+    """Test address with invalid label."""
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        addresses=[
+            ContactAddress(
+                id="AID",
+                label="mailbox",
+                value="ADDRESS",
+                street="1 Street",
+                city="Eureka",
+                state="CA",
+                zip_code="95501",
+                country="United States",
+                country_code="us",
+            ),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.ERROR
+    assert problem.message == "Address label <mailbox> is not valid."
+
+
+def test_address_street_geocoding_error(
+    mock_geocoder: MockGeocoder,
+    problem_checker: ProblemChecker,
+) -> None:
+    """Test address not geocoding."""
+    mock_geocoder.error()
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        addresses=[
+            ContactAddress(
+                id="AID",
+                label="_$!<Home>!$_",
+                value="ADDRESS",
+                street="1 Street",
+                city="Eureka",
+                state="CA",
+                zip_code="95501",
+                country="United States",
+                country_code="us",
+            ),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.ERROR
+    assert problem.message == "Address 'ADDRESS' cannot be geocoded."
+
+
+def test_address_missing_street(problem_checker: ProblemChecker) -> None:
+    """Test address with missing street."""
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        addresses=[
+            ContactAddress(
+                id="AID",
+                label="_$!<Home>!$_",
+                value="ADDRESS",
+                city="Eureka",
+                state="CA",
+                zip_code="95501",
+                country="United States",
+                country_code="us",
+            ),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.ERROR
+    assert problem.message == "Street for 'ADDRESS' is missing."
+
+
+def test_address_street_not_in_format(
+    mock_config: Config,
+    mock_address_book: MockAddressBook,
+    problem_checker: ProblemChecker,
+) -> None:
+    """Test address with a street in format that does not have streets."""
+    mock_config.address_formats = {
+        "us": AddressFormat(
+            city=SemanticAddressField.CITY,
+            state=SemanticAddressField.STATE,
+            zip_code=SemanticAddressField.ZIP_CODE,
+        )
+    }
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        addresses=[
+            ContactAddress(
+                id="AID",
+                label="_$!<Home>!$_",
+                value="ADDRESS",
+                street="1 Street",
+                city="Eureka",
+                state="CA",
+                zip_code="95501",
+                country="United States",
+                country_code="us",
+            ),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "Street '1 Street' should be removed."
+    assert sorted(mock_address_book.updates) == [
+        ("ID", "addresses", "AID", {"street": ""})
+    ]
+    assert sorted(mock_address_book.adds) == []
+    assert sorted(mock_address_book.deletes) == []
+
+
+def test_address_street_geocode_fix(
+    mock_address_book: MockAddressBook,
+    mock_geocoder: MockGeocoder,
+    problem_checker: ProblemChecker,
+) -> None:
+    """Test address city fixed by geocoding."""
+    mock_geocoder.provide(
+        Geocode(
+            street="1 Street",
+            city="Eureka",
+            state="CA",
+            zip_code="95501",
+            country_code="us",
+        )
+    )
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        addresses=[
+            ContactAddress(
+                id="AID",
+                label="_$!<Home>!$_",
+                value="ADDRESS",
+                street="Street No 1\n#1",
+                city="Eureka",
+                state="CA",
+                zip_code="95501",
+                country="United States",
+                country_code="us",
+            ),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "Street 'Street No 1 #1' should be '1 Street #1'."
+    assert sorted(mock_address_book.updates) == [
+        ("ID", "addresses", "AID", {"street": "1 Street\n#1"})
+    ]
+    assert sorted(mock_address_book.adds) == []
+    assert sorted(mock_address_book.deletes) == []
+
+
+def test_address_missing_city(problem_checker: ProblemChecker) -> None:
+    """Test address with missing city."""
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        addresses=[
+            ContactAddress(
+                id="AID",
+                label="_$!<Home>!$_",
+                value="ADDRESS",
+                street="1 Street",
+                state="CA",
+                zip_code="95501",
+                country="United States",
+                country_code="us",
+            ),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.ERROR
+    assert problem.message == "City for 'ADDRESS' is missing."
+
+
+def test_address_city_not_in_format(
+    mock_config: Config,
+    mock_address_book: MockAddressBook,
+    problem_checker: ProblemChecker,
+) -> None:
+    """Test address with a city in format that does not have cities."""
+    mock_config.address_formats = {
+        "us": AddressFormat(
+            street=SemanticAddressField.STREET,
+            state=SemanticAddressField.STATE,
+            zip_code=SemanticAddressField.ZIP_CODE,
+        )
+    }
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        addresses=[
+            ContactAddress(
+                id="AID",
+                label="_$!<Home>!$_",
+                value="ADDRESS",
+                street="1 Street",
+                city="Eureka",
+                state="CA",
+                zip_code="95501",
+                country="United States",
+                country_code="us",
+            ),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "City 'Eureka' should be removed."
+    assert sorted(mock_address_book.updates) == [
+        ("ID", "addresses", "AID", {"city": ""})
+    ]
+    assert sorted(mock_address_book.adds) == []
+    assert sorted(mock_address_book.deletes) == []
+
+
+def test_address_city_geocode_fix(
+    mock_address_book: MockAddressBook,
+    mock_geocoder: MockGeocoder,
+    problem_checker: ProblemChecker,
+) -> None:
+    """Test address city fixed by geocoding."""
+    mock_geocoder.provide(
+        Geocode(
+            street="1 Street",
+            city="Eureka",
+            state="CA",
+            zip_code="95501",
+            country_code="us",
+        )
+    )
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        addresses=[
+            ContactAddress(
+                id="AID",
+                label="_$!<Home>!$_",
+                value="ADDRESS",
+                street="1 Street",
+                city="Eurek",
+                state="CA",
+                zip_code="95501",
+                country="United States",
+                country_code="us",
+            ),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "City 'Eurek' should be 'Eureka'."
+    assert sorted(mock_address_book.updates) == [
+        ("ID", "addresses", "AID", {"city": "Eureka"})
+    ]
+    assert sorted(mock_address_book.adds) == []
+    assert sorted(mock_address_book.deletes) == []
+
+
+def test_address_state_not_in_format(
+    mock_config: Config,
+    mock_address_book: MockAddressBook,
+    problem_checker: ProblemChecker,
+) -> None:
+    """Test address with a state in format that does not have states."""
+    mock_config.address_formats = {
+        "us": AddressFormat(
+            street=SemanticAddressField.STREET,
+            city=SemanticAddressField.CITY,
+            zip_code=SemanticAddressField.ZIP_CODE,
+        )
+    }
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        addresses=[
+            ContactAddress(
+                id="AID",
+                label="_$!<Home>!$_",
+                value="ADDRESS",
+                street="1 Street",
+                city="Eureka",
+                state="CA",
+                zip_code="95501",
+                country="United States",
+                country_code="us",
+            ),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "State 'CA' should be removed."
+    assert sorted(mock_address_book.updates) == [
+        ("ID", "addresses", "AID", {"state": ""})
+    ]
+    assert sorted(mock_address_book.adds) == []
+    assert sorted(mock_address_book.deletes) == []
+
+
+def test_address_state_geocode_fix(
+    mock_address_book: MockAddressBook,
+    mock_geocoder: MockGeocoder,
+    problem_checker: ProblemChecker,
+) -> None:
+    """Test address state fixed by geocoding."""
+    mock_geocoder.provide(
+        Geocode(
+            street="1 Street",
+            city="Eureka",
+            state="CA",
+            zip_code="95501",
+            country_code="us",
+        )
+    )
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        addresses=[
+            ContactAddress(
+                id="AID",
+                label="_$!<Home>!$_",
+                value="ADDRESS",
+                street="1 Street",
+                city="Eureka",
+                state="California",
+                zip_code="95501",
+                country="United States",
+                country_code="us",
+            ),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "State 'California' should be 'CA'."
+    assert sorted(mock_address_book.updates) == [
+        ("ID", "addresses", "AID", {"state": "CA"})
+    ]
+    assert sorted(mock_address_book.adds) == []
+    assert sorted(mock_address_book.deletes) == []
+
+
+def test_missing_zip_code(problem_checker: ProblemChecker) -> None:
+    """Test address with missing zip code."""
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        addresses=[
+            ContactAddress(
+                id="AID",
+                label="_$!<Home>!$_",
+                value="ADDRESS",
+                street="1 Street",
+                city="Eureka",
+                state="CA",
+                country="United States",
+                country_code="us",
+            ),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.ERROR
+    assert problem.message == "ZIP code for 'ADDRESS' is missing."
+
+
+def test_address_zip_code_not_in_format(
+    mock_config: Config,
+    mock_address_book: MockAddressBook,
+    problem_checker: ProblemChecker,
+) -> None:
+    """Test address with a zip code in format that does not have zip codes."""
+    mock_config.address_formats = {
+        "us": AddressFormat(
+            street=SemanticAddressField.STREET,
+            city=SemanticAddressField.CITY,
+            state=SemanticAddressField.STATE,
+        )
+    }
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        addresses=[
+            ContactAddress(
+                id="AID",
+                label="_$!<Home>!$_",
+                value="ADDRESS",
+                street="1 Street",
+                city="Eureka",
+                state="CA",
+                zip_code="95501",
+                country="United States",
+                country_code="us",
+            ),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "ZIP code '95501' should be removed."
+    assert sorted(mock_address_book.updates) == [
+        ("ID", "addresses", "AID", {"zip_code": ""})
+    ]
+    assert sorted(mock_address_book.adds) == []
+    assert sorted(mock_address_book.deletes) == []
+
+
+def test_address_zip_code_geocode_fix(
+    mock_address_book: MockAddressBook,
+    mock_geocoder: MockGeocoder,
+    problem_checker: ProblemChecker,
+) -> None:
+    """Test address zip code fixed by geocoding."""
+    mock_geocoder.provide(
+        Geocode(
+            street="1 Street",
+            city="Eureka",
+            state="CA",
+            zip_code="95501-1001",
+            country_code="us",
+        )
+    )
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        addresses=[
+            ContactAddress(
+                id="AID",
+                label="_$!<Home>!$_",
+                value="ADDRESS",
+                street="1 Street",
+                city="Eureka",
+                state="CA",
+                zip_code="95501",
+                country="United States",
+                country_code="us",
+            ),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "ZIP code '95501' should be '95501-1001'."
+    assert sorted(mock_address_book.updates) == [
+        ("ID", "addresses", "AID", {"zip_code": "95501-1001"})
+    ]
+    assert sorted(mock_address_book.adds) == []
+    assert sorted(mock_address_book.deletes) == []
+
+
+def test_address_missing_country(problem_checker: ProblemChecker) -> None:
+    """Test address with missing country."""
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        addresses=[
+            ContactAddress(
+                id="AID",
+                label="_$!<Home>!$_",
+                value="ADDRESS",
+                street="1 Street",
+                city="Eureka",
+                state="CA",
+                zip_code="95501",
+            ),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.ERROR
+    assert problem.message == "Country for 'ADDRESS' is missing."
+
+
+def test_address_country_from_country_code_fix(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
+) -> None:
+    """Test address with country in wrong format."""
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        addresses=[
+            ContactAddress(
+                id="AID",
+                label="_$!<Home>!$_",
+                value="ADDRESS",
+                street="1 Street",
+                city="Eureka",
+                state="CA",
+                zip_code="95501",
+                country_code="us",
+            ),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "Country for 'ADDRESS' should be 'United States'."
+    assert sorted(mock_address_book.updates) == [
+        ("ID", "addresses", "AID", {"country": "United States"})
+    ]
+    assert sorted(mock_address_book.adds) == []
+    assert sorted(mock_address_book.deletes) == []
+
+
+def test_address_wrong_country_for_country_code_fix(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
+) -> None:
+    """Test address with country in wrong format."""
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        addresses=[
+            ContactAddress(
+                id="AID",
+                label="_$!<Home>!$_",
+                value="ADDRESS",
+                street="1 Street",
+                city="Eureka",
+                state="CA",
+                zip_code="95501",
+                country="Canada",
+                country_code="us",
+            ),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "Country 'Canada' should be 'United States'."
+    assert sorted(mock_address_book.updates) == [
+        ("ID", "addresses", "AID", {"country": "United States"})
+    ]
+    assert sorted(mock_address_book.adds) == []
+    assert sorted(mock_address_book.deletes) == []
+
+
+def test_address_country_code_format_fix(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
+) -> None:
+    """Test address with country code in wrong format."""
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        addresses=[
+            ContactAddress(
+                id="AID",
+                label="_$!<Home>!$_",
+                value="ADDRESS",
+                street="1 Street",
+                city="Eureka",
+                state="CA",
+                zip_code="95501",
+                country="United States",
+                country_code="US",
+            ),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "Country code 'US' should be 'us'."
+    assert sorted(mock_address_book.updates) == [
+        ("ID", "addresses", "AID", {"country_code": "us"})
+    ]
+    assert sorted(mock_address_book.adds) == []
+    assert sorted(mock_address_book.deletes) == []
+
+
+def test_address_country_code_from_country_fix(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
+) -> None:
+    """Test address with country in wrong format."""
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        addresses=[
+            ContactAddress(
+                id="AID",
+                label="_$!<Home>!$_",
+                value="ADDRESS",
+                street="1 Street",
+                city="Eureka",
+                state="CA",
+                zip_code="95501",
+                country="United States",
+            ),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "Country code for 'ADDRESS' should be 'us'."
+    assert sorted(mock_address_book.updates) == [
+        ("ID", "addresses", "AID", {"country_code": "us"})
+    ]
+    assert sorted(mock_address_book.adds) == []
+    assert sorted(mock_address_book.deletes) == []
+
+
+def test_address_country_fix(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
+) -> None:
+    """Test address with country in wrong format."""
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        addresses=[
+            ContactAddress(
+                id="AID",
+                label="_$!<Home>!$_",
+                value="ADDRESS",
+                street="1 Street",
+                city="Eureka",
+                state="CA",
+                zip_code="95501",
+                country="USA",
+                country_code="us",
+            ),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "Country 'USA' should be 'United States'."
+    assert sorted(mock_address_book.updates) == [
+        ("ID", "addresses", "AID", {"country": "United States"})
+    ]
+    assert sorted(mock_address_book.adds) == []
+    assert sorted(mock_address_book.deletes) == []
+
+
+def test_address_correct_custom_format(
+    mock_config: Config,
+    mock_geocoder: MockGeocoder,
+) -> None:
+    """Test address in correct custom format."""
+    mock_config.address_formats = {
+        "tr": AddressFormat(
+            street=SemanticAddressField.STREET,
+            state=SemanticAddressField.CITY,
+            city=SemanticAddressField.COUNTY,
+            zip_code=SemanticAddressField.ZIP_CODE,
+        )
+    }
+    mock_geocoder.provide(
+        Geocode(
+            street="1. Cadde",
+            neighborhood="Bahçelievler",
+            city="Çankaya",
+            county="Ankara",
+            zip_code="06490",
+            country_code="tr",
+        )
+    )
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        addresses=[
+            ContactAddress(
+                id="AID",
+                label="_$!<Home>!$_",
+                value="ADDRESS",
+                street="1. Cadde\nNo: 1",
+                city="Ankara",
+                state="Çankaya",
+                zip_code="06490",
+                country="Türkiye",
+                country_code="tr",
+            ),
+        ],
+    )
+    assert contact.problems == []
+
+
+def test_address_fix_from_custom_format(
+    mock_config: Config,
+    mock_address_book: MockAddressBook,
+    mock_geocoder: MockGeocoder,
+) -> None:
+    """Test address in correct custom format."""
+    mock_config.address_formats = {
+        "tr": AddressFormat(
+            street=SemanticAddressField.STREET,
+            state=SemanticAddressField.CITY,
+            city=SemanticAddressField.COUNTY,
+            zip_code=SemanticAddressField.ZIP_CODE,
+        )
+    }
+    mock_geocoder.provide(
+        Geocode(
+            street="1. Cadde",
+            neighborhood="Bahçelievler",
+            city="Çankaya",
+            county="Ankara",
+            zip_code="06490",
+            country_code="tr",
+        )
+    )
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        addresses=[
+            ContactAddress(
+                id="AID",
+                label="_$!<Home>!$_",
+                value="ADDRESS",
+                street="1. Cadde\nNo: 1",
+                state="Ankara",
+                city="Çankaya",
+                zip_code="06490",
+                country="Türkiye",
+                country_code="tr",
+            ),
+        ],
+    )
+    assert len(contact.problems) == 2
+    assert sorted(problem.message for problem in contact.problems) == [
+        "City 'Çankaya' should be 'Ankara'.",
+        "State 'Ankara' should be 'Çankaya'.",
+    ]
+
+
+def test_addresses_duplicate_values(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
+) -> None:
+    """Test duplicate addresses."""
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        addresses=[
+            ContactAddress(
+                id="AID1",
+                label="_$!<Home>!$_",
+                value="ADDRESS",
+                street="1 Street",
+                city="Eureka",
+                state="CA",
+                zip_code="95501",
+                country="United States",
+                country_code="us",
+            ),
+            ContactAddress(
+                id="AID2",
+                label="_$!<Work>!$_",
+                value="ADDRESS",
+                street="1 Street",
+                city="Eureka",
+                state="CA",
+                zip_code="95501",
+                country="United States",
+                country_code="us",
+            ),
+            ContactAddress(
+                id="AID3",
+                label="_$!<School>!$_",
+                value="ANOTHER",
+                street="1 Street",
+                city="Eureka",
+                state="CA",
+                zip_code="95501",
+                country="United States",
+                country_code="us",
+            ),
         ],
     )
     problem = problem_checker.problem(contact)
@@ -589,10 +1323,52 @@ def test_duplicate_addresses(
     assert sorted(mock_address_book.deletes) == [("ID", "addresses", "AID2")]
 
 
-def test_duplicate_social_profiles(
-    problem_checker: ProblemChecker, mock_address_book: MockAddressBook
+def test_custom_date_mixed_case_label_fix(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
 ) -> None:
-    """Test duplicate social profile deletion."""
+    """Test custom date with mixed case label."""
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        custom_dates=[
+            ContactInfo(id="DID", label="Favorite", value="DATE"),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "Custom date label <Favorite> should be <favorite>."
+    assert sorted(mock_address_book.updates) == [
+        ("ID", "custom_dates", "DID", {"label": "favorite"})
+    ]
+    assert sorted(mock_address_book.adds) == []
+    assert sorted(mock_address_book.deletes) == []
+
+
+def test_custom_date_duplicate_values(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
+) -> None:
+    """Test duplicate custom dates."""
+    contact = Contact(
+        id="ID",
+        name="NAME",
+        custom_dates=[
+            ContactInfo(id="DID1", label="favorite", value="DATE"),
+            ContactInfo(id="DID2", label="favorite", value="DATE"),
+            ContactInfo(id="DID2", label="something else", value="DATE"),
+        ],
+    )
+    problem = problem_checker.problem(contact)
+    assert problem.category == Category.WARNING
+    assert problem.message == "Custom date 'DATE <favorite>' has duplicate(s)."
+    assert sorted(mock_address_book.updates) == []
+    assert sorted(mock_address_book.adds) == []
+    assert sorted(mock_address_book.deletes) == [("ID", "custom_dates", "DID2")]
+
+
+def test_social_profile_duplicate_values(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
+) -> None:
+    """Test duplicate social profiles."""
     contact = Contact(
         id="ID",
         name="NAME",
@@ -611,10 +1387,10 @@ def test_duplicate_social_profiles(
     assert sorted(mock_address_book.deletes) == [("ID", "social_profiles", "SID4")]
 
 
-def test_duplicate_instant_messages(
-    problem_checker: ProblemChecker, mock_address_book: MockAddressBook
+def test_instant_message_duplicate_values(
+    mock_address_book: MockAddressBook, problem_checker: ProblemChecker
 ) -> None:
-    """Test duplicate instant message profile deletion."""
+    """Test duplicate instant messages."""
     contact = Contact(
         id="ID",
         name="NAME",
