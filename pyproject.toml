@@ -22,7 +22,7 @@ classifiers = [
 ]
 dependencies = [
   "email_validator==2.0.0.post2",
-  "phonenumberslite==8.13.21",
+  "phonenumberslite==8.13.22",
   "pydantic==2.4.0",
   "rich==13.5.3",
   "typer[all]==0.9.0",
