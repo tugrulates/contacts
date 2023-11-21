@@ -37,7 +37,7 @@ dev = [
   "flake8-builtins==2.2.0",
   "flake8-comprehensions==3.14.0",
   "flake8-docstrings==1.7.0",
-  "flake8-encodings[classes]==0.5.0.post1",
+  "flake8-encodings[classes]==0.5.1",
   "flake8-return==1.2.0",
   "flake8-simplify==0.21.0",
   "flake8==6.1.0",
