@@ -5,10 +5,10 @@ feature:
   - head-branch: "^feature/"
 
 dependencies:
-  - head-branch: ^deps/"
+  - head-branch: "^deps/"
 
 documentation:
-  - head-branch: ^doc/"
+  - head-branch: "^doc/"
 
 performance:
   - head-branch: "^perf/"
