@@ -2,24 +2,11 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "githubPullRequests.defaultMergeMethod": "squash",
     "python.analysis.typeCheckingMode": "basic",
-    "python.linting.flake8Enabled": true,
-    "python.linting.mypyEnabled": true,
-    "python.formatting.provider": "black",
     "[python]": {
         "editor.defaultFormatter": "ms-python.black-formatter",
         "editor.codeActionsOnSave": {
-            "source.organizeImports": true
+            "source.organizeImports": "explicit"
         }
     },
-    "python.testing.pytestEnabled": true,
-    "python.linting.banditEnabled": true,
-    "python.linting.pylintEnabled": false,
-    "python.linting.banditArgs": ["-c pyproject.toml"],
-    "python.linting.mypyArgs": [
-        "--follow-imports=silent",
-        "--ignore-missing-imports",
-        "--show-column-numbers",
-        "--no-pretty",
-        "--check-untyped-defs"
-    ]
+    "python.testing.pytestEnabled": true
 }

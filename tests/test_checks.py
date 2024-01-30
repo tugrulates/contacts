@@ -1,6 +1,5 @@
 """Unittests for contact_diff."""
 
-
 from pathlib import Path
 
 import email_validator

@@ -1,6 +1,5 @@
 """A CLI tool to manage contacts."""
 
-
 import sys
 from typing import Annotated, Any, Optional
 

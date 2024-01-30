@@ -1,6 +1,5 @@
 """NicknameCheck class."""
 
-
 from __future__ import annotations
 
 from contacts.contact import Contact

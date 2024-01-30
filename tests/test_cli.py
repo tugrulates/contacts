@@ -1,6 +1,5 @@
 """Unittests for cli."""
 
-
 import importlib
 import json
 from pathlib import Path

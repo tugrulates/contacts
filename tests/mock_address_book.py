@@ -1,6 +1,5 @@
 """MockAddressBook class."""
 
-
 import json
 from pathlib import Path
 from typing import Iterator

@@ -1,6 +1,5 @@
 """HomePageCheck class."""
 
-
 from __future__ import annotations
 
 from contacts.address_book import AddressBook

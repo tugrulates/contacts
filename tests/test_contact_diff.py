@@ -1,6 +1,5 @@
 """Unittests for contact_diff."""
 
-
 from contacts.contact import Contact, ContactAddress, ContactInfo
 from tests.contact_diff import ContactDiff
 

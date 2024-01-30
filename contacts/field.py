@@ -1,6 +1,5 @@
 """Contact field metadata."""
 
-
 from enum import Enum
 from typing import Callable, NamedTuple, Optional, Sequence
 
