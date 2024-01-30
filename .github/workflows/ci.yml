@@ -15,9 +15,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.10"
-      - run: pip install hatch pre-commit
+      - run: pip install hatch
       - run: hatch run dev:lint
-      - run: pre-commit run --all-files
+      - run: hatch run dev:fmt
       - run: git diff --exit-code
 
   test:
