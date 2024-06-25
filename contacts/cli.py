@@ -9,7 +9,7 @@ from rich.console import Console
 from rich.progress import Progress
 from rich.table import Table
 
-from contacts import contact, keyword
+from contacts import contact, query
 from contacts.address_book import AddressBook
 from contacts.applescript_address_book import AppleScriptBasedAddressBook
 from contacts.category import Category
@@ -107,7 +107,7 @@ def main(
     console = Console(width=width, safe_box=safe_box)
     with Progress(transient=True, console=console) as progress:
         task = progress.add_task("Counting contacts")
-        keywords = keyword.prepare_keywords(keywords or [])
+        keywords = query.prepare_keywords(keywords or [])
 
         address_book = get_address_book(
             brief=not (detail or json or check or fix),

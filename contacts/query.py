@@ -1,4 +1,4 @@
-"""Keyword operations."""
+"""Query operations."""
 
 from functools import cache
 from itertools import chain, combinations
