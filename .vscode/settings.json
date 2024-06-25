@@ -1,12 +1,12 @@
 {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "githubPullRequests.defaultMergeMethod": "squash",
-    "python.analysis.typeCheckingMode": "basic",
     "[python]": {
         "editor.defaultFormatter": "ms-python.black-formatter",
         "editor.codeActionsOnSave": {
             "source.organizeImports": "explicit"
         }
     },
+    "mypy-type-checker.args": ["--check-untyped-defs"],
     "python.testing.pytestEnabled": true
 }
