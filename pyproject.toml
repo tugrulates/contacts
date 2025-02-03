@@ -23,7 +23,7 @@ classifiers = [
 ]
 dependencies = [
   "email_validator==2.2.0",
-  "phonenumberslite==8.13.53",
+  "phonenumberslite==8.13.54",
   "pydantic==2.10.6",
   "rich==13.9.4",
   "typer[all]==0.15.1",
@@ -33,7 +33,7 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
   "bandit[toml]==1.8.2",
-  "black==24.10.0",
+  "black==25.1.0",
   "flake8-bugbear==24.12.12",
   "flake8-builtins==2.5.0",
   "flake8-comprehensions==3.16.0",
