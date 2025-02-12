@@ -26,7 +26,7 @@ class ContactDiff:
         mutation: Mutation,
     ) -> None:
         def _info_dict(
-            values: Optional[list[dict[str, Any]]]
+            values: Optional[list[dict[str, Any]]],
         ) -> dict[str, dict[str, Any]]:
             return {
                 x["id"]: {
