@@ -441,7 +441,8 @@ class AddressBook(ABC):
             __address_book: AddressBook,
             contact_id: str,
             value: str,
-        ) -> None: ...
+        ) -> None:
+            ...
 
     class DeleteFieldFunction(Protocol):
         """Type hint for delete field calls."""
@@ -450,7 +451,8 @@ class AddressBook(ABC):
             self,
             __address_book: AddressBook,
             contact_id: str,
-        ) -> None: ...
+        ) -> None:
+            ...
 
     class UpdateInfoLabelFunction(Protocol):
         """Type hint for update info calls for labels."""
@@ -462,7 +464,8 @@ class AddressBook(ABC):
             info_id: str,
             *,
             label: Optional[str],
-        ) -> None: ...
+        ) -> None:
+            ...
 
     class DeleteInfoFunction(Protocol):
         """Type hint for delete info calls."""
@@ -472,4 +475,5 @@ class AddressBook(ABC):
             __address_book: AddressBook,
             contact_id: str,
             info_id: str,
-        ) -> None: ...
+        ) -> None:
+            ...
