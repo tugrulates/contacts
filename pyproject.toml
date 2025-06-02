@@ -23,10 +23,10 @@ classifiers = [
 ]
 dependencies = [
   "email_validator==2.2.0",
-  "phonenumberslite==9.0.5",
-  "pydantic==2.11.4",
+  "phonenumberslite==9.0.6",
+  "pydantic==2.11.5",
   "rich==14.0.0",
-  "typer[all]==0.15.4",
+  "typer[all]==0.16.0",
   "Unidecode==1.4.0",
 ]
 
@@ -40,16 +40,16 @@ dev = [
   "flake8-docstrings==1.7.0",
   "flake8-encodings[classes]==0.5.1",
   "flake8-return==1.2.0",
-  "flake8-simplify==0.21.0",
+  "flake8-simplify==0.22.0",
   "flake8==7.2.0",
   "isort==6.0.1",
-  "mypy==1.15.0",
+  "mypy==1.16.0",
   "pep8-naming==0.15.1",
-  "pytest==8.3.5",
+  "pytest==8.4.0",
 ]
 test = [
   "pytest-cov==6.1.1",
-  "pytest==8.3.5",
+  "pytest==8.4.0",
 ]
 
 [project.scripts]
