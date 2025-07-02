@@ -14,7 +14,7 @@ from contacts.contact import Contact
 from tests.contact_diff import ContactDiff
 from tests.mock_address_book import MockAddressBook
 
-runner = CliRunner(mix_stderr=True)
+runner = CliRunner()
 
 
 @pytest.fixture(scope="session", autouse=True)
