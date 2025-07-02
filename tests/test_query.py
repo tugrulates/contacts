@@ -7,7 +7,7 @@ from typer.testing import CliRunner
 
 from contacts import config, query
 
-runner = CliRunner(mix_stderr=True)
+runner = CliRunner()
 
 
 @pytest.fixture(autouse=True)
