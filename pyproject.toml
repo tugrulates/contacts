@@ -23,11 +23,11 @@ classifiers = [
   "License :: OSI Approved :: MIT License",
 ]
 dependencies = [
-  "email_validator==2.2.0",
-  "phonenumberslite==9.0.12",
+  "email_validator==2.3.0",
+  "phonenumberslite==9.0.13",
   "pydantic==2.11.7",
   "rich==14.1.0",
-  "typer[all]==0.16.1",
+  "typer[all]==0.17.3",
   "Unidecode==1.4.0",
 ]
 
