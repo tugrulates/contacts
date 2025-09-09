@@ -27,7 +27,7 @@ dependencies = [
   "phonenumberslite==9.0.13",
   "pydantic==2.11.7",
   "rich==14.1.0",
-  "typer[all]==0.17.3",
+  "typer[all]==0.17.4",
   "Unidecode==1.4.0",
 ]
 
@@ -46,11 +46,11 @@ dev = [
   "isort==6.0.1",
   "mypy==1.17.1",
   "pep8-naming==0.15.1",
-  "pytest==8.4.1",
+  "pytest==8.4.2",
 ]
 test = [
-  "pytest-cov==6.2.1",
-  "pytest==8.4.1",
+  "pytest-cov==6.3.0",
+  "pytest==8.4.2",
 ]
 
 [project.scripts]
