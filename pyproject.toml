@@ -24,9 +24,9 @@ classifiers = [
 ]
 dependencies = [
   "email_validator==2.3.0",
-  "phonenumberslite==9.0.15",
-  "pydantic==2.11.10",
-  "rich==14.1.0",
+  "phonenumberslite==9.0.16",
+  "pydantic==2.12.1",
+  "rich==14.2.0",
   "typer[all]==0.19.2",
   "Unidecode==1.4.0",
 ]
