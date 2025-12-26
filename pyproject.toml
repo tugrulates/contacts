@@ -24,10 +24,10 @@ classifiers = [
 ]
 dependencies = [
   "email_validator==2.3.0",
-  "phonenumberslite==9.0.20",
+  "phonenumberslite==9.0.21",
   "pydantic==2.12.5",
   "rich==14.2.0",
-  "typer[all]==0.20.0",
+  "typer[all]==0.20.1",
   "Unidecode==1.4.0",
 ]
 
