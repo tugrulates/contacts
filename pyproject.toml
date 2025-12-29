@@ -27,7 +27,7 @@ dependencies = [
   "phonenumberslite==9.0.21",
   "pydantic==2.12.5",
   "rich==14.2.0",
-  "typer[all]==0.20.1",
+  "typer[all]==0.21.0",
   "Unidecode==1.4.0",
 ]
 
