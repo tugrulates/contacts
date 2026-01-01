@@ -41,7 +41,7 @@ dev = [
   "flake8-docstrings==1.7.0",
   "flake8-encodings[classes]==0.5.1",
   "flake8-return==1.2.0",
-  "flake8-simplify==0.22.0",
+  "flake8-simplify==0.30.0",
   "flake8==7.3.0",
   "isort==6.1.0",
   "mypy==1.19.1",
