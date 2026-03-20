@@ -1,24 +1,24 @@
-╭────────────────────────┬────┬───────────────────────────────────────────────╮
-│                        │ ⚠️  │ dr. warnen bitte sanft jr.                    │
-├────────────────────────┼────┼───────────────────────────────────────────────┤
-│             First name │ 🔖 │ warnen                                        │
-│              Last name │ 🔖 │ sanft                                         │
-│                 Phones │ 📞 │ +18172000003 <mobile>                         │
-│                E-mails │ 📧 │ warnensanft@warnen.com <Email>                │
-│              Home page │ 🌐 │ http://warnen.blog                            │
-│           Custom dates │ 📅 │ July 7 <Favorite>                             │
-│        Social profiles │ 🌐 │ warnensanft <LinkedIn>                        │
-│                        │ 🌐 │ warnensanft <LinkedIn>                        │
-│               Problems │ ⚠️  │ First name 'warnen' should be 'Warnen'.       │
-│                        │ ⚠️  │ Last name 'sanft' should be 'Sanft'.          │
-│                        │ ⚠️  │ Phone label <mobile> should be                │
-│                        │    │ <_$!<Mobile>!$_>.                             │
-│                        │ ⚠️  │ E-mail label <Email> should be                │
-│                        │    │ <_$!<Home>!$_>.                               │
-│                        │ ⚠️  │ Home page 'http://warnen.blog' should be a    │
-│                        │    │ URL.                                          │
-│                        │ ⚠️  │ Custom date label <Favorite> should be        │
-│                        │    │ <favorite>.                                   │
-│                        │ ⚠️  │ Social profile 'warnensanft <LinkedIn>' has   │
-│                        │    │ duplicate(s).                                 │
-╰────────────────────────┴────┴───────────────────────────────────────────────╯
+╭────────────────────────┬─────┬──────────────────────────────────────────────╮
+│                        │ ⚠️  │ dr. warnen bitte sanft jr.                   │
+├────────────────────────┼─────┼──────────────────────────────────────────────┤
+│             First name │ 🔖  │ warnen                                       │
+│              Last name │ 🔖  │ sanft                                        │
+│                 Phones │ 📞  │ +18172000003 <mobile>                        │
+│                E-mails │ 📧  │ warnensanft@warnen.com <Email>               │
+│              Home page │ 🌐  │ http://warnen.blog                           │
+│           Custom dates │ 📅  │ July 7 <Favorite>                            │
+│        Social profiles │ 🌐  │ warnensanft <LinkedIn>                       │
+│                        │ 🌐  │ warnensanft <LinkedIn>                       │
+│               Problems │ ⚠️  │ First name 'warnen' should be 'Warnen'.      │
+│                        │ ⚠️  │ Last name 'sanft' should be 'Sanft'.         │
+│                        │ ⚠️  │ Phone label <mobile> should be               │
+│                        │     │ <_$!<Mobile>!$_>.                            │
+│                        │ ⚠️  │ E-mail label <Email> should be               │
+│                        │     │ <_$!<Home>!$_>.                              │
+│                        │ ⚠️  │ Home page 'http://warnen.blog' should be a   │
+│                        │     │ URL.                                         │
+│                        │ ⚠️  │ Custom date label <Favorite> should be       │
+│                        │     │ <favorite>.                                  │
+│                        │ ⚠️  │ Social profile 'warnensanft <LinkedIn>' has  │
+│                        │     │ duplicate(s).                                │
+╰────────────────────────┴─────┴──────────────────────────────────────────────╯
