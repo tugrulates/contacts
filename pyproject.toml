@@ -24,10 +24,10 @@ classifiers = [
 ]
 dependencies = [
   "email_validator==2.3.0",
-  "phonenumberslite==9.0.33",
+  "phonenumberslite==9.0.35",
   "pydantic==2.13.4",
   "rich==15.0.0",
-  "typer[all]==0.26.8",
+  "typer[all]==0.27.0",
   "Unidecode==1.4.0",
 ]
 
@@ -44,7 +44,7 @@ dev = [
   "flake8-simplify==0.30.0",
   "flake8==7.3.0",
   "isort==8.0.1",
-  "mypy==2.1.0",
+  "mypy==2.3.0",
   "pep8-naming==0.15.1",
   "pytest==9.1.1",
 ]
